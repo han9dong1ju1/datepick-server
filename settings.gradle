@@ -2,3 +2,5 @@ rootProject.name = 'datepick-server'
 include 'application'
 include 'domain'
 include 'infrastructure'
+include 'util'
+
