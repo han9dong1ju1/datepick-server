@@ -1,6 +1,6 @@
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.mariadb.jdbc:mariadb-java-client' // MariaDB
+    implementation 'org.mariadb.jdbc:mariadb-java-client'
     // Module
     implementation project(':util')
     implementation project(':domain')
