@@ -1,0 +1,36 @@
+# Common 공통 설정
+spring.profiles.active: dev   # 환경 선택
+
+server:
+  port: 8080
+
+--- # local 환경
+
+#spring:
+#  config:
+#    activate:
+#      on-profile: local
+
+--- # dev 환경
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:mariadb://datepickdb.cbwheay2prg8.ap-northeast-2.rds.amazonaws.com:3306/datepickdb_dev
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: hdjadmin
+    password: tlrmsldpf2773
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+--- # prod 환경
+
+#spring:
+#  profiles:
+#    active:
+#      on-profile: prod
+
