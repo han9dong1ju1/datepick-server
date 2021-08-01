@@ -8,12 +8,10 @@ bootJar {
     enabled = false
 }
 
-allprojects {
-    repositories {
-        mavenCentral()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
+repositories {
+    mavenCentral()
+    maven {
+        url "https://plugins.gradle.org/m2/"
     }
 }
 
