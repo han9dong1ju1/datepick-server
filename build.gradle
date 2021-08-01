@@ -8,6 +8,15 @@ bootJar {
     enabled = false
 }
 
+allprojects {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+
 subprojects {
     group = 'app.hdj.datepick'
     version = '0.0.1-SNAPSHOT'
