@@ -5,3 +5,7 @@ dependencies {
     implementation project(':util')
     implementation project(':domain')
 }
+
+springBoot {
+    mainClass = "app.hdj.datepick.DatepickServerApplication"
+}
