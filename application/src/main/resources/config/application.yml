@@ -3,6 +3,8 @@ spring.profiles.active: dev   # 환경 선택
 
 server:
   port: 8080
+  servlet:
+    context-path: /api
 
 --- # local 환경
 
