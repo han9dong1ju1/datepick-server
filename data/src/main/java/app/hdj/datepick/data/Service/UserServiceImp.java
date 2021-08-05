@@ -1,11 +1,10 @@
 package app.hdj.datepick.data.Service;
 
-import app.hdj.datepick.data.repository.UserRepositoryImp;
 import app.hdj.datepick.domain.dto.User;
 import app.hdj.datepick.domain.repository.UserRepository;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,13 +25,13 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    public User findById(Long id) {
-        return userRepository.findById(id);
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Override
-    public User findByNickname(String nickname) {
-        return userRepository.findByNickname(nickname);
+    public User findById(Long id) {
+        return userRepository.findById(id);
     }
 
     @Override
