@@ -5,6 +5,7 @@ import app.hdj.datepick.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("")
-    public List<User> getAllUsers() {
+    List<User> getAllUsers() {
         User user = new User(
                 1L,
                 "sample_user",
@@ -32,8 +33,19 @@ public class UserController {
         return new ArrayList<User>(){{add(user);}};
     }
 
+    @GetMapping("me")
+    User getMyUser() {
+        User user = new User(
+                1L,
+                "sample_user",
+                "nickname",
+                "profile_url");
+
+        return user;
+    }
+
     @GetMapping("{userId}")
-    public User getUser(@PathVariable Long userId) {
+    User getUser(@PathVariable Long userId) {
         if (userId == 13)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Fuck");
 
@@ -45,7 +57,29 @@ public class UserController {
     }
 
     @PostMapping("")
-    public User createUser() {
+    User createUser() {
+        User user = new User(
+                1L,
+                "sample_user",
+                "nickname",
+                "profile_url");
+
+        return user;
+    }
+
+    @PostMapping("me")
+    User createMyUser() {
+        User user = new User(
+                1L,
+                "sample_user",
+                "nickname",
+                "profile_url");
+
+        return user;
+    }
+
+    @PatchMapping("me")
+    User updateMyUser() {
         User user = new User(
                 1L,
                 "sample_user",
@@ -56,12 +90,18 @@ public class UserController {
     }
 
     @PatchMapping("{userId}")
-    public void updateUser(@PathVariable Long userId) {
+    User updateUser(@PathVariable Long userId) {
+        User user = new User(
+                1L,
+                "sample_user",
+                "nickname",
+                "profile_url");
 
+        return user;
     }
 
     @DeleteMapping("{userId}")
-    public void deleteUser(@PathVariable Long userId) {
+    void deleteUser(@PathVariable Long userId) {
 
     }
 }
