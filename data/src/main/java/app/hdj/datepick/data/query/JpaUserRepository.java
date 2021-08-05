@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface JpaUserRepository extends JpaRepository<UserTable, Long> {
-    public Optional<UserTable> findByNickname(String nickname);
+
 
 }

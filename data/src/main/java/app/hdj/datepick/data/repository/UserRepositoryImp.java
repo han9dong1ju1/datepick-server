@@ -4,15 +4,20 @@ import app.hdj.datepick.data.entity.UserTable;
 import app.hdj.datepick.data.query.JpaUserRepository;
 import app.hdj.datepick.domain.dto.User;
 import app.hdj.datepick.domain.repository.UserRepository;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -32,21 +37,27 @@ public class UserRepositoryImp implements UserRepository {
         //https://stackoverflow.com/questions/47929674/modelmapper-mapping-list-of-entites-to-list-of-dto-objects/58324819 참고
         List<UserTable> userTables = jpaUserRepository.findAll();
         Type listType = new TypeToken<List<User>>(){}.getType();
-        List<User> postDtoList = mapper.map(userTables, listType);
-        return postDtoList;
+        List<User> users = mapper.map(userTables, listType);
+
+        return users;
     }
+
+    @Override
+    public Page<User> findAll(Pageable pageable){
+        //https://stackoverflow.com/questions/30644543/convert-pageentity-to-pagedtoentitydto 참고
+        Page<UserTable> userTables = jpaUserRepository.findAll(pageable);
+        Type listType = new TypeToken<List<User>>(){}.getType();
+        List<User> users = mapper.map(userTables.getContent(), listType);
+        return new PageImpl<>(users, pageable, userTables.getTotalElements());
+    }
+
+
+
     @Override
     public User findById(Long id){
         //UserTable to User
         return mapper.map(
-                jpaUserRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("없는 아이디에요.")),
-                User.class
-        );
-    }
-    @Override
-    public User findByNickname(String nickname){
-        return mapper.map(
-                jpaUserRepository.findByNickname(nickname).orElseThrow(()-> new IllegalArgumentException("없는 닉네임이에요.")),
+                jpaUserRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d 의 유저가 존재하지 않습니다", id))),
                 User.class
         );
     }
@@ -54,19 +65,22 @@ public class UserRepositoryImp implements UserRepository {
     @Override
     public List<User> findByIdList(List<Long> idList){
         List<User> users = new ArrayList<>();
-        for (Long id : idList) {
-            users.add(
-                    mapper.map(jpaUserRepository.findById(id).orElseThrow(()->new IllegalArgumentException("없는 아이디입니다만?")),User.class
-                )
-            );
-        }
+        users = idList.stream()
+                .map(id -> findById(id))
+                .map(userTable -> mapper.map(userTable, User.class))
+                .collect(Collectors.toList());
         return users;
     }
 
     @Override
     public Boolean create(User user) {
-        if (jpaUserRepository.existsById(user.getId())){
-            throw new IllegalArgumentException("이미 있는 유저입니다만?");
+        try{
+            if (jpaUserRepository.existsById(user.getId())) {
+                throw new IllegalAccessException(String.format("해당 id : %d의 유저는 이미 존재합니다.", user.getId()));
+            }
+        }catch (IllegalAccessException e) {
+            //Exception handler
+            return false;
         }
         UserTable userTable = mapper.map(user, UserTable.class);
         jpaUserRepository.save(userTable);
@@ -76,20 +90,15 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public User update(User user){
-        if (!jpaUserRepository.existsById(user.getId())){
-            throw new IllegalArgumentException("없는 유저입니다만?");
-        }
-        UserTable userTable = mapper.map(user, UserTable.class);
+        UserTable userTable = jpaUserRepository.findById(user.getId()).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d의 유저가 존재하지 않습니다", user.getId())));
+        mapper.map(user, userTable);
         jpaUserRepository.save(userTable);
-        return mapper.map(jpaUserRepository.findById(user.getId()), User.class);
+        return mapper.map(userTable, User.class);
     }
 
     @Override
     public Boolean delete(User user){
-        if (!jpaUserRepository.existsById(user.getId())){
-            throw new IllegalArgumentException("없는 유저입니다만?");
-        }
-        UserTable userTable = mapper.map(user, UserTable.class);
+        UserTable userTable = jpaUserRepository.findById(user.getId()).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d의 유저가 존재하지 않습니다", user.getId())));
         jpaUserRepository.delete(userTable);
         return !jpaUserRepository.existsById(user.getId());
     }
