@@ -20,15 +20,16 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:mariadb://datepickdb.cbwheay2prg8.ap-northeast-2.rds.amazonaws.com:3306/datepickdb_dev
+    url: jdbc:mariadb://datepickdb.cbwheay2prg8.ap-northeast-2.rds.amazonaws.com:3306/datepick_dummy_db_utf8
     driver-class-name: org.mariadb.jdbc.Driver
     username: hdjadmin
     password: tlrmsldpf2773
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
 
+spring.jpa.properties.hibernate.format_sql : true
 --- # prod 환경
 
 #spring:
