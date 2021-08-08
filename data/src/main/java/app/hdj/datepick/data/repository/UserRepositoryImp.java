@@ -42,14 +42,14 @@ public class UserRepositoryImp implements UserRepository {
         return users;
     }
 
-    @Override
-    public Page<User> findAll(Pageable pageable){
-        //https://stackoverflow.com/questions/30644543/convert-pageentity-to-pagedtoentitydto 참고
-        Page<UserTable> userTables = jpaUserRepository.findAll(pageable);
-        Type listType = new TypeToken<List<User>>(){}.getType();
-        List<User> users = mapper.map(userTables.getContent(), listType);
-        return new PageImpl<>(users, pageable, userTables.getTotalElements());
-    }
+//    @Override
+//    public Page<User> findAll(Pageable pageable){
+//        //https://stackoverflow.com/questions/30644543/convert-pageentity-to-pagedtoentitydto 참고
+//        Page<UserTable> userTables = jpaUserRepository.findAll(pageable);
+//        Type listType = new TypeToken<List<User>>(){}.getType();
+//        List<User> users = mapper.map(userTables.getContent(), listType);
+//        return new PageImpl<>(users, pageable, userTables.getTotalElements());
+//    }
 
 
 
