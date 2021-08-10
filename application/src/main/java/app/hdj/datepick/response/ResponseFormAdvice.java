@@ -27,9 +27,9 @@ public class ResponseFormAdvice implements ResponseBodyAdvice<Object> {
         if (body instanceof Exception) {
             return new Response<Object>(
                     ((Exception) body).getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.toString(),
                     body);
         }
-        return new Response<Object>(null, HttpStatus.OK.value(), body);
+        return new Response<Object>(null, HttpStatus.OK.toString(), body);
     }
 }

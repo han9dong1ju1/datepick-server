@@ -21,7 +21,7 @@ public class UserTable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "uid", columnDefinition = "varchar(128) not null")
+    @Column(name = "uid", columnDefinition = "varchar(128) not null unique")
     private String uid;
 
     @Column(name = "nickname", columnDefinition = "varchar(16) not null unique")
