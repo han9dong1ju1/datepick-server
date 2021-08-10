@@ -13,7 +13,7 @@ public class User {
 
     private Long id;
     private String uid;
-    private Boolean gender;
+    private String gender;
     private String nickname;
     private String profileUrl;
 
