@@ -7,9 +7,6 @@ import app.hdj.datepick.domain.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Type;
@@ -42,17 +39,6 @@ public class UserRepositoryImp implements UserRepository {
         return users;
     }
 
-//    @Override
-//    public Page<User> findAll(Pageable pageable){
-//        //https://stackoverflow.com/questions/30644543/convert-pageentity-to-pagedtoentitydto 참고
-//        Page<UserTable> userTables = jpaUserRepository.findAll(pageable);
-//        Type listType = new TypeToken<List<User>>(){}.getType();
-//        List<User> users = mapper.map(userTables.getContent(), listType);
-//        return new PageImpl<>(users, pageable, userTables.getTotalElements());
-//    }
-
-
-
     @Override
     public User findById(Long id){
         //UserTable to User
@@ -72,20 +58,14 @@ public class UserRepositoryImp implements UserRepository {
     }
 
     @Override
-    public Boolean create(User user) {
-        try {
-            if (jpaUserRepository.existsById(user.getId())) {
-                throw new IllegalAccessException(String.format("해당 id : %d의 유저는 이미 존재합니다.", user.getId()));
-            }
-        } catch (IllegalAccessException e) {
-            //Exception handler
-            return false;
+    public User create(User user) {
+        if (jpaUserRepository.existsByUid(user.getUid())) {
+            throw new NoSuchElementException(String.format("해당 uid : %s의 유저는 이미 존재합니다.", user.getUid()));
         }
         UserTable userTable = mapper.map(user, UserTable.class);
         jpaUserRepository.save(userTable);
-        return jpaUserRepository.existsById(user.getId());
+        return user;
     }
-
 
     @Override
     public User update(User user){
