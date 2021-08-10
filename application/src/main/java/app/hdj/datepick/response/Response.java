@@ -8,12 +8,13 @@ import lombok.Setter;
 public class Response<T> {
 
     private String message;
-    private int code;
+    private String error;
     private T data;
 
-    public Response(String message, int code, T data) {
+    public Response(String message, String error, T data) {
         this.message = message;
-        this.code = code;
+        this.error = error;
         this.data = data;
     }
+
 }

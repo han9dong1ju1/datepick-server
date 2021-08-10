@@ -25,11 +25,12 @@ spring:
     username: hdjadmin
     password: tlrmsldpf2773
   jpa:
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate:
-        ddl-auto: update
         format_sql: true
-        show-sql: true
+    show-sql: true
 
 --- # prod 환경
 
