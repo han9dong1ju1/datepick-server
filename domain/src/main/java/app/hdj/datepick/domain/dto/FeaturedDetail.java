@@ -13,10 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FeaturedDetail {
-    private Long id;
-    private String title;
-    private String description;
+    private FeaturedMeta meta;
     private String content;
-    private String photoUrl;
     private List<Course> courses;
 }

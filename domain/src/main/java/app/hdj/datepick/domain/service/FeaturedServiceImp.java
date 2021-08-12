@@ -24,11 +24,6 @@ public class FeaturedServiceImp implements FeaturedService{
     }
 
     @Override
-    public FeaturedMeta findById(Long id) {
-        return featuredRepository.findById(id);
-    }
-
-    @Override
     public FeaturedDetail findByIdWithDetail(Long id) {
         return featuredRepository.findByIdWithDetail(id);
     }

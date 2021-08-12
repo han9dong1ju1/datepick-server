@@ -10,6 +10,5 @@ import java.util.List;
 public interface FeaturedService {
     public List<FeaturedMeta> findAll();
 
-    public FeaturedMeta findById(Long id);
     public FeaturedDetail findByIdWithDetail(Long id);
 }
