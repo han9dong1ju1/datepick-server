@@ -40,22 +40,24 @@ public class FeaturedRepositoryImp implements FeaturedRepository {
         return featuredMetas;
     }
 
-    @Override
-    public FeaturedMeta findById(Long id) {
-        return mapper.map(
-                jpaFeaturedRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d 의 피쳐드가 존재하지 않습니다", id))),
-                FeaturedMeta.class
-        );
-    }
 
     @Override
     public FeaturedDetail findByIdWithDetail(Long id) {
+        //Find Course By Featured
         List<CourseTable> courseTableList = jpaFeaturedRepository.findCourseListByFeaturedId(id);
         Type listType = new TypeToken<List<Course>>(){}.getType();
         List<Course> courseList = mapper.map(courseTableList, listType);
+
+        //Find Featured By Id
         FeaturedTable featuredTable = jpaFeaturedRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d 의 피쳐드가 존재하지 않습니다", id)));
-        FeaturedDetail featuredDetail = mapper.map(featuredTable, FeaturedDetail.class);
+        FeaturedMeta featuredMeta = mapper.map(featuredTable, FeaturedMeta.class);
+        FeaturedDetail featuredDetail = new FeaturedDetail();
+
+        //Make Featured Detail
+        featuredDetail.setMeta(featuredMeta);
+        featuredDetail.setContent(featuredTable.getContent());
         featuredDetail.setCourses(courseList);
+
         return featuredDetail;
     }
 }

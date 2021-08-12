@@ -24,23 +24,15 @@ public class FeaturedController {
         this.featuredService = featuredService;
     }
 
-    // -- api/v1/featured/meta --
-    @GetMapping("/meta/all")
+
+    @GetMapping("")
     public List<FeaturedMeta> getAllFeatured(){
         System.out.println("Get All Featured");
         return featuredService.findAll();
     }
-    @GetMapping("/meta/{featured_id}")
-    public FeaturedMeta getFeaturedById(@PathVariable Long featured_id){
-        System.out.println(String.format("Get Featured %d", featured_id));
-        return featuredService.findById(featured_id);
+    @GetMapping("/{featuredId}")
+    public FeaturedDetail getFeaturedByIdWithDetail(@PathVariable Long featuredId){
+        System.out.println(String.format("Get Featured Detail %d", featuredId));
+        return featuredService.findByIdWithDetail(featuredId);
     }
-    //--
-    //-- api/v1/featured/detail --
-    @GetMapping("/detail/{featured_id}")
-    public FeaturedDetail getFeaturedByIdWithDetail(@PathVariable Long featured_id){
-        System.out.println(String.format("Get Featured Detail %d", featured_id));
-        return featuredService.findByIdWithDetail(featured_id);
-    }
-    //--
 }

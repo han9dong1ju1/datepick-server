@@ -13,6 +13,5 @@ public interface FeaturedRepository {
 
     public List<FeaturedMeta> findAll();
 
-    public FeaturedMeta findById(Long id);
     public FeaturedDetail findByIdWithDetail(Long id);
 }
