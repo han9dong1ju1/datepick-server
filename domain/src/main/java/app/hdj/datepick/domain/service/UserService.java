@@ -12,7 +12,7 @@ public interface UserService {
     public List<User> findAll();
     public Page<User> findAll(Pageable pageable);
     public User findById(Long id);
-    public List<User> findByIdList(List<Long> idList);2
+    public List<User> findByIdList(List<Long> idList);
 
     public Boolean create(User user);
     public User update(User user);
