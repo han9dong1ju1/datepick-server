@@ -27,6 +27,7 @@ public class UserController {
         User user = new User(
                 1L,
                 "sample_user",
+                'M',
                 "nickname",
                 "profile_url");
 
@@ -38,6 +39,7 @@ public class UserController {
         User user = new User(
                 1L,
                 "sample_user",
+                'M',
                 "nickname",
                 "profile_url");
 
@@ -52,6 +54,7 @@ public class UserController {
         return new User(
                 userId,
                 "sample_user",
+                'M',
                 "nickname",
                 "profile_url");
     }
@@ -61,6 +64,7 @@ public class UserController {
         User user = new User(
                 1L,
                 "sample_user",
+                'M',
                 "nickname",
                 "profile_url");
 
@@ -72,6 +76,7 @@ public class UserController {
         User user = new User(
                 1L,
                 "sample_user",
+                'M',
                 "nickname",
                 "profile_url");
 
@@ -83,6 +88,7 @@ public class UserController {
         User user = new User(
                 1L,
                 "sample_user",
+                'M',
                 "nickname",
                 "profile_url");
 
@@ -94,6 +100,7 @@ public class UserController {
         User user = new User(
                 1L,
                 "sample_user",
+                'M',
                 "nickname",
                 "profile_url");
 
