@@ -1,7 +1,7 @@
 package app.hdj.datepick.domain.service;
 
-import app.hdj.datepick.domain.dto.FeaturedDetail;
-import app.hdj.datepick.domain.dto.FeaturedMeta;
+import app.hdj.datepick.domain.model.FeaturedDetail;
+import app.hdj.datepick.domain.model.FeaturedMeta;
 import app.hdj.datepick.domain.repository.FeaturedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

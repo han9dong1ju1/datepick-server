@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserCreateRequestDto {
 
-    private String gender;
+    private Character gender;
     private String nickname;
     private String profileUrl;
 

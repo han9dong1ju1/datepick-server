@@ -2,21 +2,17 @@ package app.hdj.datepick.data.repository;
 
 import app.hdj.datepick.data.entity.CourseTable;
 import app.hdj.datepick.data.entity.FeaturedTable;
-import app.hdj.datepick.data.entity.UserTable;
 import app.hdj.datepick.data.query.JpaFeaturedRepository;
-import app.hdj.datepick.domain.dto.Course;
-import app.hdj.datepick.domain.dto.FeaturedDetail;
-import app.hdj.datepick.domain.dto.FeaturedMeta;
-import app.hdj.datepick.domain.dto.User;
+import app.hdj.datepick.domain.model.Course;
+import app.hdj.datepick.domain.model.FeaturedDetail;
+import app.hdj.datepick.domain.model.FeaturedMeta;
 import app.hdj.datepick.domain.repository.FeaturedRepository;
-import com.fasterxml.jackson.core.JsonParser;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
