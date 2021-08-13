@@ -1,4 +1,5 @@
-package app.hdj.datepick.domain.model;
+package app.hdj.datepick.domain.dto;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,12 +10,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-
+public class FeaturedMeta {
     private Long id;
-    private String uid;
-    private Character gender;
-    private String nickname;
-    private String profileUrl;
-
+    private String title;
+    private String description;
+    private String photoUrl;
 }
