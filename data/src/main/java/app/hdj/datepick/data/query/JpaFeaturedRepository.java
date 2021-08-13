@@ -2,7 +2,6 @@ package app.hdj.datepick.data.query;
 
 import app.hdj.datepick.data.entity.CourseTable;
 import app.hdj.datepick.data.entity.FeaturedTable;
-import app.hdj.datepick.domain.dto.FeaturedDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
