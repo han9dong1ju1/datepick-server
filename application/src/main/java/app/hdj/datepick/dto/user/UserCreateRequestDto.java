@@ -1,6 +1,6 @@
 package app.hdj.datepick.dto.user;
 
-import app.hdj.datepick.domain.dto.User;
+import app.hdj.datepick.domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

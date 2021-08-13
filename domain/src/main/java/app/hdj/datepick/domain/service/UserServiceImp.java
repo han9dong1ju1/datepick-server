@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.service;
 
-import app.hdj.datepick.domain.dto.User;
+import app.hdj.datepick.domain.model.User;
 import app.hdj.datepick.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

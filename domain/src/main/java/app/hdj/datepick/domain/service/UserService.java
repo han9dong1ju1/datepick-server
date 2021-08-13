@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.service;
 
-import app.hdj.datepick.domain.dto.User;
+import app.hdj.datepick.domain.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

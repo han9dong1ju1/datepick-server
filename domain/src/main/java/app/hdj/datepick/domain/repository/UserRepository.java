@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.repository;
 
-import app.hdj.datepick.domain.dto.User;
+import app.hdj.datepick.domain.model.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
