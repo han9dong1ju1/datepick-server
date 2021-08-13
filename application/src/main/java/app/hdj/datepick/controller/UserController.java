@@ -1,6 +1,6 @@
 package app.hdj.datepick.controller;
 
-import app.hdj.datepick.domain.dto.User;
+import app.hdj.datepick.domain.model.User;
 import app.hdj.datepick.dto.user.UserCreateRequestDto;
 import app.hdj.datepick.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,8 @@ public class UserController {
      * TODO
      */
     @DeleteMapping("{userId}")
-    Boolean deleteUser(@PathVariable Long userId) {
-        return userService.delete(new User());
+    void deleteUser(@PathVariable Long userId) {
+        throw new RuntimeException("user delete error");
+        //userService.delete(new User());
     }
 }

@@ -1,6 +1,6 @@
 package app.hdj.datepick.controller;
 
-import app.hdj.datepick.domain.dto.User;
+import app.hdj.datepick.domain.model.User;
 import app.hdj.datepick.dto.auth.AuthRegisterRequestDto;
 import app.hdj.datepick.dto.auth.AuthRegisterResponseDto;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +56,7 @@ public class AuthController {
      */
     @GetMapping("logout")
     public void logout() {
-
+        throw new RuntimeException("Auth exception");
     }
 
     /**

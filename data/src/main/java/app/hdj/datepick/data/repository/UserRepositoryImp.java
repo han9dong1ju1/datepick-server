@@ -2,7 +2,7 @@ package app.hdj.datepick.data.repository;
 
 import app.hdj.datepick.data.entity.UserTable;
 import app.hdj.datepick.data.query.JpaUserRepository;
-import app.hdj.datepick.domain.dto.User;
+import app.hdj.datepick.domain.model.User;
 import app.hdj.datepick.domain.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
