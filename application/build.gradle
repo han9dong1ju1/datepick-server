@@ -1,9 +1,9 @@
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.mariadb.jdbc:mariadb-java-client'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     // Module
     implementation project(':util')
     implementation project(':domain')
+    implementation project(':data')
 }
 
 springBoot {
