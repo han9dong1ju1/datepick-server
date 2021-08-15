@@ -1,8 +1,8 @@
 package app.hdj.datepick.domain.repository;
 
 
-import app.hdj.datepick.domain.dto.FeaturedDetail;
-import app.hdj.datepick.domain.dto.FeaturedMeta;
+import app.hdj.datepick.domain.model.FeaturedDetail;
+import app.hdj.datepick.domain.model.FeaturedMeta;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

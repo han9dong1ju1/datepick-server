@@ -1,6 +1,8 @@
-package app.hdj.datepick.response;
+package app.hdj.datepick.advice;
 
+import app.hdj.datepick.dto.BaseResponseDto;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 @RestControllerAdvice
+@Order(CustomOrder.FINAL)
 public class ResponseFormAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
@@ -23,13 +26,16 @@ public class ResponseFormAdvice implements ResponseBodyAdvice<Object> {
                                   Class selectedConverterType,
                                   ServerHttpRequest request,
                                   ServerHttpResponse response) {
-        // 형식 변경 처리
+        /**
+         * 형식 변경 처리
+         */
         if (body instanceof Exception) {
-            return new Response<Object>(
+            return new BaseResponseDto<Object>(
                     ((Exception) body).getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.toString(),
                     body);
         }
-        return new Response<Object>(null, HttpStatus.OK.value(), body);
+        return new BaseResponseDto<Object>(null, null, body);
     }
+
 }

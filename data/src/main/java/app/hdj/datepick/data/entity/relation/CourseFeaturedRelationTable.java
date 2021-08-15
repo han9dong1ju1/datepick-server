@@ -1,12 +1,9 @@
 package app.hdj.datepick.data.entity.relation;
 
 
-import app.hdj.datepick.data.entity.FeaturedTable;
-import app.hdj.datepick.domain.dto.Course;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity(name = "course_featured_relation")
 @Getter

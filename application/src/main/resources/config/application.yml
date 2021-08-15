@@ -27,9 +27,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
     show-sql: true
 
-spring.jpa.properties.hibernate.format_sql : true
 --- # prod 환경
 
 #spring:
