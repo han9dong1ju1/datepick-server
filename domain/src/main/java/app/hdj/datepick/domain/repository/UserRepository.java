@@ -1,12 +1,10 @@
 package app.hdj.datepick.domain.repository;
 
 import app.hdj.datepick.domain.model.User;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 
-@Repository
 public interface UserRepository {
 
     public List<User> findAll();
