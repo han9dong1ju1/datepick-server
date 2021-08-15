@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CourseTable {
+public class CourseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -20,7 +20,7 @@ public class CourseTable {
     @Column(name = "title", columnDefinition = "varchar(50) not null")
     private String title;
 
-    @Column(name = "user_id", columnDefinition = "int unsigned not null")
+    @Column(name = "user_id", columnDefinition = "bigint not null")
     private Long userId;
 
     @Column(name = "region", columnDefinition = "tinyint(4) not null")
@@ -29,13 +29,13 @@ public class CourseTable {
     @Column(name = "expected_at", columnDefinition = "timestamp not null default now()")
     private Timestamp expectedAt;
 
-    @Column(name = "pick_count", columnDefinition = "int unsigned not null default 0")
-    private Long pickCount;
+    @Column(name = "pick_count", columnDefinition = "int not null default 0")
+    private Integer pickCount;
 
-    @Column(name = "import_count", columnDefinition = "int unsigned not null default 0")
-    private Long importCount;
+    @Column(name = "import_count", columnDefinition = "int not null default 0")
+    private Integer importCount;
 
-    @Column(name = "is_private", columnDefinition = "tinyint(1) not null default 0")
+    @Column(name = "is_private", columnDefinition = "boolean not null default false")
     private Boolean isPrivate;
 
     @Column(name = "created_at", columnDefinition = "timestamp not null default now()")

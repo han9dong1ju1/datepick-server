@@ -26,7 +26,7 @@ public class UserController {
      */
     @GetMapping("")
     List<User> getAllUsers() {
-        return userService.findAll();
+        return userService.getAllUsers();
     }
 
     /**
@@ -35,7 +35,7 @@ public class UserController {
      */
     @GetMapping("{userId}")
     User getUser(@PathVariable Long userId) {
-        return userService.findById(userId);
+        return userService.getUser(userId);
     }
 
     /**
@@ -44,7 +44,7 @@ public class UserController {
     @PostMapping("")
     User createUser(@Valid @RequestBody UserCreateRequestDto userCreateRequestDto) {
         User user = userCreateRequestDto.createUser();
-        return userService.create(user);
+        return userService.addUser(user);
     }
 
     /**
@@ -53,7 +53,7 @@ public class UserController {
     @PatchMapping("{userId}")
     User updateUser(@PathVariable Long userId, @Valid @RequestBody UserCreateRequestDto userCreateRequestDto) {
         User user = userCreateRequestDto.createUser();
-        return userService.update(user);
+        return userService.modifyUser(user);
     }
 
     /**
@@ -62,7 +62,7 @@ public class UserController {
      */
     @DeleteMapping("{userId}")
     void deleteUser(@PathVariable Long userId) {
-        throw new RuntimeException("user delete error");
-        //userService.delete(new User());
+        userService.removeUser(userId);
     }
+
 }

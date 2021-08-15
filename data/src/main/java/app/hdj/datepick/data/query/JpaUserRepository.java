@@ -1,12 +1,10 @@
 package app.hdj.datepick.data.query;
 
-import app.hdj.datepick.data.entity.UserTable;
+import app.hdj.datepick.data.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 
-@Repository
-public interface JpaUserRepository extends JpaRepository<UserTable, Long> {
+public interface JpaUserRepository extends JpaRepository<UserEntity, Long> {
 
     Boolean existsByUid(String uid);
 

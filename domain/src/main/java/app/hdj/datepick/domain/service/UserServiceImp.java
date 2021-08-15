@@ -18,27 +18,27 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public User findById(Long id) {
+    public User getUser(Long id) {
         return userRepository.findById(id);
     }
 
     @Override
-    public User create(User user) {
+    public User addUser(User user) {
         return userRepository.create(user);
     }
 
     @Override
-    public User update(User user) {
+    public User modifyUser(User user) {
         return userRepository.update(user);
     }
 
     @Override
-    public Boolean delete(User user) {
-        return userRepository.delete(user);
+    public void removeUser(Long id) {
+        userRepository.delete(id);
     }
 }

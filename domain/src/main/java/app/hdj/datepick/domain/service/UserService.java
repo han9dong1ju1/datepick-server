@@ -1,16 +1,14 @@
 package app.hdj.datepick.domain.service;
 
 import app.hdj.datepick.domain.model.User;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface UserService {
-    public List<User> findAll();
-    public User findById(Long id);
+    List<User> getAllUsers();
+    User getUser(Long id);
 
-    public User create(User user);
-    public User update(User user);
-    public Boolean delete(User user);
+    User addUser(User user);
+    User modifyUser(User user);
+    void removeUser(Long id);
 }

@@ -1,7 +1,7 @@
 package app.hdj.datepick.data.repository;
 
-import app.hdj.datepick.data.entity.CourseTable;
-import app.hdj.datepick.data.entity.FeaturedTable;
+import app.hdj.datepick.data.entity.CourseEntity;
+import app.hdj.datepick.data.entity.FeaturedEntity;
 import app.hdj.datepick.data.query.JpaFeaturedRepository;
 import app.hdj.datepick.domain.model.Course;
 import app.hdj.datepick.domain.model.FeaturedDetail;
@@ -30,9 +30,9 @@ public class FeaturedRepositoryImp implements FeaturedRepository {
 
     @Override
     public List<FeaturedMeta> findAll() {
-        List<FeaturedTable> featuredTables = jpaFeaturedRepository.findAll();
+        List<FeaturedEntity> featuredEntities = jpaFeaturedRepository.findAll();
         Type listType = new TypeToken<List<FeaturedMeta>>(){}.getType();
-        List<FeaturedMeta> featuredMetas = mapper.map(featuredTables, listType);
+        List<FeaturedMeta> featuredMetas = mapper.map(featuredEntities, listType);
         return featuredMetas;
     }
 
@@ -40,18 +40,18 @@ public class FeaturedRepositoryImp implements FeaturedRepository {
     @Override
     public FeaturedDetail findByIdWithDetail(Long id) {
         //Find Course By Featured
-        List<CourseTable> courseTableList = jpaFeaturedRepository.findCourseListByFeaturedId(id);
+        List<CourseEntity> courseEntityList = jpaFeaturedRepository.findCourseListByFeaturedId(id);
         Type listType = new TypeToken<List<Course>>(){}.getType();
-        List<Course> courseList = mapper.map(courseTableList, listType);
+        List<Course> courseList = mapper.map(courseEntityList, listType);
 
         //Find Featured By Id
-        FeaturedTable featuredTable = jpaFeaturedRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d 의 피쳐드가 존재하지 않습니다", id)));
-        FeaturedMeta featuredMeta = mapper.map(featuredTable, FeaturedMeta.class);
+        FeaturedEntity featuredEntity = jpaFeaturedRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d 의 피쳐드가 존재하지 않습니다", id)));
+        FeaturedMeta featuredMeta = mapper.map(featuredEntity, FeaturedMeta.class);
         FeaturedDetail featuredDetail = new FeaturedDetail();
 
         //Make Featured Detail
         featuredDetail.setMeta(featuredMeta);
-        featuredDetail.setContent(featuredTable.getContent());
+        featuredDetail.setContent(featuredEntity.getContent());
         featuredDetail.setCourses(courseList);
 
         return featuredDetail;

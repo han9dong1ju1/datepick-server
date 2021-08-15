@@ -1,6 +1,6 @@
 package app.hdj.datepick.data.repository;
 
-import app.hdj.datepick.data.entity.UserTable;
+import app.hdj.datepick.data.entity.UserEntity;
 import app.hdj.datepick.data.query.JpaUserRepository;
 import app.hdj.datepick.domain.model.User;
 import app.hdj.datepick.domain.repository.UserRepository;
@@ -33,9 +33,9 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public List<User> findAll(){
-        List<UserTable> userTables = jpaUserRepository.findAll();
+        List<UserEntity> userEntities = jpaUserRepository.findAll();
         Type listType = new TypeToken<List<User>>(){}.getType();
-        List<User> users = mapper.map(userTables, listType);
+        List<User> users = mapper.map(userEntities, listType);
         return users;
     }
 
@@ -62,24 +62,23 @@ public class UserRepositoryImp implements UserRepository {
         if (jpaUserRepository.existsByUid(user.getUid())) {
             throw new NoSuchElementException(String.format("해당 uid : %s의 유저는 이미 존재합니다.", user.getUid()));
         }
-        UserTable userTable = mapper.map(user, UserTable.class);
-        jpaUserRepository.save(userTable);
+        UserEntity userEntity = mapper.map(user, UserEntity.class);
+        jpaUserRepository.save(userEntity);
         return user;
     }
 
     @Override
     public User update(User user){
-        UserTable userTable = jpaUserRepository.findById(user.getId()).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d의 유저가 존재하지 않습니다", user.getId())));
-        mapper.map(user, userTable);
-        jpaUserRepository.save(userTable);
-        return mapper.map(userTable, User.class);
+        UserEntity userEntity = jpaUserRepository.findById(user.getId()).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d의 유저가 존재하지 않습니다", user.getId())));
+        mapper.map(user, userEntity);
+        jpaUserRepository.save(userEntity);
+        return mapper.map(userEntity, User.class);
     }
 
     @Override
-    public Boolean delete(User user){
-        UserTable userTable = jpaUserRepository.findById(user.getId()).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d의 유저가 존재하지 않습니다", user.getId())));
-        jpaUserRepository.delete(userTable);
-        return !jpaUserRepository.existsById(user.getId());
+    public void delete(Long id){
+        UserEntity userEntity = jpaUserRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d의 유저가 존재하지 않습니다", id)));
+        jpaUserRepository.delete(userEntity);
     }
 
 }

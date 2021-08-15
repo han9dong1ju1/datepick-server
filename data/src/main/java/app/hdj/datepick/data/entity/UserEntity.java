@@ -1,11 +1,9 @@
 package app.hdj.datepick.data.entity;
 
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-
 
 
 @Entity(name = "user")
@@ -14,7 +12,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserTable {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +25,8 @@ public class UserTable {
     @Column(name = "nickname", columnDefinition = "varchar(16) not null unique")
     private String nickname;
 
-    @Column(name = "gender", columnDefinition = "tinyint(1) not null default 0")
-    private boolean gender;
+    @Column(name = "gender", columnDefinition = "char(1) not null default 'N'")
+    private Character gender;
 
     @Column(name = "photo_url", columnDefinition = "varchar(255) not null default ''")
     private String profileUrl;
