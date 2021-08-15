@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class FeaturedServiceImp implements FeaturedService{
+public class FeaturedServiceImp implements FeaturedService {
 
     private final FeaturedRepository featuredRepository;
 
@@ -19,12 +19,12 @@ public class FeaturedServiceImp implements FeaturedService{
     }
 
     @Override
-    public List<FeaturedMeta> findAll() {
+    public List<FeaturedMeta> getAllFeaturedMetas() {
         return featuredRepository.findAll();
     }
 
     @Override
-    public FeaturedDetail findByIdWithDetail(Long id) {
+    public FeaturedDetail getFeaturedDetail(Long id) {
         return featuredRepository.findByIdWithDetail(id);
     }
 }

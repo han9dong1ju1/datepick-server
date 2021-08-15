@@ -9,12 +9,12 @@ import java.util.List;
 @Repository
 public interface UserRepository {
 
-    public List<User> findAll();
-    public User findById(Long id);
-    public List<User> findByIdList(List<Long> idList);
+    List<User> findAll();
+    User findById(Long id);
+    List<User> findByIdList(List<Long> idList);
 
-    public User create(User user);
-    public User update(User user);
-    public Boolean delete(User user);
+    User create(User user);
+    User update(User user);
+    void delete(Long id);
 
 }

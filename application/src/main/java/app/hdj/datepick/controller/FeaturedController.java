@@ -26,12 +26,12 @@ public class FeaturedController {
 
     @GetMapping("")
     public List<FeaturedMeta> getAllFeatured(){
-        System.out.println("Get All Featured");
-        return featuredService.findAll();
+        return featuredService.getAllFeaturedMetas();
     }
+
     @GetMapping("/{featuredId}")
     public FeaturedDetail getFeaturedByIdWithDetail(@PathVariable Long featuredId){
-        System.out.println(String.format("Get Featured Detail %d", featuredId));
-        return featuredService.findByIdWithDetail(featuredId);
+        return featuredService.getFeaturedDetail(featuredId);
     }
+
 }

@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FeaturedTable {
+public class FeaturedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class FeaturedTable {
     @Column(name = "description", columnDefinition = "varchar(255) not null default ''")
     private String description;
 
-    @Column(name = "content", columnDefinition = "varchar(255) not null default ''")
+    @Column(name = "content", columnDefinition = "text not null default ''")
     private String content;
 
     @Column(name = "photo_url", columnDefinition = "varchar(255) not null default ''")

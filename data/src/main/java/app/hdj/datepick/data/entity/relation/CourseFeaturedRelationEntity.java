@@ -11,19 +11,19 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CourseFeaturedRelationTable {
+public class CourseFeaturedRelationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "featured_id", columnDefinition = "int unsigned not null")
-    private Long featured_id;
+    @Column(name = "featured_id", columnDefinition = "bigint not null")
+    private Long featuredId;
 
-    @Column(name = "course_id", columnDefinition = "int unsigned not null")
-    private Long course_id;
+    @Column(name = "course_id", columnDefinition = "bigint not null")
+    private Long courseId;
 
     @Column(name = "order", columnDefinition = "tinyint(4) not null")
-    private String order;
+    private Integer order;
 }
