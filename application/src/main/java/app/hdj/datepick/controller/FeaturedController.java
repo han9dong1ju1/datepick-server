@@ -1,11 +1,10 @@
 package app.hdj.datepick.controller;
 
 
-import app.hdj.datepick.domain.dto.FeaturedDetail;
-import app.hdj.datepick.domain.dto.FeaturedMeta;
+import app.hdj.datepick.domain.model.FeaturedDetail;
+import app.hdj.datepick.domain.model.FeaturedMeta;
 import app.hdj.datepick.domain.service.FeaturedService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

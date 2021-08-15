@@ -1,14 +1,12 @@
 package app.hdj.datepick.controller;
 
-import app.hdj.datepick.domain.dto.User;
+import app.hdj.datepick.domain.model.User;
+import app.hdj.datepick.dto.user.UserCreateRequestDto;
 import app.hdj.datepick.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,93 +20,49 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * 모든 유저 목록
+     * TODO
+     */
     @GetMapping("")
     List<User> getAllUsers() {
-        User user = new User(
-                1L,
-                "sample_user",
-                'M',
-                "nickname",
-                "profile_url");
-
-        return new ArrayList<User>(){{add(user);}};
+        return userService.findAll();
     }
 
-    @GetMapping("me")
-    User getMyUser() {
-        User user = new User(
-                1L,
-                "sample_user",
-                'M',
-                "nickname",
-                "profile_url");
-
-        return user;
-    }
-
+    /**
+     * 유저 세부 정보 반환
+     * TODO
+     */
     @GetMapping("{userId}")
     User getUser(@PathVariable Long userId) {
-        if (userId == 13)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Fuck");
-
-        return new User(
-                userId,
-                "sample_user",
-                'M',
-                "nickname",
-                "profile_url");
+        return userService.findById(userId);
     }
 
+    /**
+     * 유저 생성
+     */
     @PostMapping("")
-    User createUser() {
-        User user = new User(
-                1L,
-                "sample_user",
-                'M',
-                "nickname",
-                "profile_url");
-
-        return user;
+    User createUser(@Valid @RequestBody UserCreateRequestDto userCreateRequestDto) {
+        User user = userCreateRequestDto.createUser();
+        return userService.create(user);
     }
 
-    @PostMapping("me")
-    User createMyUser() {
-        User user = new User(
-                1L,
-                "sample_user",
-                'M',
-                "nickname",
-                "profile_url");
-
-        return user;
-    }
-
-    @PatchMapping("me")
-    User updateMyUser() {
-        User user = new User(
-                1L,
-                "sample_user",
-                'M',
-                "nickname",
-                "profile_url");
-
-        return user;
-    }
-
+    /**
+     * 유저 세부 정보 수정
+     */
     @PatchMapping("{userId}")
-    User updateUser(@PathVariable Long userId) {
-        User user = new User(
-                1L,
-                "sample_user",
-                'M',
-                "nickname",
-                "profile_url");
-
-        return user;
+    User updateUser(@PathVariable Long userId, @Valid @RequestBody UserCreateRequestDto userCreateRequestDto) {
+        User user = userCreateRequestDto.createUser();
+        return userService.update(user);
     }
 
+    /**
+     * 유저 삭제
+     * TODO
+     */
     @DeleteMapping("{userId}")
     void deleteUser(@PathVariable Long userId) {
-
+        throw new RuntimeException("user delete error");
+        //userService.delete(new User());
     }
 }
