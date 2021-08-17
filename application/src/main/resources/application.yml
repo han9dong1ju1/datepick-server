@@ -5,6 +5,12 @@ server:
   port: 8080
   servlet:
     context-path: /api
+  error:
+    include-exception: true
+    include-binding-errors: always
+    include-message: always
+    whitelabel:
+      enabled: false
 
 --- # local 환경
 
