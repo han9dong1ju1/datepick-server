@@ -21,6 +21,6 @@ public class Place {
     private double longitude;
     private List<String> photos;
     //User feature
-    private boolean is_picked;
+    private boolean picked;
 
 }

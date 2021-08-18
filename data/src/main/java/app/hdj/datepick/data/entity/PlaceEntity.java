@@ -6,7 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Entity(name = "featured")
+@Entity(name = "place")
 @Getter
 @Setter
 @NoArgsConstructor
