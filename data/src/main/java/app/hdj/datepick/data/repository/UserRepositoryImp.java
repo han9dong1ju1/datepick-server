@@ -18,10 +18,6 @@ import java.util.stream.Collectors;
 @Repository
 public class UserRepositoryImp implements UserRepository {
 
-    /**
-     * Entity to DTO Mapper
-     * (참고: https://stackoverflow.com/questions/47929674/modelmapper-mapping-list-of-entites-to-list-of-dto-objects/58324819)
-     */
     private final ModelMapper mapper = new ModelMapper();
 
     private final JpaUserRepository jpaUserRepository;
