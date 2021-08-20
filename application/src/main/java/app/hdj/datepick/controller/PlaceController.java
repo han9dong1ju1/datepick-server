@@ -1,22 +1,28 @@
 package app.hdj.datepick.controller;
 
 
+import app.hdj.datepick.filter.PlaceParamFilter;
 import app.hdj.datepick.domain.model.Place;
-import org.springframework.stereotype.Controller;
+import app.hdj.datepick.domain.service.PlaceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
 @RequestMapping("v1/places")
 public class PlaceController {
 
+    private final PlaceService placeService;
+
+    @Autowired
+    public PlaceController(PlaceService placeService) {
+        this.placeService = placeService;
+    }
+
     @GetMapping("/{placeId}")
     public Place getPlace(@PathVariable Long placeId){
         /**
-         * params : Long placeId
-         * return : place
          * description :
          * 요청 place id 로 placeModel 객체 1개 반환
          */
@@ -35,37 +41,19 @@ public class PlaceController {
         return place;
     }
 
-    @GetMapping("/textsearch")
-    public void textSearchPlaces(@RequestParam(value = "query") String query,
-                                 @RequestParam(value = "sort", required = false, defaultValue = "accuracy") String sort)
+    @GetMapping("")
+    public List<Place> getPlaces(@ModelAttribute PlaceParamFilter placeParamFilter)
     {
-        /**
-         * search places by query
-         * sorting by sort (ex "rating, distance")
-         */
-        return;
+        List<Place> places;
+        if (placeParamFilter.isPick()){
+            places = placeService.getPickedPlaces(placeParamFilter.getUserId());
+        }
+        else {
+            places = placeService.getPlacesWhereInCourse(placeParamFilter.getCourseId());
+        }
+        return places;
     }
 
-    @GetMapping("/nearbysearch")
-    public void nearBySearchPlaces(@RequestParam(value = "latitude") double latitude,
-                             @RequestParam(value = "longitude")  double longitude,
-                             @RequestParam(value = "sort", required = false, defaultValue = "distance") String sort)
-    {
-        /**
-         * search places by location
-         * default sort : "distance", not required sort param
-         */
-        return;
-    }
-
-    @GetMapping("/course/{courseId}")
-    public void courseSearchPlaces(@PathVariable Long courseId)
-    {
-        /**
-         * find places included course
-         */
-        return;
-    }
 
 
 }
