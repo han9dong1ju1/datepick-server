@@ -17,10 +17,14 @@ public class Place {
     private String name;
     private float rating;
     private String address;
+    private String contact;
     private double latitude;
     private double longitude;
     private Category category;
+    private String homepage;
     private List<String> photos;
+    private float region;
+
     //User feature
     private boolean picked;
 

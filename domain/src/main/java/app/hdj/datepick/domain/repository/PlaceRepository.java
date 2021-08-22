@@ -8,4 +8,5 @@ public interface PlaceRepository {
 
     List<Place> findPlacesWhereInCourse(Long courseId);
     List<Place> findPickedPlaces(Long userId);
+    void savePlace(Place place);
 }
