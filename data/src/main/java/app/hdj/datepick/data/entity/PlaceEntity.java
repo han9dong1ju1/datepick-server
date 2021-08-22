@@ -52,16 +52,16 @@ public class PlaceEntity {
     private String homepage;
 
     @Column(name = "review_count", columnDefinition = "int not null default 0")
-    private int review_count;
+    private int reviewCount;
 
     @Column(name = "blog_review_count", columnDefinition = "int not null default 0")
-    private int blog_review_count;
+    private int blogReviewCount;
 
     @Column(name = "region", columnDefinition = "tinyint(4) not null")
     private int region;
 
     @Column(name = "pick_count", columnDefinition = "int not null default 0")
-    private int pick_count;
+    private int pickCount;
 
     @Column(name = "updated_at", columnDefinition = "timestamp not null default now()")
     private Timestamp updatedAt;
