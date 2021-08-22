@@ -26,19 +26,7 @@ public class PlaceController {
          * description :
          * 요청 place id 로 placeModel 객체 1개 반환
          */
-
-        Place place = new Place(
-        1L,
-        1000L,
-        "이름",
-        4.5F,
-        "주소",
-        123.123,
-        123.123,
-        null,
-        false
-        );
-        return place;
+        return null;
     }
 
     @GetMapping("")
