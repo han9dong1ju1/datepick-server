@@ -5,7 +5,6 @@ import app.hdj.datepick.domain.model.Place;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -14,14 +13,14 @@ import java.util.stream.Collectors;
 @Component
 public class PlaceMapper {
 
-    private ModelMapper placeMapper = new ModelMapper();
+    private ModelMapper modelMapper = new ModelMapper();
 
     public Place EntityToModel(PlaceEntity entity){
         /**
          * exclude
          * picked, photos
          */
-        Place model = placeMapper.map(entity, Place.class);
+        Place model = modelMapper.map(entity, Place.class);
         model.mapCategory(entity.getType(), entity.getSubtype());
         return model;
 
@@ -37,8 +36,9 @@ public class PlaceMapper {
          * Model 에서 기존 OldEntity 내용을 참고해 Update Entity로 Mapping 한다.
          * 기존 OldEntity가 없을경우 null을 입력한다.
          */
-        PlaceEntity entity = placeMapper.map(model, PlaceEntity.class);
+        PlaceEntity entity = modelMapper.map(model, PlaceEntity.class);
 
+        entity.setCategory("카테고리");
         entity.setType(model.getCategory().getType());
         entity.setSubtype(model.getCategory().getSubtype());
         if (oldEntity != null) {
@@ -75,8 +75,6 @@ public class PlaceMapper {
 
 
     public PlaceEntity FillEntity(PlaceEntity newEntity, PlaceEntity oldEntity){
-        newEntity.setContact(oldEntity.getContact());
-        newEntity.setHomepage(oldEntity.getHomepage());
         newEntity.setReviewCount(oldEntity.getReviewCount());
         newEntity.setBlogReviewCount(oldEntity.getBlogReviewCount());
         newEntity.setRegion(oldEntity.getRegion());
@@ -84,4 +82,5 @@ public class PlaceMapper {
         newEntity.setUpdatedAt(oldEntity.getUpdatedAt());
         return newEntity;
     }
+
 }

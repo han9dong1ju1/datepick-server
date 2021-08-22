@@ -27,4 +27,9 @@ public class PlaceServiceImp implements PlaceService{
     public List<Place> getPlacesWhereInCourse(Long courseId) {
         return placeRepository.findPlacesWhereInCourse(courseId);
     }
+
+    @Override
+    public void postPlace(Place place) {
+        placeRepository.savePlace(place);
+    }
 }

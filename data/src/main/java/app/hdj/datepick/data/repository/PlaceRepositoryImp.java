@@ -1,19 +1,13 @@
 package app.hdj.datepick.data.repository;
 
 import app.hdj.datepick.data.entity.PlaceEntity;
-import app.hdj.datepick.data.entity.UserEntity;
 import app.hdj.datepick.data.mapper.PlaceMapper;
-import app.hdj.datepick.data.query.JpaFeaturedRepository;
 import app.hdj.datepick.data.query.JpaPlaceRepository;
 import app.hdj.datepick.domain.model.Place;
-import app.hdj.datepick.domain.model.User;
 import app.hdj.datepick.domain.repository.PlaceRepository;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 
@@ -42,5 +36,14 @@ public class PlaceRepositoryImp implements PlaceRepository {
         List<PlaceEntity> placeEntities = jpaPlaceRepository.findPickedPlaces(userId);
         List<Place> places = placeMapper.EntitiesToModels(placeEntities);
         return places;
+    }
+
+    @Override
+    public void savePlace(Place place) {
+        place.setId(null);
+        PlaceEntity placeEntity = placeMapper.ModelToEntity(place, null);
+        System.out.println(placeEntity.toString());
+        jpaPlaceRepository.save(placeEntity);
+
     }
 }

@@ -42,6 +42,11 @@ public class PlaceController {
         return places;
     }
 
+    @PostMapping("")
+    public void postPlace(@RequestBody Place newPlace){
+        placeService.postPlace(newPlace);
+    }
+
 
 
 }
