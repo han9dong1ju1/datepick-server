@@ -1,13 +1,12 @@
 package app.hdj.datepick.domain.repository;
 
-import app.hdj.datepick.domain.model.FeaturedDetail;
-import app.hdj.datepick.domain.model.FeaturedMeta;
+import app.hdj.datepick.domain.model.Featured;
 
 import java.util.List;
 
 public interface FeaturedRepository {
 
-    List<FeaturedMeta> findAll();
+    List<Featured> findAll();
 
-    FeaturedDetail findByIdWithDetail(Long id);
+    Featured findById(Long id);
 }

@@ -4,41 +4,33 @@ import app.hdj.datepick.data.entity.CourseEntity;
 import app.hdj.datepick.data.entity.FeaturedEntity;
 import app.hdj.datepick.data.query.JpaFeaturedRepository;
 import app.hdj.datepick.domain.model.Course;
-import app.hdj.datepick.domain.model.FeaturedDetail;
-import app.hdj.datepick.domain.model.FeaturedMeta;
+import app.hdj.datepick.domain.model.Featured;
 import app.hdj.datepick.domain.repository.FeaturedRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-
+@RequiredArgsConstructor
 @Repository
 public class FeaturedRepositoryImp implements FeaturedRepository {
 
-    private final ModelMapper mapper = new ModelMapper();
+    private final ModelMapper mapper;
     private final JpaFeaturedRepository jpaFeaturedRepository;
 
-    @Autowired
-    public FeaturedRepositoryImp(JpaFeaturedRepository jpaFeaturedRepository) {
-        this.jpaFeaturedRepository = jpaFeaturedRepository;
-    }
-
     @Override
-    public List<FeaturedMeta> findAll() {
+    public List<Featured> findAll() {
         List<FeaturedEntity> featuredEntities = jpaFeaturedRepository.findAll();
-        Type listType = new TypeToken<List<FeaturedMeta>>(){}.getType();
-        List<FeaturedMeta> featuredMetas = mapper.map(featuredEntities, listType);
-        return featuredMetas;
+        Type listType = new TypeToken<List<Featured>>(){}.getType();
+        return mapper.map(featuredEntities, listType);
     }
 
-
     @Override
-    public FeaturedDetail findByIdWithDetail(Long id) {
+    public Featured findById(Long id) {
         //Find Course By Featured
         List<CourseEntity> courseEntityList = jpaFeaturedRepository.findCourseListByFeaturedId(id);
         Type listType = new TypeToken<List<Course>>(){}.getType();
@@ -46,14 +38,11 @@ public class FeaturedRepositoryImp implements FeaturedRepository {
 
         //Find Featured By Id
         FeaturedEntity featuredEntity = jpaFeaturedRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d 의 피쳐드가 존재하지 않습니다", id)));
-        FeaturedMeta featuredMeta = mapper.map(featuredEntity, FeaturedMeta.class);
-        FeaturedDetail featuredDetail = new FeaturedDetail();
+        Featured featured = mapper.map(featuredEntity, Featured.class);
 
         //Make Featured Detail
-        featuredDetail.setMeta(featuredMeta);
-        featuredDetail.setContent(featuredEntity.getContent());
-        featuredDetail.setCourses(courseList);
+        featured.setCourses(courseList);
 
-        return featuredDetail;
+        return featured;
     }
 }

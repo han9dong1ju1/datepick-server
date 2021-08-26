@@ -1,12 +1,11 @@
 package app.hdj.datepick.domain.service;
 
-import app.hdj.datepick.domain.model.FeaturedDetail;
-import app.hdj.datepick.domain.model.FeaturedMeta;
+import app.hdj.datepick.domain.model.Featured;
 
 import java.util.List;
 
 public interface FeaturedService {
-    List<FeaturedMeta> getAllFeaturedMetas();
+    List<Featured> getAllFeatured();
 
-    FeaturedDetail getFeaturedDetail(Long id);
+    Featured getFeatured(Long id);
 }

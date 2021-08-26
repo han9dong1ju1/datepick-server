@@ -1,37 +1,37 @@
 package app.hdj.datepick.controller;
 
 
-import app.hdj.datepick.domain.model.FeaturedDetail;
-import app.hdj.datepick.domain.model.FeaturedMeta;
 import app.hdj.datepick.domain.service.FeaturedService;
-import org.springframework.beans.factory.annotation.Autowired;
+import app.hdj.datepick.dto.featured.FeaturedDetailResponseDto;
+import app.hdj.datepick.dto.featured.FeaturedMetaResponseDto;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("v1/featured")
 public class FeaturedController {
 
+    private final ModelMapper modelMapper;
     private final FeaturedService featuredService;
 
-    @Autowired
-    public FeaturedController(FeaturedService featuredService) {
-        this.featuredService = featuredService;
-    }
-
-
     @GetMapping("")
-    public List<FeaturedMeta> getAllFeatured(){
-        return featuredService.getAllFeaturedMetas();
+    public List<FeaturedMetaResponseDto> getAllFeatured(){
+        return featuredService.getAllFeatured().stream()
+                .map(featured -> modelMapper.map(featured, FeaturedMetaResponseDto.class))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{featuredId}")
-    public FeaturedDetail getFeaturedByIdWithDetail(@PathVariable Long featuredId){
-        return featuredService.getFeaturedDetail(featuredId);
+    public FeaturedDetailResponseDto getFeaturedByIdWithDetail(@PathVariable Long featuredId){
+        return modelMapper.map(featuredService.getFeatured(featuredId), FeaturedDetailResponseDto.class);
     }
 
 }
