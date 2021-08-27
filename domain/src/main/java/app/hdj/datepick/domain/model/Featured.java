@@ -1,10 +1,6 @@
 package app.hdj.datepick.domain.model;
 
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -12,7 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@ToString(exclude = {"courses"})
 public class Featured {
     private Long id;
     private String title;

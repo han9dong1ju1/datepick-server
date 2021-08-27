@@ -1,6 +1,5 @@
 package app.hdj.datepick.data.entity;
 
-
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,10 +7,8 @@ import java.sql.Timestamp;
 
 @Entity(name = "featured")
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = {"id"})
 public class FeaturedEntity {
 
     @Id
@@ -33,4 +30,5 @@ public class FeaturedEntity {
 
     @Column(name = "created_at", columnDefinition = "timestamp not null default now()")
     private Timestamp createdAt;
+
 }
