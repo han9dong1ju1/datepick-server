@@ -20,6 +20,7 @@ public class Place {
     private String contact;
     private double latitude;
     private double longitude;
+    //TODO Category 분리 여부 결정
     private Category category;
     private String homepage;
     private List<String> photos;
@@ -39,4 +40,10 @@ public class Place {
     public void mapCategory(String type, String subtype){
         this.category = new Category(type, subtype);
     }
+
+    public float getDistance(float curLatitude, float curLongitude){
+
+        return 0;
+    }
+
 }

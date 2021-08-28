@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlaceParamFilter {
+    //거리순, 리뷰개수순, 평점순,
     String sort;
     int limit;
     String filter;

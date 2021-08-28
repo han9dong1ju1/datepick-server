@@ -18,6 +18,7 @@ public class PlaceEntity {
     @Column(name = "id")
     private Long id;
 
+    //TODO kakao id 타입 결정
     @Column(name = "kakao_id", columnDefinition = "bigint not null")
     private String kakaoId;
 
@@ -29,29 +30,6 @@ public class PlaceEntity {
 
     @Column(name = "address", columnDefinition = "varchar(200) not null")
     private String address;
-
-    @Override
-    public String toString() {
-        return "PlaceEntity{" +
-                "id=" + id +
-                ", kakaoId='" + kakaoId + '\'' +
-                ", name='" + name + '\'' +
-                ", rating=" + rating +
-                ", address='" + address + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", contact='" + contact + '\'' +
-                ", type='" + type + '\'' +
-                ", subtype='" + subtype + '\'' +
-                ", category='" + category + '\'' +
-                ", homepage='" + homepage + '\'' +
-                ", reviewCount=" + reviewCount +
-                ", blogReviewCount=" + blogReviewCount +
-                ", region=" + region +
-                ", pickCount=" + pickCount +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 
     @Column(name = "latitude", columnDefinition = "double not null")
     private double latitude;

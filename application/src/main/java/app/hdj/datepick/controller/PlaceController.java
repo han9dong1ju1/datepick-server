@@ -7,6 +7,7 @@ import app.hdj.datepick.domain.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -39,6 +40,8 @@ public class PlaceController {
         else {
             places = placeService.getPlacesWhereInCourse(placeParamFilter.getCourseId());
         }
+        String sort = placeParamFilter.getSort();
+        //places.stream().sorted(Comparator.comparing(Place::))
         return places;
     }
 

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface JpaPlaceRepository extends JpaRepository<PlaceEntity, Long> {
 
@@ -16,6 +17,7 @@ public interface JpaPlaceRepository extends JpaRepository<PlaceEntity, Long> {
     @Query(value = "SELECT p FROM place p WHERE p.id in " +
             "(SELECT placeId FROM place_pick WHERE userId = :userId)")
     List<PlaceEntity> findPickedPlaces(@Param("userId") Long userId);
+
 
 
 }
