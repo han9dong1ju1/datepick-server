@@ -21,7 +21,8 @@ public class Place {
     private double latitude;
     private double longitude;
     //TODO Category 분리 여부 결정
-    private Category category;
+    private Categorys categorys;
+
     private String homepage;
     private List<String> photos;
     private float region;
@@ -33,16 +34,16 @@ public class Place {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public class Category{
+    public class Categorys{
+        String category;
         String type;
         String subtype;
     }
-    public void mapCategory(String type, String subtype){
-        this.category = new Category(type, subtype);
+    public void mapCategorys(String category, String type, String subtype){
+        this.categorys = new Categorys(category, type, subtype);
     }
 
     public float getDistance(float curLatitude, float curLongitude){
-
         return 0;
     }
 
