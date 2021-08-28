@@ -3,6 +3,7 @@ package app.hdj.datepick.advice;
 import app.hdj.datepick.dto.BaseResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -33,6 +34,17 @@ public class BaseExceptionAdvice {
                 "Validation failed for object='" + e.getObjectName() + "'. Error count: " + e.getErrorCount(),
                 e.getClass().getSimpleName(),
                 e.getAllErrors());
+    }
+
+    // SQL Error
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DataAccessException.class)
+    public BaseResponseDto<Object> illegalArgumentException(DataAccessException e) {
+        return new BaseResponseDto<>(
+                e.getMessage(),
+                e.getClass().getSimpleName(),
+                e.getRootCause()
+        );
     }
 
 }

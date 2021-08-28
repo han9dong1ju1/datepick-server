@@ -1,7 +1,7 @@
 package app.hdj.datepick.data.repository;
 
-import app.hdj.datepick.data.entity.CourseEntity;
-import app.hdj.datepick.data.entity.FeaturedEntity;
+import app.hdj.datepick.data.entity.table.CourseEntity;
+import app.hdj.datepick.data.entity.table.FeaturedEntity;
 import app.hdj.datepick.data.query.JpaFeaturedRepository;
 import app.hdj.datepick.domain.model.Course;
 import app.hdj.datepick.domain.model.Featured;

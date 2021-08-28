@@ -1,26 +1,16 @@
-package app.hdj.datepick.data.entity;
+package app.hdj.datepick.data.entity.table;
 
+import app.hdj.datepick.data.entity.BaseTimeEntity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.Date;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
 @Entity(name = "user")
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class UserEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class UserEntity extends BaseTimeEntity<Long> {
 
     @Column(name = "uid", columnDefinition = "varchar(128)", nullable = false, unique = true)
     private String uid;
@@ -35,9 +25,5 @@ public class UserEntity {
     @Column(name = "photo_url", nullable = false)
     @ColumnDefault("''")    // TODO: 기본 프로필 사진 링크 추가
     private String profileUrl;
-
-    @Column(name = "created_at", nullable = false)
-    @CreatedDate
-    private Timestamp createdAt;
 
 }

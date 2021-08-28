@@ -1,6 +1,6 @@
 package app.hdj.datepick.data.repository;
 
-import app.hdj.datepick.data.entity.UserEntity;
+import app.hdj.datepick.data.entity.table.UserEntity;
 import app.hdj.datepick.data.query.JpaUserRepository;
 import app.hdj.datepick.domain.model.User;
 import app.hdj.datepick.domain.repository.UserRepository;
