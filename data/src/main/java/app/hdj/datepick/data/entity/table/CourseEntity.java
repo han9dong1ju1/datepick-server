@@ -6,6 +6,7 @@ import app.hdj.datepick.data.entity.relation.CoursePlaceRelationEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Entity(name = "course")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CourseEntity extends BaseTimeEntity<Long> {
 

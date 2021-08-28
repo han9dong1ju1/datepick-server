@@ -5,6 +5,7 @@ import app.hdj.datepick.data.entity.relation.CourseFeaturedRelationEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Entity(name = "featured")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FeaturedEntity extends BaseTimeEntity<Long> {
 

@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 
 @Entity(name = "user")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity extends BaseTimeEntity<Long> {
 

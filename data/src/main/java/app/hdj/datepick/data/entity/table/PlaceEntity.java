@@ -5,6 +5,7 @@ import app.hdj.datepick.data.entity.relation.CoursePlaceRelationEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @DynamicUpdate
 @Entity(name = "place")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlaceEntity extends BaseEntity<Long> {
 
