@@ -21,9 +21,8 @@ public class PlaceMapper {
          * picked, photos
          */
         Place model = modelMapper.map(entity, Place.class);
-        model.mapCategory(entity.getType(), entity.getSubtype());
+        model.mapCategorys(entity.getCategory(), entity.getType(), entity.getSubtype());
         return model;
-
     }
 
     public List<Place> EntitiesToModels(List<PlaceEntity> entities){
@@ -37,10 +36,9 @@ public class PlaceMapper {
          * 기존 OldEntity가 없을경우 null을 입력한다.
          */
         PlaceEntity entity = modelMapper.map(model, PlaceEntity.class);
-
         entity.setCategory("카테고리");
-        entity.setType(model.getCategory().getType());
-        entity.setSubtype(model.getCategory().getSubtype());
+        entity.setType(model.getCategorys().getType());
+        entity.setSubtype(model.getCategorys().getSubtype());
         if (oldEntity != null) {
             entity = FillEntity(entity, oldEntity);
         }
