@@ -19,22 +19,18 @@ public class FeaturedEntity {
     private Long id;
 
     @Column(name = "title", columnDefinition = "varchar(128)", nullable = false)
-    @ColumnDefault("")
     private String title;
 
-    @Column(name = "description", columnDefinition = "varchar(255)", nullable = false)
-    @ColumnDefault("")
+    @Column(name = "description", nullable = false)
     private String description;
 
     @Column(name = "content", columnDefinition = "text", nullable = false)
-    @ColumnDefault("")
     private String content;
 
-    @Column(name = "photo_url", columnDefinition = "varchar(255)", nullable = false)
-    @ColumnDefault("")
+    @Column(name = "photo_url", nullable = false)
     private String photoUrl;
 
-    @Column(name = "created_at", columnDefinition = "timestamp", nullable = false)
+    @Column(name = "created_at", nullable = false)
     @CreatedDate
     private Timestamp createdAt;
 

@@ -18,12 +18,12 @@ public class CourseFeaturedRelationEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "featured_id", columnDefinition = "bigint not null")
+    @Column(name = "featured_id", nullable = false)
     private Long featuredId;
 
-    @Column(name = "course_id", columnDefinition = "bigint not null")
+    @Column(name = "course_id", nullable = false)
     private Long courseId;
 
-    @Column(name = "order", columnDefinition = "tinyint(4) not null")
-    private Integer order;
+    @Column(name = "course_order", nullable = false)
+    private Byte order;
 }
