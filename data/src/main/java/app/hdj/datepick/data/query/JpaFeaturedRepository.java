@@ -1,7 +1,7 @@
 package app.hdj.datepick.data.query;
 
-import app.hdj.datepick.data.entity.CourseEntity;
-import app.hdj.datepick.data.entity.FeaturedEntity;
+import app.hdj.datepick.domain.entity.CourseEntity;
+import app.hdj.datepick.domain.entity.FeaturedEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
