@@ -1,3 +1,6 @@
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // Module
     implementation project(':util')
 }

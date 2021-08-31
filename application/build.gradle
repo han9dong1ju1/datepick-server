@@ -1,5 +1,6 @@
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
     // Module
     implementation project(':util')
     implementation project(':domain')
