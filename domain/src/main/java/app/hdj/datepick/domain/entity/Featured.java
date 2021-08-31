@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FeaturedEntity {
+public class Featured {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

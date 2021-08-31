@@ -1,22 +1,19 @@
 package app.hdj.datepick.domain.service;
 
-import app.hdj.datepick.domain.model.FeaturedDetail;
-import app.hdj.datepick.domain.model.FeaturedMeta;
+import app.hdj.datepick.domain.entity.Featured;
 import app.hdj.datepick.domain.repository.FeaturedRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
+@RequiredArgsConstructor
 @Service
 public class FeaturedServiceImp implements FeaturedService {
 
     private final FeaturedRepository featuredRepository;
-
-    @Autowired
-    public FeaturedServiceImp(FeaturedRepository featuredRepository) {
-        this.featuredRepository = featuredRepository;
-    }
 
     @Override
     public List<FeaturedMeta> getAllFeaturedMetas() {
@@ -24,7 +21,7 @@ public class FeaturedServiceImp implements FeaturedService {
     }
 
     @Override
-    public FeaturedDetail getFeaturedDetail(Long id) {
+    public Featured getFeaturedDetail(Long id) {
         return featuredRepository.findByIdWithDetail(id);
     }
 }

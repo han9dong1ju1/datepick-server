@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 
 @Slf4j
-@RestControllerAdvice
 @Order(CustomOrder.BASE_EXCEPTION_ADVICE)
+@RestControllerAdvice
 public class BaseExceptionAdvice {
 
     // Default Exception Handler

@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.service;
 
-import app.hdj.datepick.domain.model.User;
+import app.hdj.datepick.domain.entity.User;
 
 import java.util.List;
 

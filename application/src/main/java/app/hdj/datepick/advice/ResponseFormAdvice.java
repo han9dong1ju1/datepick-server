@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 @Slf4j
-@RestControllerAdvice
 @Order(CustomOrder.FINAL)
+@RestControllerAdvice
 public class ResponseFormAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
