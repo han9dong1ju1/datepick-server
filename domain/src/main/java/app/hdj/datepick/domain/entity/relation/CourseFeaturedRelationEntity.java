@@ -1,4 +1,4 @@
-package app.hdj.datepick.data.entity.relation;
+package app.hdj.datepick.domain.entity.relation;
 
 
 import lombok.*;
