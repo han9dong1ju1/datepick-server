@@ -1,6 +1,7 @@
 package app.hdj.datepick.domain.service;
 
 import app.hdj.datepick.domain.entity.Featured;
+import app.hdj.datepick.domain.entity.FeaturedMeta;
 import app.hdj.datepick.domain.repository.FeaturedRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ public class FeaturedServiceImp implements FeaturedService {
     }
 
     @Override
-    public Featured getFeaturedDetail(Long id) {
-        return featuredRepository.findByIdWithDetail(id);
+    public Featured getFeatured(Long id) {
+        return featuredRepository.findById(id).orElseThrow();
     }
 }

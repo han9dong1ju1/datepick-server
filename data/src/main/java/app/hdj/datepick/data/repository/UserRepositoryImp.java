@@ -1,18 +1,12 @@
 package app.hdj.datepick.data.repository;
 
-import app.hdj.datepick.domain.entity.User;
 import app.hdj.datepick.data.query.JpaUserRepository;
-import app.hdj.datepick.domain.model.User;
+import app.hdj.datepick.domain.entity.User;
 import app.hdj.datepick.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Repository;
 
-import java.lang.reflect.Type;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Repository
@@ -22,58 +16,37 @@ public class UserRepositoryImp implements UserRepository {
      * Entity to DTO Mapper
      * (참고: https://stackoverflow.com/questions/47929674/modelmapper-mapping-list-of-entites-to-list-of-dto-objects/58324819)
      */
-    private final ModelMapper mapper = new ModelMapper();
-
     private final JpaUserRepository jpaUserRepository;
 
     @Override
     public List<User> findAll(){
-        List<User> userEntities = jpaUserRepository.findAll();
-        Type listType = new TypeToken<List<User>>(){}.getType();
-        List<User> users = mapper.map(userEntities, listType);
-        return users;
+        return null;
     }
 
     @Override
     public User findById(Long id){
         //UserTable to User
-        return mapper.map(
-                jpaUserRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d 의 유저가 존재하지 않습니다", id))),
-                User.class
-        );
+        return null;
     }
 
     @Override
     public List<User> findByIdList(List<Long> idList){
-        List<User> users = idList.stream()
-                .map(this::findById)
-                .map(userTable -> mapper.map(userTable, User.class))
-                .collect(Collectors.toList());
-        return users;
+        return null;
     }
 
     @Override
     public User create(User user) {
-        if (jpaUserRepository.existsByUid(user.getUid())) {
-            throw new NoSuchElementException(String.format("해당 uid : %s의 유저는 이미 존재합니다.", user.getUid()));
-        }
-        User userEntity = mapper.map(user, User.class);
-        jpaUserRepository.save(userEntity);
-        return user;
+        return null;
     }
 
     @Override
     public User update(User user){
-        User userEntity = jpaUserRepository.findById(user.getId()).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d의 유저가 존재하지 않습니다", user.getId())));
-        mapper.map(user, userEntity);
-        jpaUserRepository.save(userEntity);
-        return mapper.map(userEntity, User.class);
+        return null;
     }
 
     @Override
     public void delete(Long id){
-        User userEntity = jpaUserRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("해당 id : %d의 유저가 존재하지 않습니다", id)));
-        jpaUserRepository.delete(userEntity);
+
     }
 
 }
