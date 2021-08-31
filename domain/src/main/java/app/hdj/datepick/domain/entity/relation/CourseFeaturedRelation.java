@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CourseFeaturedRelationEntity {
+public class CourseFeaturedRelation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

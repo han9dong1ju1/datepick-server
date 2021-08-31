@@ -1,24 +1,20 @@
 package app.hdj.datepick.controller;
 
-import app.hdj.datepick.domain.model.User;
-import app.hdj.datepick.dto.user.UserCreateRequestDto;
+import app.hdj.datepick.domain.entity.User;
 import app.hdj.datepick.domain.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import app.hdj.datepick.dto.user.UserCreateRequestDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("v1/users")
 public class UserController {
 
     private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     /**
      * 모든 유저 목록

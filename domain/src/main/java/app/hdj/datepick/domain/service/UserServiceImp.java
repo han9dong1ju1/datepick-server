@@ -1,21 +1,17 @@
 package app.hdj.datepick.domain.service;
 
-import app.hdj.datepick.domain.model.User;
+import app.hdj.datepick.domain.entity.User;
 import app.hdj.datepick.domain.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class UserServiceImp implements UserService {
 
     private final UserRepository userRepository;
-
-    @Autowired
-    public UserServiceImp(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public List<User> getAllUsers() {

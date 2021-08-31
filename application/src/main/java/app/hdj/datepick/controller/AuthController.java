@@ -3,6 +3,7 @@ package app.hdj.datepick.controller;
 import app.hdj.datepick.domain.model.User;
 import app.hdj.datepick.dto.auth.AuthRegisterRequestDto;
 import app.hdj.datepick.dto.auth.AuthRegisterResponseDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -10,6 +11,7 @@ import javax.validation.Valid;
 /**
  * Firebase Auth 관련 처리
  */
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("v1/auth")
 public class AuthController {

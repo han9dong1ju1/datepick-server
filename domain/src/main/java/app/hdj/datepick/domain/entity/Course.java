@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CourseEntity {
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -43,5 +43,5 @@ public class CourseEntity {
 
     @Column(name = "updated_at", columnDefinition = "timestamp not null default now()")
     private Timestamp updatedAt;
-    
+
 }

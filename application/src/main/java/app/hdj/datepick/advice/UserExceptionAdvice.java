@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(assignableTypes = UserController.class)
 @Order(CustomOrder.CONTROLLER_EXCEPTION_ADVICE)
+@RestControllerAdvice(assignableTypes = UserController.class)
 public class UserExceptionAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

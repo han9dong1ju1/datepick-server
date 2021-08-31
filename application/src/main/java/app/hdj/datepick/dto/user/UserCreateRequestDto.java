@@ -1,6 +1,6 @@
 package app.hdj.datepick.dto.user;
 
-import app.hdj.datepick.domain.model.User;
+import app.hdj.datepick.domain.entity.User;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
 
@@ -20,13 +20,4 @@ public class UserCreateRequestDto {
     @URL
     private String profileUrl;
 
-    public User createUser() {
-        return new User(
-                null,
-                null,
-                this.gender,
-                this.nickname,
-                this.profileUrl
-        );
-    }
 }
