@@ -1,6 +1,6 @@
 package app.hdj.datepick.controller;
 
-import app.hdj.datepick.domain.entity.User;
+import app.hdj.datepick.domain.entity.table.User;
 import app.hdj.datepick.dto.auth.AuthRegisterRequestDto;
 import app.hdj.datepick.dto.auth.AuthRegisterResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class AuthController {
      */
     @GetMapping("login")
     public User login() {
-        return new User();
+        return null;
     }
 
     /**

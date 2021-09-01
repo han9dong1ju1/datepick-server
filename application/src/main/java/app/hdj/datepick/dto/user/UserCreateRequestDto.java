@@ -1,6 +1,5 @@
 package app.hdj.datepick.dto.user;
 
-import app.hdj.datepick.domain.entity.User;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
 
