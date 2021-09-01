@@ -1,7 +1,7 @@
 package app.hdj.datepick.controller;
 
-import app.hdj.datepick.domain.entity.Featured;
-import app.hdj.datepick.domain.entity.FeaturedMeta;
+import app.hdj.datepick.domain.dto.FeaturedDetail;
+import app.hdj.datepick.domain.entity.table.Featured;
 import app.hdj.datepick.domain.service.FeaturedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +19,12 @@ public class FeaturedController {
     private final FeaturedService featuredService;
 
     @GetMapping("")
-    public List<FeaturedMeta> getAllFeatured(){
+    public List<Featured> getAllFeatured(){
         return featuredService.getAllFeaturedMetas();
     }
 
     @GetMapping("/{featuredId}")
-    public Featured getFeaturedByIdWithDetail(@PathVariable Long featuredId){
+    public FeaturedDetail getFeaturedByIdWithDetail(@PathVariable Long featuredId){
         return featuredService.getFeatured(featuredId);
     }
 

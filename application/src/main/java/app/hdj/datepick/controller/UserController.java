@@ -1,6 +1,6 @@
 package app.hdj.datepick.controller;
 
-import app.hdj.datepick.domain.entity.User;
+import app.hdj.datepick.domain.entity.table.User;
 import app.hdj.datepick.domain.service.UserService;
 import app.hdj.datepick.dto.user.UserCreateRequestDto;
 import lombok.RequiredArgsConstructor;
