@@ -1,13 +1,11 @@
 package app.hdj.datepick.domain.featured.entity;
 
 
-import app.hdj.datepick.global.common.entity.BaseEntity;
+import app.hdj.datepick.global.common.entity.BaseTimeEntity;
 import app.hdj.datepick.global.common.entity.CourseFeaturedRelation;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -18,8 +16,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "featured")
-public class Featured extends BaseEntity<Long> {
-
+public class Featured extends BaseTimeEntity<Long> {
 
     @Column(name = "title", columnDefinition = "varchar(128)", nullable = false)
     private String title;
@@ -35,9 +32,5 @@ public class Featured extends BaseEntity<Long> {
 
     @OneToMany(mappedBy = "featured", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<CourseFeaturedRelation> courseFeaturedRelations;
-
-    @Column(name = "created_at", updatable = false)
-    @CreatedDate
-    private LocalDateTime createdAt;
 
 }

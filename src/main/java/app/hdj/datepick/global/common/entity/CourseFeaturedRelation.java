@@ -19,11 +19,10 @@ public class CourseFeaturedRelation extends BaseEntity<Long> {
     @JoinColumn(name = "featured_id",nullable = false)
     private Featured featured;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id",nullable = false)
     private Course course;
 
     @Column(name = "course_order", nullable = false)
-    private Byte order;
+    private Byte courseOrder;
 }
