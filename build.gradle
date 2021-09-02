@@ -4,8 +4,14 @@ plugins {
     id 'java'
 }
 
-bootJar {
-    enabled = false
+group = 'app.hdj.datepick'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
@@ -13,38 +19,54 @@ repositories {
     maven { url "https://plugins.gradle.org/m2/" } // plugin 저장소
 }
 
-subprojects {
-    group = 'app.hdj.datepick'
-    version = '0.0.1-SNAPSHOT'
-    sourceCompatibility = '11'
+bootJar {
+    enabled = false
+}
 
-    apply plugin: 'java'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
-    repositories {
-        mavenCentral()
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
     }
-
-    configurations {
-        developmentOnly
-        runtimeClasspath {
-            extendsFrom developmentOnly
-        }
-        compileOnly {
-            extendsFrom annotationProcessor
-        }
-    }
-
-    test {
-        useJUnitPlatform()
-    }
-
-    dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    compileOnly {
+        extendsFrom annotationProcessor
     }
 }
 
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // MariaDB
+    implementation 'org.mariadb.jdbc:mariadb-java-client'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // MapStruct
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+
+    // QueryDSL
+    implementation 'com.querydsl:querydsl-core'
+    implementation 'com.querydsl:querydsl-jpa'
+    annotationProcessor 'com.querydsl:querydsl-apt'
+
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}
