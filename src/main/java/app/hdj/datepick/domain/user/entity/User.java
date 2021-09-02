@@ -2,6 +2,7 @@ package app.hdj.datepick.domain.user.entity;
 
 import app.hdj.datepick.global.common.entity.BaseEntity;
 import app.hdj.datepick.domain.place.entity.PlacePick;
+import app.hdj.datepick.global.common.entity.BaseTimeEntity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
@@ -18,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "user")
-public class User extends BaseEntity<Long> {
+public class User extends BaseTimeEntity<Long> {
 
     @Column(name = "uid", columnDefinition = "varchar(128)", nullable = false, unique = true)
     private String uid;
@@ -34,14 +35,7 @@ public class User extends BaseEntity<Long> {
     @ColumnDefault("''")    // TODO: 기본 프로필 사진 링크 추가
     private String profileUrl;
 
-    @Column(name = "created_at", updatable = false)
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<PlacePick> placePicks;
+
 }

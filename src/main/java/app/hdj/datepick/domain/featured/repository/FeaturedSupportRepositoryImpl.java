@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.featured.repository;
 
-import app.hdj.datepick.domain.featured.dto.CourseInfo;
+import app.hdj.datepick.domain.course.dto.CourseInfo;
 import app.hdj.datepick.domain.featured.dto.FeaturedDetail;
 import app.hdj.datepick.domain.featured.dto.QCourseInfo;
 import app.hdj.datepick.domain.featured.entity.Featured;

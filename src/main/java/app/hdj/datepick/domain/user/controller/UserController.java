@@ -1,8 +1,8 @@
 package app.hdj.datepick.domain.user.controller;
 
 import app.hdj.datepick.domain.user.entity.User;
-import app.hdj.datepick.domain.featured.service.UserService;
 import app.hdj.datepick.domain.user.dto.UserCreateRequestDto;
+import app.hdj.datepick.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

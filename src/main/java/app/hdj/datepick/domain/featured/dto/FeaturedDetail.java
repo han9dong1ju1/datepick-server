@@ -1,5 +1,6 @@
 package app.hdj.datepick.domain.featured.dto;
 
+import app.hdj.datepick.domain.course.dto.CourseInfo;
 import app.hdj.datepick.domain.featured.entity.Featured;
 import lombok.*;
 

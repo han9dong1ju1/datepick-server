@@ -16,29 +16,10 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven { url "https://plugins.gradle.org/m2/" } // plugin 저장소
 }
 
 bootJar {
     enabled = false
-}
-
-apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-
-repositories {
-    mavenCentral()
-}
-
-configurations {
-    developmentOnly
-    runtimeClasspath {
-        extendsFrom developmentOnly
-    }
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
 }
 
 dependencies {

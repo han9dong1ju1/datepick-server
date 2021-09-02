@@ -1,13 +1,11 @@
 package app.hdj.datepick.domain.course.entity;
 
-import app.hdj.datepick.global.common.entity.BaseEntity;
+import app.hdj.datepick.domain.user.entity.User;
+import app.hdj.datepick.global.common.entity.BaseTimeEntity;
 import app.hdj.datepick.global.common.entity.CourseFeaturedRelation;
 import app.hdj.datepick.global.common.entity.CoursePlaceRelation;
-import app.hdj.datepick.domain.user.entity.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "course")
-public class Course extends BaseEntity<Long> {
+public class Course extends BaseTimeEntity<Long> {
 
     @Column(name = "title", columnDefinition = "varchar(100)", nullable = false)
     private String title;
@@ -42,15 +40,6 @@ public class Course extends BaseEntity<Long> {
     @Column(name = "is_private", nullable = false)
     @ColumnDefault("false")
     private Boolean isPrivate;
-
-    @Column(name = "created_at", updatable = false)
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

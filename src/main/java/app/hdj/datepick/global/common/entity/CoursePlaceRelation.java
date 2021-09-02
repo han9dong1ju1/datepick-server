@@ -27,7 +27,7 @@ public class CoursePlaceRelation extends BaseEntity<Long> {
     private Place place;
 
     @Column(name = "place_order", nullable = false)
-    private Byte order;
+    private Byte placeOrder;
 
     @Column(name = "visit_time", nullable = false)
     private LocalDateTime visitTime;

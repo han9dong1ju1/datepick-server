@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.featured.dto;
+package app.hdj.datepick.domain.course.dto;
 
 
 import app.hdj.datepick.domain.course.entity.Course;
