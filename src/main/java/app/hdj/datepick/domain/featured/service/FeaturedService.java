@@ -22,6 +22,6 @@ public class FeaturedService {
     }
 
     public FeaturedDetail getFeaturedDetail(Long id) {
-        return featuredRepository.findDetailById(id);;
+        return featuredRepository.findDetailById(id);
     }
 }
