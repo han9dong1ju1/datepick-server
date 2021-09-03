@@ -1,7 +1,6 @@
 package app.hdj.datepick.domain.featured.dto;
 
-import app.hdj.datepick.domain.course.dto.CourseInfo;
-import app.hdj.datepick.domain.featured.entity.Featured;
+import app.hdj.datepick.domain.course.dto.CourseFeaturedInfo;
 import lombok.*;
 
 import java.util.List;
@@ -12,7 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 public class FeaturedDetail {
 
-    private Featured featured;
-    private List<CourseInfo> courseInfos;
+    private FeaturedMeta featuredMeta;
+    private String content;
+    private List<CourseFeaturedInfo> featuredDetail;
 
 }

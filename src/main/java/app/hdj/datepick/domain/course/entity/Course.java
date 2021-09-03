@@ -45,10 +45,10 @@ public class Course extends BaseTimeEntity<Long> {
     @JoinColumn(name = "user_id")
     User user;
 
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<CoursePlaceRelation> coursePlaceRelations;
+//    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    List<CoursePlaceRelation> coursePlaceRelations;
 
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<CourseFeaturedRelation> courseFeaturedRelations;
+//    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    List<CourseFeaturedRelation> courseFeaturedRelations;
 
 }

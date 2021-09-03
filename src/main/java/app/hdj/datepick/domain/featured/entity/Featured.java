@@ -30,7 +30,7 @@ public class Featured extends BaseTimeEntity<Long> {
     @Column(name = "photo_url", nullable = false)
     private String photoUrl;
 
-    @OneToMany(mappedBy = "featured", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<CourseFeaturedRelation> courseFeaturedRelations;
+//    @OneToMany(mappedBy = "featured", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    List<CourseFeaturedRelation> courseFeaturedRelations;
 
 }

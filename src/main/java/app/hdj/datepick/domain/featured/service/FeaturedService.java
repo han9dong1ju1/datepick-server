@@ -17,11 +17,11 @@ public class FeaturedService {
 
     private final FeaturedRepository featuredRepository;
 
-    public List<FeaturedMeta> getAllFeaturedMetas() {
-        return featuredRepository.findAllBy();
+    public List<Featured> getAllFeatured() {
+        return featuredRepository.findAll();
     }
 
-    public FeaturedDetail getFeatured(Long id) {
-        return featuredRepository.findDetailBy(id);
+    public FeaturedDetail getFeaturedDetail(Long id) {
+        return featuredRepository.findDetailById(id);
     }
 }
