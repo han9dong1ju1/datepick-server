@@ -1,8 +1,11 @@
 package app.hdj.datepick.domain.user.entity;
 
+import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.global.common.entity.BaseEntity;
 import app.hdj.datepick.domain.place.entity.PlacePick;
 import app.hdj.datepick.global.common.entity.BaseTimeEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
+@ToString
 @Getter
 @Setter
 @Builder
@@ -37,5 +41,9 @@ public class User extends BaseTimeEntity<Long> {
 
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 //    private List<PlacePick> placePicks;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Course> courses;
 
 }

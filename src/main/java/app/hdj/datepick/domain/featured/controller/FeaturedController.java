@@ -27,7 +27,10 @@ public class FeaturedController {
     @GetMapping("/{featuredId}")
     public FeaturedDetail getFeaturedDetail(@PathVariable Long featuredId){
         //TODO
-        return featuredService.getFeaturedDetail(featuredId);
+        System.out.println("controller start");
+        FeaturedDetail featuredDetail = featuredService.getFeaturedDetail(featuredId);
+        System.out.println("controller end");
+        return featuredDetail;
     }
 
 }

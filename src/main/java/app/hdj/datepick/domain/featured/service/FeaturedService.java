@@ -22,6 +22,9 @@ public class FeaturedService {
     }
 
     public FeaturedDetail getFeaturedDetail(Long id) {
-        return featuredRepository.findDetailById(id);
+        System.out.println("service start");
+        FeaturedDetail featuredDetail = featuredRepository.findDetailById(id);
+        System.out.println("service end");
+        return featuredDetail;
     }
 }
