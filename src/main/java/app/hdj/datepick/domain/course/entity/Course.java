@@ -4,6 +4,9 @@ import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.common.entity.BaseTimeEntity;
 import app.hdj.datepick.global.common.entity.CourseFeaturedRelation;
 import app.hdj.datepick.global.common.entity.CoursePlaceRelation;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -41,6 +44,7 @@ public class Course extends BaseTimeEntity<Long> {
     @ColumnDefault("false")
     private Boolean isPrivate;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     User user;

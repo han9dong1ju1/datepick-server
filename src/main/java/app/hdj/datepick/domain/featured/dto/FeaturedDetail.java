@@ -11,8 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 public class FeaturedDetail {
 
-    private FeaturedMeta featuredMeta;
+    private FeaturedMeta meta;
     private String content;
-    private List<CourseFeaturedInfo> featuredDetail;
+    private List<CourseFeaturedInfo> detail;
 
 }
