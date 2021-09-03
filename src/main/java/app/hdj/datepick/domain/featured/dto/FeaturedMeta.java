@@ -13,5 +13,5 @@ public class FeaturedMeta {
     private Long id;
     private String title;
     private String description;
-
+    private String photoUrl;
 }

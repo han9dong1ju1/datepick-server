@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface FeaturedCustomRepository {
 
-    FeaturedDetail findDetailBy(Long id);
+    FeaturedDetail findDetailById(Long id);
 
 }

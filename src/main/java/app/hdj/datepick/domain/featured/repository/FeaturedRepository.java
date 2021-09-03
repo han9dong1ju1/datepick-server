@@ -12,6 +12,6 @@ public interface FeaturedRepository extends
         FeaturedCustomRepository,
         QuerydslPredicateExecutor<Featured> {
 
-    List<FeaturedMeta> findAllBy();
+    List<Featured> findAll();
 
 }

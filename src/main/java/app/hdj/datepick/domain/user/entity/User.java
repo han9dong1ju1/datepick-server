@@ -35,7 +35,7 @@ public class User extends BaseTimeEntity<Long> {
     @ColumnDefault("''")    // TODO: 기본 프로필 사진 링크 추가
     private String profileUrl;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<PlacePick> placePicks;
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+//    private List<PlacePick> placePicks;
 
 }

@@ -73,10 +73,10 @@ public class Place extends BaseEntity<Long> {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<CoursePlaceRelation> coursePlaceRelations;
+//    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    List<CoursePlaceRelation> coursePlaceRelations;
 
-    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY) //cascade = CascadeType.ALL
-    List<PlacePick> placePicks;
+//    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY) //cascade = CascadeType.ALL
+//    List<PlacePick> placePicks;
 
 }

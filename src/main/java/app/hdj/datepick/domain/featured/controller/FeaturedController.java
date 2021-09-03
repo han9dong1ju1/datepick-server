@@ -20,13 +20,14 @@ public class FeaturedController {
     private final FeaturedService featuredService;
 
     @GetMapping("")
-    public List<FeaturedMeta> getAllFeatured(){
-        return featuredService.getAllFeaturedMetas();
+    public List<Featured> getAllFeatrued(){
+        return featuredService.getAllFeatured();
     }
 
     @GetMapping("/{featuredId}")
-    public FeaturedDetail getFeaturedByIdWithDetail(@PathVariable Long featuredId){
-        return featuredService.getFeatured(featuredId);
+    public FeaturedDetail getFeaturedDetail(@PathVariable Long featuredId){
+        //TODO
+        return featuredService.getFeaturedDetail(featuredId);
     }
 
 }
