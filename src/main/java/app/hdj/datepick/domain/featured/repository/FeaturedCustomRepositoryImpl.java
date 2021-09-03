@@ -47,8 +47,7 @@ public class FeaturedCustomRepositoryImpl extends QuerydslRepositorySupport impl
                 .where(qCourseFeaturedRelation.featured.id.eq(id))
                 .select(new QCourseFeaturedInfo(qCourseFeaturedRelation.order, qCourseFeaturedRelation.course))
                 .fetch();
-
-        System.out.println(123123123);
+        
         //TODO Mapper 사용?
         FeaturedMeta featuredMeta = FeaturedMeta.builder()
                 .id(featured.getId())
@@ -57,7 +56,6 @@ public class FeaturedCustomRepositoryImpl extends QuerydslRepositorySupport impl
                 .photoUrl(featured.getPhotoUrl())
                 .build();
 
-        System.out.println(123123123);
         FeaturedDetail featuredDetail = FeaturedDetail.builder()
                 .meta(featuredMeta)
                 .content(featured.getContent())
