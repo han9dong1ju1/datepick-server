@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.featured;
+package app.hdj.datepick.domain.featured.mapper;
 
 import org.mapstruct.Mapper;
 
