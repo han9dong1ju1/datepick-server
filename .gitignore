@@ -41,3 +41,6 @@ out/
 
 ### Log ###
 /log
+
+### Generated ###
+/src/main/generated/
