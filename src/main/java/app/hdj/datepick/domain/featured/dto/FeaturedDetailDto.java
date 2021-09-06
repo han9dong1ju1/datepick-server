@@ -1,17 +1,17 @@
 package app.hdj.datepick.domain.featured.dto;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
-@Getter
-@Builder
-@AllArgsConstructor
-public class FeaturedMeta {
+import java.time.LocalDateTime;
 
-    private Long id;
+@Getter
+@AllArgsConstructor
+public class FeaturedDetailDto {
     private String title;
     private String description;
+    private String content;
     private String photoUrl;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

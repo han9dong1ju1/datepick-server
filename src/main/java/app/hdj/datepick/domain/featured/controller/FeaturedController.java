@@ -1,7 +1,7 @@
 package app.hdj.datepick.domain.featured.controller;
 
-import app.hdj.datepick.domain.featured.dto.FeaturedDetail;
-import app.hdj.datepick.domain.featured.dto.FeaturedMeta;
+import app.hdj.datepick.domain.featured.dto.FeaturedMetaDto;
+import app.hdj.datepick.domain.featured.dto.response.FeaturedDetailResponseDto;
 import app.hdj.datepick.domain.featured.entity.Featured;
 import app.hdj.datepick.domain.featured.service.FeaturedService;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +20,12 @@ public class FeaturedController {
     private final FeaturedService featuredService;
 
     @GetMapping("")
-    public List<Featured> getAllFeatrued(){
-        return featuredService.getAllFeatured();
+    public List<FeaturedMetaDto> getAllFeaturedMeta(){
+        return featuredService.getAllFeaturedMeta();
     }
 
     @GetMapping("/{featuredId}")
-    public FeaturedDetail getFeaturedDetail(@PathVariable Long featuredId){
+    public FeaturedDetailResponseDto getFeaturedDetail(@PathVariable Long featuredId){
         return featuredService.getFeaturedDetail(featuredId);
     }
 
