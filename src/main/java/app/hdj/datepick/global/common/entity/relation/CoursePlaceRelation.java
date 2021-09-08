@@ -1,4 +1,4 @@
-package app.hdj.datepick.global.common.entity;
+package app.hdj.datepick.global.common.entity.relation;
 
 
 import app.hdj.datepick.global.common.entity.BaseEntity;

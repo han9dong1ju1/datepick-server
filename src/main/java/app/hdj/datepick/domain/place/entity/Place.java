@@ -1,13 +1,11 @@
 package app.hdj.datepick.domain.place.entity;
 
-import app.hdj.datepick.global.common.entity.BaseEntity;
-import app.hdj.datepick.global.common.entity.CoursePlaceRelation;
+import app.hdj.datepick.domain.review.entity.PlaceReview;
+import app.hdj.datepick.global.common.entity.BaseTimeEntity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -16,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "place")
-public class Place extends BaseEntity<Long> {
+public class Place extends BaseTimeEntity<Long> {
 
     //TODO kakao id 타입 결정
     @Column(name = "kakao_id", columnDefinition = "bigint", nullable = false)
@@ -69,14 +67,13 @@ public class Place extends BaseEntity<Long> {
     @ColumnDefault("0")
     private Integer pickCount;
 
-    @Column(name = "updated_at")
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-
 //    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    List<CoursePlaceRelation> coursePlaceRelations;
 
 //    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY) //cascade = CascadeType.ALL
 //    List<PlacePick> placePicks;
+
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    private List<PlaceReview> placeReviews;
 
 }
