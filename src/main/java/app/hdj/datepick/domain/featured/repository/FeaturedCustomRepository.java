@@ -1,11 +1,11 @@
 package app.hdj.datepick.domain.featured.repository;
 
-import app.hdj.datepick.domain.featured.dto.FeaturedCourseMetaDto;
+import app.hdj.datepick.domain.featured.dto.FeaturedCourseDto;
 
 import java.util.List;
 
 public interface FeaturedCustomRepository {
 
-    List<FeaturedCourseMetaDto> findCourseMetaById(Long id);
+    List<FeaturedCourseDto> findCourseMetaById(Long id);
 
 }
