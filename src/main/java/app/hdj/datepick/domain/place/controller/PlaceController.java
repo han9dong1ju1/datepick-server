@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.place.controller;
 
-import app.hdj.datepick.domain.place.dto.PlaceDto;
+import app.hdj.datepick.domain.place.dto.response.PlaceMetaDto;
 import app.hdj.datepick.domain.place.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +17,8 @@ public class PlaceController {
     private final PlaceService placeService;
 
     @GetMapping("/{placeId}")
-    public PlaceDto getPlace(@PathVariable Long placeId){
-        return placeService.getPlaceById(placeId);
+    public PlaceMetaDto getPlace(@PathVariable Long placeId){
+        return placeService.getPlace(placeId);
     }
 
 }

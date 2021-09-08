@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.place.dto;
+package app.hdj.datepick.domain.place.dto.response;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 @Getter
-public class PlaceDto {
+public class PlaceMetaDto {
 
     private Long id;
     private Long kakaoId;
@@ -22,6 +22,7 @@ public class PlaceDto {
 
     private Category categorys;
     private Boolean isPicked;
+
     @Getter
     @AllArgsConstructor
     class Category{
@@ -31,7 +32,7 @@ public class PlaceDto {
     }
 
     @QueryProjection
-    public PlaceDto(Long id, Long kakaoId, String name, Float rating, String address, Double latitude, Double longitude, String type, String subtype, String category, Boolean isPicked) {
+    public PlaceMetaDto(Long id, Long kakaoId, String name, Float rating, String address, Double latitude, Double longitude, String type, String subtype, String category, Boolean isPicked) {
         this.id = id;
         this.kakaoId = kakaoId;
         this.name = name;
