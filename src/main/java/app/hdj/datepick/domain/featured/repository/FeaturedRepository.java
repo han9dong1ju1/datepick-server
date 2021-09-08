@@ -14,6 +14,8 @@ public interface FeaturedRepository extends
 
     <T> List<T> findAllBy(Class<T> type);
 
+    <T> List<T> findAllByIsPinnedTrue(Class<T> type);
+
     <T> Optional<T> findById(Long id, Class<T> type);
 
 }
