@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.place.service;
 
-import app.hdj.datepick.domain.place.dto.PlaceDto;
+import app.hdj.datepick.domain.place.dto.response.PlaceMetaDto;
 import app.hdj.datepick.domain.place.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +14,8 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
 
-
-    public PlaceDto getPlaceById(Long id){
-        return placeRepository.findById(id, PlaceDto.class).orElseThrow();
+    public PlaceMetaDto getPlace(Long id){
+        return placeRepository.findByIdWithUserPicked(id);
     }
 
 }
