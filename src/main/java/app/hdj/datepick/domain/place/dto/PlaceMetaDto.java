@@ -1,17 +1,14 @@
-package app.hdj.datepick.domain.place.dto.response;
+package app.hdj.datepick.domain.place.dto;
+
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class PlaceMetaDto {
-
     private Long id;
     private Long kakaoId;
     private String name;
@@ -20,10 +17,8 @@ public class PlaceMetaDto {
     private Double latitude;
     private Double longitude;
 
-    private Category categorys;
-    private Boolean isPicked;
+    private PlaceMetaDto.Category categorys;
 
-    @Getter
     @AllArgsConstructor
     class Category{
         private String type;
@@ -32,7 +27,7 @@ public class PlaceMetaDto {
     }
 
     @QueryProjection
-    public PlaceMetaDto(Long id, Long kakaoId, String name, Float rating, String address, Double latitude, Double longitude, String type, String subtype, String category, Boolean isPicked) {
+    public PlaceMetaDto(Long id, Long kakaoId, String name, Float rating, String address, Double latitude, Double longitude, String type, String subtype, String category) {
         this.id = id;
         this.kakaoId = kakaoId;
         this.name = name;
@@ -40,7 +35,6 @@ public class PlaceMetaDto {
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.categorys = new Category(type, subtype, category);
-        this.isPicked = isPicked;
+        this.categorys = new PlaceMetaDto.Category(type, subtype, category);
     }
 }
