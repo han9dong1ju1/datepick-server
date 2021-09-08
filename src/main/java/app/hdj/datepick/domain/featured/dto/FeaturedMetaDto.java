@@ -1,7 +1,6 @@
 package app.hdj.datepick.domain.featured.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter

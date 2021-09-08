@@ -35,7 +35,9 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
                                 course.user.id)))
                 .from(courseFeaturedRelation)
                 .innerJoin(courseFeaturedRelation.course, course)
-                .where(courseFeaturedRelation.featured.id.eq(id))
+                .where(
+                        courseFeaturedRelation.featured.id.eq(id)
+                )
                 .fetch();
     }
 }

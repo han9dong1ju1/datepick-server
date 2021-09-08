@@ -5,10 +5,9 @@ import app.hdj.datepick.domain.featured.dto.response.FeaturedDetailResponseDto;
 import app.hdj.datepick.domain.featured.entity.Featured;
 import app.hdj.datepick.domain.featured.service.FeaturedService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.hibernate.annotations.Parameter;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,7 +19,13 @@ public class FeaturedController {
     private final FeaturedService featuredService;
 
     @GetMapping("")
-    public List<FeaturedMetaDto> getAllFeaturedMeta(){
+    public Page<FeaturedMetaDto> getAllFeaturedMeta(){
+        return null;
+        //return featuredService.getAllFeaturedMeta();
+    }
+
+    @GetMapping("/main")
+    public List<FeaturedMetaDto> getMainFeaturedMeta(){
         return featuredService.getAllFeaturedMeta();
     }
 

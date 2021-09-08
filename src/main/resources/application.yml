@@ -2,7 +2,7 @@
 spring.profiles.active: dev   # 환경 선택
 
 server:
-  port: 8080
+  port: 8181
   servlet:
     context-path: /api
   error:
