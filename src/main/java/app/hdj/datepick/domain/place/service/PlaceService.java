@@ -18,5 +18,9 @@ public class PlaceService {
         Long userId = 1L;
         return placeRepository.findPlaceDetail(id, placeRepository.IsUserPickedPlace(id, userId), placeRepository.findReviewPhotoUrls(id));
     }
+    public void deletePlace(Long id){
+        //placeRepository.deleteById(id);
+        placeRepository.customDeleteById(id);
+    }
 
 }
