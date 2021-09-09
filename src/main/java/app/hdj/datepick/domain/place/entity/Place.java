@@ -2,6 +2,7 @@ package app.hdj.datepick.domain.place.entity;
 
 import app.hdj.datepick.domain.review.entity.PlaceReview;
 import app.hdj.datepick.global.common.entity.BaseTimeEntity;
+import app.hdj.datepick.global.common.entity.relation.CoursePlaceRelation;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -67,6 +68,10 @@ public class Place extends BaseTimeEntity<Long> {
     @ColumnDefault("0")
     private Integer pickCount;
 
+/*고민한 양방향 관계 문제점 : 하나의 장소는 여러개의 course에 입력가능함.
+따라서 course의 places를 찾을때, list 에서 course Id에 맞는 course Relation을 찾는 과정이 필수적임.
+그래서 굳이 양방향 관계를 만들기보다, Relation테이블에서 직접적으로 course id를 탐색한다.
+ */
 //    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    List<CoursePlaceRelation> coursePlaceRelations;
 

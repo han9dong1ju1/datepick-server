@@ -5,8 +5,6 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 public class PlaceMetaDto {
     private Long id;
@@ -17,10 +15,10 @@ public class PlaceMetaDto {
     private Double latitude;
     private Double longitude;
 
-    private PlaceMetaDto.Category categorys;
+    private Category categorys;
 
     @AllArgsConstructor
-    class Category{
+    private class Category{
         private String type;
         private String subtype;
         private String category;
