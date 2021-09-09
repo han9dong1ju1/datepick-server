@@ -1,7 +1,8 @@
 package app.hdj.datepick.domain.place.repository;
 
-import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
-import app.hdj.datepick.domain.place.dto.QPlaceDetailDto;
+import app.hdj.datepick.domain.place.dto.*;
+import app.hdj.datepick.domain.place.dto.request.PlaceInfoRequestDto;
+import app.hdj.datepick.global.common.entity.relation.QCoursePlaceRelation;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import static app.hdj.datepick.domain.place.entity.QPlace.place;
 import static app.hdj.datepick.domain.place.entity.QPlacePick.placePick;
 import static app.hdj.datepick.domain.review.entity.QPlaceReview.placeReview;
 import static app.hdj.datepick.domain.review.entity.QPlaceReviewPhoto.placeReviewPhoto;
+import static app.hdj.datepick.global.common.entity.relation.QCoursePlaceRelation.coursePlaceRelation;
 
 
 @Slf4j
@@ -113,6 +115,89 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository{
         else
             log.debug(deletedCount.toString());
 
+    }
+
+
+    @Override
+    public PlaceMetaDto patch(PlaceInfoRequestDto placeInfoRequestDto) {
+        //map placePatchRequestDto to place
+        return null;
+    }
+
+    /**
+     *
+     * @param userId 유저 id
+     * @return 유저가 pick 한 place id list를 반환한다.
+     */
+    @Override
+    public List<Long> findPickedPlaceIds(Long userId) {
+
+        return jpaQueryFactory
+                .select(place.id)
+                .from(placePick)
+                .where(placePick.user.id.eq(userId))
+                .fetch();
+    }
+
+    /**
+     *
+     * @param placeIds 찾을 place id list
+     * @return place id 에 맞는 places를 static 한 내용만 들어있는 PlaceMetaDto list로 반환한다.
+     */
+    @Override
+    public List<PlaceMetaDto> findPlaceMetasWithIds(List<Long> placeIds) {
+        return jpaQueryFactory
+                .select(new QPlaceMetaDto(
+                        place.id,
+                        place.kakaoId,
+                        place.name,
+                        place.rating,
+                        place.address,
+                        place.latitude,
+                        place.longitude,
+                        place.type,
+                        place.subtype,
+                        place.category
+                ))
+                .from(place)
+                .where(place.id.in(placeIds))
+                .fetch();
+    }
+
+    /**
+     *
+     * @param courseId 장소를 찾으려는 course id
+     * @return place order 기준 정렬된 PlaceCourseMetaDto list
+     */
+    @Override
+    public List<PlaceCourseMetaDto> findPlaceCourseMetas(Long courseId) {
+        return jpaQueryFactory
+                .select(new QPlaceCourseMetaDto(
+                        coursePlaceRelation.placeOrder,
+                        coursePlaceRelation.visitTime,
+                        coursePlaceRelation.memo,
+                        new QPlaceMetaDto(
+                                place.id,
+                                place.kakaoId,
+                                place.name,
+                                place.rating,
+                                place.address,
+                                place.latitude,
+                                place.longitude,
+                                place.type,
+                                place.subtype,
+                                place.category
+                        )
+                ))
+                .from(coursePlaceRelation.place, place)
+                .where(coursePlaceRelation.course.id.eq(courseId))
+                .orderBy(coursePlaceRelation.placeOrder.asc())
+                .fetch();
+    }
+
+    @Override
+    public PlaceMetaDto post(PlaceInfoRequestDto placeInfoRequestDto) {
+        return null;
     }
 }
 
