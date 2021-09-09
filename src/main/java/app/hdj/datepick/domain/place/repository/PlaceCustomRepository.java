@@ -9,4 +9,5 @@ public interface PlaceCustomRepository {
     Boolean IsUserPickedPlace(Long placeId, Long userId);
     PlaceDetailDto findPlaceDetail(Long placeId, Boolean isPicked, List<String> photoUrls);
     List<String> findReviewPhotoUrls(Long placeId);
+    void customDeleteById(Long id);
 }

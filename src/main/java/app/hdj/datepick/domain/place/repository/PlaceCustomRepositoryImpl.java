@@ -96,5 +96,23 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository{
                 .where(placeReview.place.id.eq(placeId))
                 .fetch();
     }
+
+    /**
+     *
+     * @param id 제거할 place id
+     */
+    @Override
+    public void customDeleteById(Long id) {
+        Long deletedCount = jpaQueryFactory
+                .delete(place)
+                .where(place.id.eq(id))
+                .execute();
+        //TODO deletedCount 가 0 일 경우 이미 없은 id를 인자로 받음. 예외처리
+        if (deletedCount == 0)
+            log.error(deletedCount.toString());
+        else
+            log.debug(deletedCount.toString());
+
+    }
 }
 
