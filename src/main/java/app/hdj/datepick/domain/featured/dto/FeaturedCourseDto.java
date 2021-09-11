@@ -7,12 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-public class FeaturedCourseMetaDto {
+public class FeaturedCourseDto {
     private Byte order;
     private CourseMetaDto courseMeta;
 
     @QueryProjection
-    public FeaturedCourseMetaDto(Byte order, CourseMetaDto courseMeta) {
+    public FeaturedCourseDto(Byte order, CourseMetaDto courseMeta) {
         this.order = order;
         this.courseMeta = courseMeta;
     }

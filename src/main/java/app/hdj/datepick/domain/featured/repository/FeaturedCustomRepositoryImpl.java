@@ -1,8 +1,8 @@
 package app.hdj.datepick.domain.featured.repository;
 
 import app.hdj.datepick.domain.course.dto.QCourseMetaDto;
-import app.hdj.datepick.domain.featured.dto.FeaturedCourseMetaDto;
-import app.hdj.datepick.domain.featured.dto.QFeaturedCourseMetaDto;
+import app.hdj.datepick.domain.featured.dto.FeaturedCourseDto;
+import app.hdj.datepick.domain.featured.dto.QFeaturedCourseDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +23,9 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<FeaturedCourseMetaDto> findCourseMetaById(Long id) {
+    public List<FeaturedCourseDto> findCourseMetaById(Long id) {
         return jpaQueryFactory
-                .select(new QFeaturedCourseMetaDto(
+                .select(new QFeaturedCourseDto(
                         courseFeaturedRelation.order,
                         new QCourseMetaDto(
                                 course.id,
