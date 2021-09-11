@@ -1,7 +1,6 @@
 package app.hdj.datepick.global.common.entity.relation;
 
 
-import app.hdj.datepick.global.common.entity.BaseEntity;
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.place.entity.Place;
 import lombok.*;
