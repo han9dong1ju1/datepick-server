@@ -31,10 +31,10 @@ public class PlaceController {
         log.debug(placeInfoRequestDto.toString());
     }
 
-    @DeleteMapping("/{placeId}")
-    public void deletePlace(@PathVariable Long placeId){
-        placeService.deletePlace(placeId);
-    }
+//    @DeleteMapping("/{placeId}")
+//    public void deletePlace(@PathVariable Long placeId){
+//        placeService.deletePlace(placeId);
+//    }
 
 
     @GetMapping("")

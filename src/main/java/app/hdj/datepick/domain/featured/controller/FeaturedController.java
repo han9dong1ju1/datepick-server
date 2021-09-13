@@ -20,18 +20,18 @@ public class FeaturedController {
 
     // TODO: Paging 처리한 리스트 가져오는 API
     @GetMapping("")
-    public List<FeaturedMetaDto> getAllFeaturedMeta() {
-        return featuredService.getAllFeaturedMeta();
+    public List<FeaturedMetaDto> getFeaturedMetaList() {
+        return featuredService.getFeaturedList();
     }
 
     @GetMapping("/pinned")
-    public List<FeaturedMetaDto> getAllPinnedFeaturedMeta() {
-        return featuredService.getAllPinnedFeaturedMeta();
+    public List<FeaturedMetaDto> getPinnedFeaturedMetaList() {
+        return featuredService.getPinnedFeaturedList();
     }
 
     @GetMapping("/{featuredId}")
     public FeaturedDetailResponseDto getFeatured(@PathVariable Long featuredId) {
-        return featuredService.getFeaturedDetail(featuredId);
+        return featuredService.getFeatured(featuredId);
     }
 
 }
