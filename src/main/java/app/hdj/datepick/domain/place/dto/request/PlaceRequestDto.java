@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class PlaceInfoRequestDto {//Post, Patch 에 사용
+public class PlaceRequestDto {//Post, Patch 에 사용
 
-    private Long kakaoId;
+    private String kakaoId;
     private String name;
     private Float rating;
     private String address;

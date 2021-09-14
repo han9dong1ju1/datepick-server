@@ -11,8 +11,4 @@ public interface PlaceRepository extends
         JpaRepository<Place, Long>,
         PlaceCustomRepository,
         QuerydslPredicateExecutor<Place>{
-
-    //jpa delete 쿼리의 경우 select place 를 통해서 이미 존재하는지 여부를 판단하고 delete쿼리를 날림
-    //TODO 논의틀 통해서 어떤 메소드를 쓸지 고민
-    void deleteById(Long id);
 }
