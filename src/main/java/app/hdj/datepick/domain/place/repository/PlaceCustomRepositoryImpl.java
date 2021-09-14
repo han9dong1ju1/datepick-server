@@ -1,8 +1,7 @@
 package app.hdj.datepick.domain.place.repository;
 
 import app.hdj.datepick.domain.place.dto.*;
-import app.hdj.datepick.domain.place.dto.request.PlaceInfoRequestDto;
-import app.hdj.datepick.global.common.entity.relation.QCoursePlaceRelation;
+import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -99,27 +98,8 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository{
                 .fetch();
     }
 
-    /**
-     *
-     * @param id 제거할 place id
-     */
     @Override
-    public void customDeleteById(Long id) {
-        Long deletedCount = jpaQueryFactory
-                .delete(place)
-                .where(place.id.eq(id))
-                .execute();
-        //TODO deletedCount 가 0 일 경우 이미 없은 id를 인자로 받음. 예외처리
-        if (deletedCount == 0)
-            log.error(deletedCount.toString());
-        else
-            log.debug(deletedCount.toString());
-
-    }
-
-
-    @Override
-    public PlaceMetaDto patch(PlaceInfoRequestDto placeInfoRequestDto) {
+    public PlaceMetaDto patch(PlaceRequestDto placeRequestDto) {
         //map placePatchRequestDto to place
         return null;
     }
@@ -196,7 +176,7 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository{
     }
 
     @Override
-    public PlaceMetaDto post(PlaceInfoRequestDto placeInfoRequestDto) {
+    public PlaceMetaDto post(PlaceRequestDto placeRequestDto) {
         return null;
     }
 }

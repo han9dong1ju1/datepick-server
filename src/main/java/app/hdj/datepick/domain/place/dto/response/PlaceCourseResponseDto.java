@@ -1,7 +1,6 @@
-package app.hdj.datepick.domain.place.dto.request;
+package app.hdj.datepick.domain.place.dto.response;
 
 import app.hdj.datepick.domain.place.dto.PlaceCourseMetaDto;
-import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

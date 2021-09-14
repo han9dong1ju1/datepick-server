@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.place.filter;
+package app.hdj.datepick.domain.place.dto.request;
 
 
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class PlaceRequestFilter {
+public class PlaceRequestFilterDto {
 
     private String sort;
     private String idType;

@@ -3,7 +3,7 @@ package app.hdj.datepick.domain.place.repository;
 import app.hdj.datepick.domain.place.dto.PlaceCourseMetaDto;
 import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
 import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
-import app.hdj.datepick.domain.place.dto.request.PlaceInfoRequestDto;
+import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
 
 import java.util.List;
 
@@ -19,8 +19,7 @@ public interface PlaceCustomRepository {
 
     List<PlaceCourseMetaDto> findPlaceCourseMetas(Long courseId);
 
-    void customDeleteById(Long id);
-    PlaceMetaDto patch(PlaceInfoRequestDto placeInfoRequestDto);
-    PlaceMetaDto post(PlaceInfoRequestDto placeInfoRequestDto);
+    PlaceMetaDto patch(PlaceRequestDto placeRequestDto);
+    PlaceMetaDto post(PlaceRequestDto placeRequestDto);
 
 }
