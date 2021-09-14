@@ -2,8 +2,8 @@ package app.hdj.datepick.domain.place.controller;
 
 import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
 import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
-import app.hdj.datepick.domain.place.dto.request.PlaceInfoRequestDto;
-import app.hdj.datepick.domain.place.filter.PlaceRequestFilter;
+import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
+import app.hdj.datepick.domain.place.dto.request.PlaceRequestFilterDto;
 import app.hdj.datepick.domain.place.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +27,8 @@ public class PlaceController {
 
     //TODO request dto 방식 선정
     @PatchMapping("/{placeId}")
-    public void patchPlace(@ModelAttribute PlaceInfoRequestDto placeInfoRequestDto){
-        log.debug(placeInfoRequestDto.toString());
+    public void patchPlace(@ModelAttribute PlaceRequestDto placeRequestDto){
+        log.debug(placeRequestDto.toString());
     }
 
     @DeleteMapping("/{placeId}")
@@ -38,15 +38,15 @@ public class PlaceController {
 
 
     @GetMapping("")
-    public List<PlaceMetaDto> getPlaces(@ModelAttribute PlaceRequestFilter placeRequestFilter){
+    public List<PlaceMetaDto> getPlaces(@ModelAttribute PlaceRequestFilterDto placeRequestFilterDto){
         return null;
     }
 
 
     //TODO request dto 방식 선정
     @PostMapping("")
-    public void postPlace(@RequestBody PlaceInfoRequestDto placeInfoRequestDto){
-        log.debug(placeInfoRequestDto.toString());
+    public void postPlace(@RequestBody PlaceRequestDto placeRequestDto){
+        log.debug(placeRequestDto.toString());
     }
 
 

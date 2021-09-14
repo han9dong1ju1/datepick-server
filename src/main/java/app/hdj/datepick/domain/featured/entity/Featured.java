@@ -18,7 +18,7 @@ import java.util.List;
 @Entity(name = "featured")
 public class Featured extends BaseTimeEntity<Long> {
 
-    @Column(name = "title", columnDefinition = "varchar(128)", nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Column(name = "description", nullable = false)

@@ -4,6 +4,7 @@ package app.hdj.datepick.domain.diary.entity;
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.common.entity.BaseTimeEntity;
+import app.hdj.datepick.global.common.enums.Style;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -16,23 +17,23 @@ import javax.persistence.*;
 public class Diary extends BaseTimeEntity<Long> {
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id")
+    @JoinColumn
     private Course course;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "user_id")
+    @JoinColumn
     private User user;
 
-    @Column(name = "title", columnDefinition = "varchar(30)", nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "like_count", columnDefinition = "int", nullable = false)
+    @Column(name = "like_count", nullable = false)
     @ColumnDefault("0")
     private Integer likeCount;
 
-    @Column(name = "style", columnDefinition = "tiny(4)", nullable = false)
-    @ColumnDefault("0")
-    private Byte style;  //TODO style enum 생성?
+    @Column(name = "style", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Style style;
 
 
 }

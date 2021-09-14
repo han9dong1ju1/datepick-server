@@ -20,7 +20,7 @@ public class PlaceReviewPhoto extends BaseEntity<Long> {
     @Column(name = "photo_order", nullable = false)
     private Byte photoOrder;
 
-    @Column(name = "photo_url", columnDefinition = "varchar(255)", nullable = false)
+    @Column(name = "photo_url", nullable = false)
     private String photoUrl;
 
 }
