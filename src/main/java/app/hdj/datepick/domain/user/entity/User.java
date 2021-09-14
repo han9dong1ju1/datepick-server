@@ -42,7 +42,6 @@ public class User extends BaseTimeEntity<Long> {
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 //    private List<PlacePick> placePicks;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Course> courses;
 

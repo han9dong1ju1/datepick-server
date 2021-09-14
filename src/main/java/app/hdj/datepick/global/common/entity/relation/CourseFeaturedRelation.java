@@ -1,7 +1,8 @@
-package app.hdj.datepick.global.common.entity;
+package app.hdj.datepick.global.common.entity.relation;
 
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.featured.entity.Featured;
+import app.hdj.datepick.global.common.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
