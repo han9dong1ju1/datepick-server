@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static app.hdj.datepick.domain.course.entity.QCourse.course;
-import static app.hdj.datepick.global.common.entity.QCourseFeaturedRelation.courseFeaturedRelation;
+import static app.hdj.datepick.global.common.entity.relation.QCourseFeaturedRelation.courseFeaturedRelation;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -35,7 +35,9 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
                                 course.user.id)))
                 .from(courseFeaturedRelation)
                 .innerJoin(courseFeaturedRelation.course, course)
-                .where(courseFeaturedRelation.featured.id.eq(id))
+                .where(
+                        courseFeaturedRelation.featured.id.eq(id)
+                )
                 .fetch();
     }
 }
