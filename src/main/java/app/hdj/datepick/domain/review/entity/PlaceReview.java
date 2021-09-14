@@ -22,13 +22,13 @@ public class PlaceReview extends BaseTimeEntity<Long> {
     @JoinColumn(name = "diary_id")
     private Diary diary;
 
-    @Column(name = "review_order", columnDefinition = "", nullable = false)
+    @Column(name = "review_order", nullable = false)
     private Byte reviewOrder;
 
     @Column(name = "rating", nullable = false)
     private Byte rating;
 
-    @Column(name = "content", columnDefinition = "varchar(150)", nullable = false)
+    @Column(name = "content", nullable = false)
     @ColumnDefault("''")
     private String content;
 
