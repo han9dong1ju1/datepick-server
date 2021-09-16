@@ -1,8 +1,0 @@
-dependencies {
-
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.mariadb.jdbc:mariadb-java-client'
-    implementation 'org.modelmapper:modelmapper:2.4.4'
-    implementation project(':util')
-    implementation project(':domain')
-}
