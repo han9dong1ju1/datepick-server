@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public class PlaceMetaDto {
     private Long id;
-    private Long kakaoId;
+    private String kakaoId;
     private String name;
     private Float rating;
     private String address;
@@ -25,7 +25,7 @@ public class PlaceMetaDto {
     }
 
     @QueryProjection
-    public PlaceMetaDto(Long id, Long kakaoId, String name, Float rating, String address, Double latitude, Double longitude, String type, String subtype, String category) {
+    public PlaceMetaDto(Long id, String kakaoId, String name, Float rating, String address, Double latitude, Double longitude, String type, String subtype, String category) {
         this.id = id;
         this.kakaoId = kakaoId;
         this.name = name;

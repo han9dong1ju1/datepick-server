@@ -25,27 +25,14 @@ public class PlaceController {
         return placeService.getPlace(placeId);
     }
 
-    //TODO request dto 방식 선정
-    @PatchMapping("/{placeId}")
-    public void patchPlace(@ModelAttribute PlaceRequestDto placeRequestDto){
-        log.debug(placeRequestDto.toString());
-    }
-
-//    @DeleteMapping("/{placeId}")
-//    public void deletePlace(@PathVariable Long placeId){
-//        placeService.deletePlace(placeId);
-//    }
-
-
     @GetMapping("")
     public List<PlaceMetaDto> getPlaces(@ModelAttribute PlaceRequestFilterDto placeRequestFilterDto){
         return null;
     }
 
 
-    //TODO request dto 방식 선정
     @PostMapping("")
-    public void postPlace(@RequestBody PlaceRequestDto placeRequestDto){
+    public void addPlace(@RequestBody PlaceRequestDto placeRequestDto){
         log.debug(placeRequestDto.toString());
     }
 
