@@ -1,20 +1,16 @@
 package app.hdj.datepick.domain.place.dto;
 
+import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import javax.persistence.Column;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 public class PlaceDetailDto {
 
     private Long id;
-    private Long kakaoId;
+    private String kakaoId;
     private String name;
     private Float rating;
     private String address;
@@ -25,8 +21,7 @@ public class PlaceDetailDto {
 
     private Boolean isPicked;
 
-    private List<String> photoUrls;
-
+    private List<PlaceReviewDto> reviews;
     @Getter
     @AllArgsConstructor
     class Category{
@@ -36,7 +31,7 @@ public class PlaceDetailDto {
     }
 
     @QueryProjection
-    public PlaceDetailDto(Long id, Long kakaoId, String name, Float rating, String address, Double latitude, Double longitude, String type, String subtype, String category, Boolean isPicked, List<String> photoUrls) {
+    public PlaceDetailDto(Long id, String kakaoId, String name, Float rating, String address, Double latitude, Double longitude, String type, String subtype, String category, Boolean isPicked, List<PlaceReviewDto> reviews) {
         this.id = id;
         this.kakaoId = kakaoId;
         this.name = name;
@@ -46,6 +41,6 @@ public class PlaceDetailDto {
         this.longitude = longitude;
         this.categorys = new Category(type, subtype, category);
         this.isPicked = isPicked;
-        this.photoUrls = photoUrls;
+        this.reviews = reviews;
     }
 }

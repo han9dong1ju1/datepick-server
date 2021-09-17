@@ -1,5 +1,6 @@
-package app.hdj.datepick.domain.place.entity;
+package app.hdj.datepick.domain.pick.entity;
 
+import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.global.common.entity.BaseEntity;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.common.entity.BaseTimeEntity;

@@ -1,10 +1,21 @@
 package app.hdj.datepick.domain.place.service;
 
+import app.hdj.datepick.domain.pick.repository.PlacePickRepository;
 import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
+import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
+import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
+import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.place.repository.PlaceRepository;
+import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
+import app.hdj.datepick.domain.review.repository.PlaceReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -12,23 +23,59 @@ import org.springframework.stereotype.Service;
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
+    private final PlacePickRepository placePickRepository;
+    private final PlaceReviewRepository placeReviewRepository;
 
-    // TODO: 파라미터 선정 및 구현
-    public void getPlaceList() {}
+    public Page<PlaceMetaDto> getPickedPlacePage(Pageable pageable) {
 
-    // TODO: 파라미터 선정 및 구현
-    public void getPickedPlacePage() {}
+        //TODO Pick 한 User Id 가져오기
+        Long userId = 10L;
 
-    // TODO: 파라미터 선정 및 구현
-    public void getRecommendedPlaceList() {}
+        //Place Pick Relation 에서 User Id 로 Place 찾기
+        List<Long> placeIds = placePickRepository.findPickedPlaceIds(userId);
 
-    // TODO: 확인 및 수정
-    public PlaceDetailDto getPlace(Long id) {
-        Long userId = 1L;
-        return placeRepository.findPlaceDetail(id, placeRepository.IsUserPickedPlace(id, userId), placeRepository.findReviewPhotoUrls(id));
+        //Place id list로 Place meta 정보 가져오기
+        return placeRepository.findPlaceMetaListsById(placeIds, pageable);
     }
 
-    // TODO: 파라미터 선정 및 구현
-    public void getPlaceImagePage(Long id) {}
+    public Page<PlaceMetaDto> getRecommendedPlaceList(Pageable pageable) {
+
+        //TODO Recommend Place 기준만들어서 place id list 찾기
+        List<Long> placeIds = new ArrayList<>();
+        placeIds.add(10L);placeIds.add(11L);placeIds.add(12L);placeIds.add(14L);
+        //Place id List로 Place meta 정보 가져오기
+        return placeRepository.findPlaceMetaListsById(placeIds, pageable);
+    }
+
+    public PlaceDetailDto getPlace(Long placeId) {
+
+        //TODO User 기준 Picked Place인지 여부판단위해, User Id 가져오기
+        Long userId = 10L;
+
+        //User가 Place를 픽했는지 여부 T/F
+        Boolean isPicked = placeRepository.isUserPickedPlace(placeId, userId);
+
+        //Place의 Review 특정개수 가져오기
+        List<PlaceReviewDto> placeReviews = placeReviewRepository.findConstReviewsWithPlaceId(placeId);
+
+        //Place meta, isPicked, reviews를 조립
+       return placeRepository.findPlaceDetail(placeId, isPicked, placeReviews);
+    }
+
+    public PlaceRequestDto addPlace(PlaceRequestDto placeRequestDto) {
+
+        //PlaceRequestDto -> Place mapping
+        Place place = placeRequestDto.toPlace();
+
+        //Place 새로 생성, 생성결과 Place -> PlaceRequestDTO로 mapping
+        return placeRepository.save(place).toPlaceRequestDto();
+    }
+
+
+    public Page<String> getPlaceImagePage(Long placeId, Pageable pageable) {
+
+        //Place에 작성된 Review의 Image List를 가져온다.
+        return placeReviewRepository.findAllPhotoUrls(placeId, pageable);
+    }
 
 }

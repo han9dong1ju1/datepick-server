@@ -23,7 +23,7 @@ public class PlaceReview extends BaseTimeEntity<Long> {
     private Diary diary;
 
     @Column(name = "review_order", nullable = false)
-    private Byte reviewOrder;
+    private Byte inDiaryOrder;
 
     @Column(name = "rating", nullable = false)
     private Byte rating;
