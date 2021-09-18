@@ -23,4 +23,5 @@ public interface PlaceReviewCustomRepository {
      * @return Place에 포함된 Photo Url의 Page 객체
      */
     Page<String> findAllPhotoUrls(Long placeId, Pageable pageable);
+
 }

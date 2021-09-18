@@ -10,6 +10,7 @@ import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
 import app.hdj.datepick.domain.review.repository.PlaceReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,11 @@ import java.util.List;
 @Service
 public class PlaceService {
 
+    @Autowired
     private final PlaceRepository placeRepository;
+    @Autowired
     private final PlacePickRepository placePickRepository;
+    @Autowired
     private final PlaceReviewRepository placeReviewRepository;
 
     public Page<PlaceMetaDto> getPickedPlacePage(Pageable pageable) {
