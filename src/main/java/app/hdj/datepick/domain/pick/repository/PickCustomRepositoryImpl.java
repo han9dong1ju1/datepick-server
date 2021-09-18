@@ -15,10 +15,9 @@ import static app.hdj.datepick.domain.pick.entity.QPlacePick.placePick;
 
 
 @Slf4j
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Repository
-public class PickCustomRepositoryImpl implements PickCustomRepository{
+public class PickCustomRepositoryImpl implements PickCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 

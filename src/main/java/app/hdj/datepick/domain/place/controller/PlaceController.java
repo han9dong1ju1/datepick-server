@@ -7,9 +7,10 @@ import app.hdj.datepick.domain.place.dto.request.PlaceRequestFilterDto;
 import app.hdj.datepick.domain.place.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 
 @Slf4j
@@ -26,8 +27,8 @@ public class PlaceController {
     }
 
     @GetMapping("")
-    public List<PlaceMetaDto> getPlaces(@ModelAttribute PlaceRequestFilterDto placeRequestFilterDto){
-        return null;
+    public Page<PlaceMetaDto> getPlaces(Pageable pageable){
+        return placeService.getPickedPlacePage(pageable);
     }
 
 
@@ -35,7 +36,5 @@ public class PlaceController {
     public void addPlace(@RequestBody PlaceRequestDto placeRequestDto){
         log.debug(placeRequestDto.toString());
     }
-
-
 
 }

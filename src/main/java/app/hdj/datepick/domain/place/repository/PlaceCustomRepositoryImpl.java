@@ -23,10 +23,9 @@ import static app.hdj.datepick.global.common.entity.relation.QCoursePlaceRelatio
 
 
 @Slf4j
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Repository
-public class PlaceCustomRepositoryImpl implements PlaceCustomRepository{
+public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 

@@ -16,8 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlaceRequestFilterDto {
 
-    private String sort;
-    private String idType;
+
     private Long id;
     private String filter;
 }
