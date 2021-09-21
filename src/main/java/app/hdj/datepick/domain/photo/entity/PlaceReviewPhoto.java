@@ -1,5 +1,6 @@
-package app.hdj.datepick.domain.review.entity;
+package app.hdj.datepick.domain.photo.entity;
 
+import app.hdj.datepick.domain.review.entity.PlaceReview;
 import app.hdj.datepick.global.common.entity.BaseEntity;
 import lombok.*;
 
