@@ -17,6 +17,5 @@ import org.springframework.stereotype.Component;
 public class PlaceRequestFilterDto {
 
 
-    private Long id;
-    private String filter;
+    private String requestType; //Picked Places, Recommended Places
 }

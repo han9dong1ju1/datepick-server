@@ -1,5 +1,6 @@
 package app.hdj.datepick.domain.place.service;
 
+import app.hdj.datepick.domain.photo.repository.PlaceReviewPhotoRepository;
 import app.hdj.datepick.domain.pick.repository.PlacePickRepository;
 import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
 import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
@@ -23,12 +24,10 @@ import java.util.List;
 @Service
 public class PlaceService {
 
-    @Autowired
     private final PlaceRepository placeRepository;
-    @Autowired
     private final PlacePickRepository placePickRepository;
-    @Autowired
     private final PlaceReviewRepository placeReviewRepository;
+    private final PlaceReviewPhotoRepository placeReviewPhotoRepository;
 
     public Page<PlaceMetaDto> getPickedPlacePage(Pageable pageable) {
 
@@ -79,7 +78,7 @@ public class PlaceService {
     public Page<String> getPlaceImagePage(Long placeId, Pageable pageable) {
 
         //Place에 작성된 Review의 Image List를 가져온다.
-        return placeReviewRepository.findAllPhotoUrls(placeId, pageable);
+        return placeReviewPhotoRepository.getPlaceReviewPhotoPage(placeId, pageable);
     }
 
 }
