@@ -65,13 +65,13 @@ public class PlaceService {
        return placeRepository.findPlaceDetail(placeId, isPicked, placeReviews);
     }
 
-    public PlaceRequestDto addPlace(PlaceRequestDto placeRequestDto) {
+    public Place addPlace(PlaceRequestDto placeRequestDto) {
 
         //PlaceRequestDto -> Place mapping
         Place place = placeRequestDto.toPlace();
 
-        //Place 새로 생성, 생성결과 Place -> PlaceRequestDTO로 mapping
-        return placeRepository.save(place).toPlaceRequestDto();
+        //Place 새로 생성
+        return placeRepository.save(place);
     }
 
 

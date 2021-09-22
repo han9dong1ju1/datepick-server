@@ -35,8 +35,8 @@ public class PlaceReviewCustomRepositoryImpl implements PlaceReviewCustomReposit
                 ))
                 .from(placeReview)
                 .where(placeReview.place.id.eq(placeId))
-                .orderBy(placeReview.inDiaryOrder.asc())
                 .limit(5)
+                .orderBy(placeReview.createdAt.desc())
                 .fetch();
         return placeReviewDtos;
     }

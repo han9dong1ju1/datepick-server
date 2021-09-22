@@ -4,6 +4,7 @@ import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
 import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
 import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
 import app.hdj.datepick.domain.place.dto.request.PlaceRequestFilterDto;
+import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.place.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class PlaceController {
     }
 
     @PostMapping("")
-    public PlaceRequestDto addPlace(@RequestBody PlaceRequestDto placeRequestDto){
+    public Place addPlace(@RequestBody PlaceRequestDto placeRequestDto){
         return placeService.addPlace(placeRequestDto);
     }
 
