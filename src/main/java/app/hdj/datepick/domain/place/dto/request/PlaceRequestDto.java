@@ -2,6 +2,10 @@ package app.hdj.datepick.domain.place.dto.request;
 
 import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.global.common.enums.Region;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Component;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Component
 public class PlaceRequestDto {//Post, Patch 에 사용
 

@@ -1,12 +1,15 @@
 package app.hdj.datepick.domain.place.dto;
 
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import java.util.List;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PlaceDetailDto {
 
     private Long id;

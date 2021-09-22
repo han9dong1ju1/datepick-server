@@ -19,7 +19,7 @@ public interface PlaceCustomRepository {
      * @param pageable paging 정보
      * @return Place Meta List를 Paging 규격에 맞게 제공
      */
-    Page<PlaceMetaDto> findPlaceMetaListsById(List<Long> placeIds, Pageable pageable);
+    Page<PlaceMetaDto> findPlaceMetaListById(List<Long> placeIds, Pageable pageable);
 
     /**
      *

@@ -11,8 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,25 +25,25 @@ public class PlaceController {
         return placeService.getPlace(placeId);
     }
 
-    @GetMapping("/photos/{placeId}")
-    public Page<String> getPlacePhotos(Long placeId, Pageable pageable){
+    @GetMapping("/{placeId}/photos")
+    public Page<String> getPlacePhotos(@PathVariable Long placeId, Pageable pageable){
         return placeService.getPlaceImagePage(placeId, pageable);
     }
-    
+
     @GetMapping("")
-    public Page<PlaceMetaDto> getPlaces(@PathVariable String requestType , Pageable pageable){
-        if(requestType == "PickedPlace"){
+    public Page<PlaceMetaDto> getPlaces(@RequestParam(value = "request_type") String requestType , Pageable pageable){
+        if(requestType.equals("picked")){
             return placeService.getPickedPlacePage(pageable);
-        }else if (requestType == "RecommededPlace"){
+        }else if (requestType.equals("recommended")){
             return placeService.getRecommendedPlaceList(pageable);
         }else {
+            //TODO RequestParam Validation Exception
             return null;
         }
     }
 
     @PostMapping("")
     public PlaceRequestDto addPlace(@RequestBody PlaceRequestDto placeRequestDto){
-        log.debug("POST PLACE :" + placeRequestDto.toString());
         return placeService.addPlace(placeRequestDto);
     }
 

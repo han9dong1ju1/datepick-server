@@ -1,21 +1,25 @@
 package app.hdj.datepick.domain.photo.repository;
 
 
-import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
-import app.hdj.datepick.domain.place.dto.QPlaceMetaDto;
-import app.hdj.datepick.domain.review.entity.QPlaceReviewPhoto;
+
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static app.hdj.datepick.domain.review.entity.QPlaceReviewPhoto.placeReviewPhoto;
+import static app.hdj.datepick.domain.photo.entity.QPlaceReviewPhoto.placeReviewPhoto;
+import static app.hdj.datepick.domain.place.entity.QPlace.place;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,13 +30,19 @@ public class PlaceReviewPhotoCustomRepositoryImpl implements PlaceReviewPhotoCus
 
     @Override
     public Page<String> getPlaceReviewPhotoPage(Long placeId, Pageable pageable) {
-        QueryResults<String> result = jpaQueryFactory
+        JPAQuery<String> query = jpaQueryFactory
                 .select(placeReviewPhoto.photoUrl)
                 .from(placeReviewPhoto)
                 .where(placeReviewPhoto.placeReview.place.id.eq(placeId))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetchResults();
-        return new PageImpl<>(result.getResults(),pageable,result.getTotal());
+                .limit(pageable.getPageSize());
+
+        for (Sort.Order o : pageable.getSort()) {
+            PathBuilder pathBuilder = new PathBuilder(placeReviewPhoto.getType(), placeReviewPhoto.getMetadata());
+            query.orderBy(new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
+        }
+
+        QueryResults<String> results = query.fetchResults();
+        return new PageImpl<>(results.getResults(),pageable,results.getTotal());
     }
 }

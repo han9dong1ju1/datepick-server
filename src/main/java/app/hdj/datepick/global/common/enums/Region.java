@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum Region {
+    지역,
     지역1,
     지역2,
     지역3;
