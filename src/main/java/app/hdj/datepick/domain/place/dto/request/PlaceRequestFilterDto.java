@@ -15,7 +15,5 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class PlaceRequestFilterDto {
-
-
-    private String requestType; //Picked Places, Recommended Places
+    private String requestType;
 }

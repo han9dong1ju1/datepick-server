@@ -38,7 +38,7 @@ public class PlaceService {
         List<Long> placeIds = placePickRepository.findPickedPlaceIds(userId);
 
         //Place id list로 Place meta 정보 가져오기
-        return placeRepository.findPlaceMetaListsById(placeIds, pageable);
+        return placeRepository.findPlaceMetaListById(placeIds, pageable);
     }
 
     public Page<PlaceMetaDto> getRecommendedPlaceList(Pageable pageable) {
@@ -47,7 +47,7 @@ public class PlaceService {
         List<Long> placeIds = new ArrayList<>();
         placeIds.add(10L);placeIds.add(11L);placeIds.add(12L);placeIds.add(14L);
         //Place id List로 Place meta 정보 가져오기
-        return placeRepository.findPlaceMetaListsById(placeIds, pageable);
+        return placeRepository.findPlaceMetaListById(placeIds, pageable);
     }
 
     public PlaceDetailDto getPlace(Long placeId) {

@@ -3,23 +3,26 @@ import app.hdj.datepick.domain.place.dto.*;
 import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static app.hdj.datepick.domain.pick.entity.QPlacePick.placePick;
 import static app.hdj.datepick.domain.place.entity.QPlace.place;
-import static app.hdj.datepick.domain.review.entity.QPlaceReview.placeReview;
-import static app.hdj.datepick.domain.review.entity.QPlaceReviewPhoto.placeReviewPhoto;
-import static app.hdj.datepick.global.common.entity.relation.QCoursePlaceRelation.coursePlaceRelation;
 
 
 @Slf4j
@@ -42,7 +45,6 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
                 .from(placePick)
                 .where(placePick.user.id.eq(userId), placePick.place.id.eq(placeId))
                 .fetchFirst();
-
         Boolean isPicked = true;
         if (isExistUserId == null){
             isPicked = false;
@@ -86,8 +88,9 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
     }
 
     @Override
-    public Page<PlaceMetaDto> findPlaceMetaListsById(List<Long> placeIds, Pageable pageable) {
-        QueryResults<PlaceMetaDto> result = jpaQueryFactory
+    public Page<PlaceMetaDto> findPlaceMetaListById(List<Long> placeIds, Pageable pageable) {
+
+        JPAQuery<PlaceMetaDto> query = jpaQueryFactory
                 .select(
                         new QPlaceMetaDto(
                                 place.id,
@@ -105,9 +108,16 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
                 .from(place)
                 .where(place.id.in(placeIds))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetchResults();
-        return new PageImpl<>(result.getResults(),pageable,result.getTotal());
+                .limit(pageable.getPageSize());
+        //정렬 적용
+        for (Sort.Order o : pageable.getSort()) {
+            PathBuilder pathBuilder = new PathBuilder(place.getType(), place.getMetadata());
+            query.orderBy(new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
+        }
+
+        QueryResults<PlaceMetaDto> results = query.fetchResults();
+
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
 }
 
