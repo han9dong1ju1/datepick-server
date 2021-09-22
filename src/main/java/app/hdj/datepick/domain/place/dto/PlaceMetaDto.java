@@ -1,14 +1,17 @@
 package app.hdj.datepick.domain.place.dto;
 
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PlaceMetaDto {
     private Long id;
-    private Long kakaoId;
+    private String kakaoId;
     private String name;
     private Float rating;
     private String address;
@@ -17,15 +20,16 @@ public class PlaceMetaDto {
 
     private Category categorys;
 
+    @Getter
     @AllArgsConstructor
-    private class Category{
+    class Category{
         private String type;
         private String subtype;
         private String category;
     }
 
     @QueryProjection
-    public PlaceMetaDto(Long id, Long kakaoId, String name, Float rating, String address, Double latitude, Double longitude, String type, String subtype, String category) {
+    public PlaceMetaDto(Long id, String kakaoId, String name, Float rating, String address, Double latitude, Double longitude, String type, String subtype, String category) {
         this.id = id;
         this.kakaoId = kakaoId;
         this.name = name;

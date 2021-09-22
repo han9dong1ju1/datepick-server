@@ -1,5 +1,6 @@
 package app.hdj.datepick.domain.place.entity;
 
+import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
 import app.hdj.datepick.domain.review.entity.PlaceReview;
 import app.hdj.datepick.global.common.entity.BaseEntity;
 import app.hdj.datepick.global.common.entity.BaseTimeEntity;
@@ -19,7 +20,6 @@ import java.util.List;
 @Entity(name = "place")
 public class Place extends BaseEntity<Long> {
 
-    //TODO kakao id 타입 결정
     @Column(name = "kakao_id", unique = true, nullable = false)
     private String kakaoId;
 
@@ -84,5 +84,23 @@ public class Place extends BaseEntity<Long> {
 
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
     private List<PlaceReview> placeReviews;
+
+
+    public PlaceRequestDto toPlaceRequestDto(){
+        return PlaceRequestDto.builder()
+                .kakaoId(this.kakaoId)
+                .name(this.name)
+                .rating(this.rating)
+                .address(this.address)
+                .contact(this.contact)
+                .latitude(this.latitude)
+                .longitude(this.longitude)
+
+                .region(this.region.toString())
+                .type(this.type)
+                .subtype(this.subtype)
+                .category(this.category)
+                .build();
+    }
 
 }
