@@ -4,18 +4,19 @@ import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
 import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
 import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
 import app.hdj.datepick.domain.place.dto.request.PlaceRequestFilterDto;
+import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.place.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("v1/place")
+@RequestMapping("v1/places")
 public class PlaceController {
 
     private final PlaceService placeService;
@@ -25,30 +26,26 @@ public class PlaceController {
         return placeService.getPlace(placeId);
     }
 
-    //TODO request dto 방식 선정
-    @PatchMapping("/{placeId}")
-    public void patchPlace(@ModelAttribute PlaceRequestDto placeRequestDto){
-        log.debug(placeRequestDto.toString());
+    @GetMapping("/{placeId}/photos")
+    public Page<String> getPlacePhotos(@PathVariable Long placeId, Pageable pageable){
+        return placeService.getPlaceImagePage(placeId, pageable);
     }
-
-    @DeleteMapping("/{placeId}")
-    public void deletePlace(@PathVariable Long placeId){
-        placeService.deletePlace(placeId);
-    }
-
 
     @GetMapping("")
-    public List<PlaceMetaDto> getPlaces(@ModelAttribute PlaceRequestFilterDto placeRequestFilterDto){
-        return null;
+    public Page<PlaceMetaDto> getPlaces(@RequestParam(value = "request_type") String requestType , Pageable pageable){
+        if(requestType.equals("picked")){
+            return placeService.getPickedPlacePage(pageable);
+        }else if (requestType.equals("recommended")){
+            return placeService.getRecommendedPlaceList(pageable);
+        }else {
+            //TODO RequestParam Validation Exception
+            return null;
+        }
     }
 
-
-    //TODO request dto 방식 선정
     @PostMapping("")
-    public void postPlace(@RequestBody PlaceRequestDto placeRequestDto){
-        log.debug(placeRequestDto.toString());
+    public Place addPlace(@RequestBody PlaceRequestDto placeRequestDto){
+        return placeService.addPlace(placeRequestDto);
     }
-
-
 
 }

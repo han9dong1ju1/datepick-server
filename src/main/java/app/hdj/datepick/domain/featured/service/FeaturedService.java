@@ -9,7 +9,6 @@ import app.hdj.datepick.domain.featured.repository.FeaturedRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,16 +19,19 @@ public class FeaturedService {
 
     private final FeaturedRepository featuredRepository;
 
-    public List<FeaturedMetaDto> getAllFeaturedMeta() {
+    // TODO: 삭제
+    public List<FeaturedMetaDto> getFeaturedList() {
         return featuredRepository.findAllBy(FeaturedMetaDto.class);
     }
 
-    public List<FeaturedMetaDto> getAllPinnedFeaturedMeta() {
+    public List<FeaturedMetaDto> getPinnedFeaturedList() {
         return featuredRepository.findAllByIsPinnedTrue(FeaturedMetaDto.class);
     }
 
-    @Transactional
-    public FeaturedDetailResponseDto getFeaturedDetail(Long id) {
+    // TODO: 파라미터 선정 및 구현
+    public void getFeaturedPage() {}
+
+    public FeaturedDetailResponseDto getFeatured(Long id) {
         FeaturedDetailDto featuredDetailDto
                 = featuredRepository.findById(id, FeaturedDetailDto.class).orElseThrow(FeaturedNotFoundException::new);
         List<FeaturedCourseDto> featuredCourseMetaDtos
