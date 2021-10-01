@@ -34,26 +34,6 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
 
     /**
      *
-     * @param placeId 타깃 place id
-     * @param userId 타깃 user id
-     * @return user가 place를 pick 했는지 여부
-     */
-    @Override
-    public Boolean isUserPickedPlace(Long placeId, Long userId){
-        Long isExistUserId = jpaQueryFactory
-                .select(placePick.user.id)
-                .from(placePick)
-                .where(placePick.user.id.eq(userId), placePick.place.id.eq(placeId))
-                .fetchFirst();
-        Boolean isPicked = true;
-        if (isExistUserId == null){
-            isPicked = false;
-        }
-        return isPicked;
-    }
-
-    /**
-     *
      * @param placeId 찾을 place id
      * @param isPicked 요청한 user가 타깃 place id를 픽했는지 여부
      * @param reviews place에 작성된 review list
@@ -88,7 +68,7 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
     }
 
     @Override
-    public Page<PlaceMetaDto> findPlaceMetaListById(List<Long> placeIds, Pageable pageable) {
+    public Page<PlaceMetaDto> findPlaceMetaPageById(List<Long> placeIds, Pageable pageable) {
 
         JPAQuery<PlaceMetaDto> query = jpaQueryFactory
                 .select(
@@ -118,6 +98,28 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
         QueryResults<PlaceMetaDto> results = query.fetchResults();
 
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
+
+    @Override
+    public List<PlaceMetaDto> findPlaceMetaListById(List<Long> placeIds) {
+        return jpaQueryFactory
+                .select(
+                        new QPlaceMetaDto(
+                                place.id,
+                                place.kakaoId,
+                                place.name,
+                                place.rating,
+                                place.address,
+                                place.latitude,
+                                place.longitude,
+                                place.type,
+                                place.subtype,
+                                place.category
+                        )
+                )
+                .from(place)
+                .where(place.id.in(placeIds))
+                .fetch();
     }
 }
 
