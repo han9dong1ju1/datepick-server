@@ -38,4 +38,33 @@ public class PickCustomRepositoryImpl implements PickCustomRepository {
                 .where(coursePick.user.id.eq(userId))
                 .fetch();
     }
+
+
+    @Override
+    public Boolean isUserPickedPlace(Long placeId, Long userId) {
+        Long isExistUserId = jpaQueryFactory
+                .select(placePick.user.id)
+                .from(placePick)
+                .where(placePick.user.id.eq(userId), placePick.place.id.eq(placeId))
+                .fetchFirst();
+        Boolean isPicked = true;
+        if (isExistUserId == null){
+            isPicked = false;
+        }
+        return isPicked;
+    }
+
+    @Override
+    public Boolean isUserPickedCourse(Long courseId, Long userId) {
+        Long isExistUserId = jpaQueryFactory
+                .select(coursePick.user.id)
+                .from(coursePick)
+                .where(coursePick.user.id.eq(userId), coursePick.course.id.eq(courseId))
+                .fetchFirst();
+        Boolean isPicked = true;
+        if (isExistUserId == null){
+            isPicked = false;
+        }
+        return isPicked;
+    }
 }

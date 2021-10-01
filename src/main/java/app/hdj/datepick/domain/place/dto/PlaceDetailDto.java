@@ -12,6 +12,7 @@ import java.util.List;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PlaceDetailDto {
 
+    //TODO region 추가
     private Long id;
     private String kakaoId;
     private String name;
