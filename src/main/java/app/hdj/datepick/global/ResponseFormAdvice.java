@@ -3,11 +3,15 @@ package app.hdj.datepick.global;
 import app.hdj.datepick.global.common.dto.BaseResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
@@ -25,17 +29,44 @@ public class ResponseFormAdvice implements ResponseBodyAdvice<Object> {
                                   Class selectedConverterType,
                                   ServerHttpRequest request,
                                   ServerHttpResponse response) {
+        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        String message = null;
+        String error = null;
+        Object data = null;
+
+        // Custom exception 처리
         if (body instanceof Exception) {
-            // TODO: request body logging
-            return new BaseResponseDto<Object>(
-                    ((Exception) body).getMessage(),
-                    ((Exception) body).getClass().getSimpleName(),
-                    null);
+            message = ((Exception) body).getMessage();
+            error = ((Exception) body).getClass().getSimpleName();
         }
         else if (body instanceof BaseResponseDto) {
-            return body;
+            BaseResponseDto bodyDto = (BaseResponseDto)body;
+            message = bodyDto.getMessage();
+            error = bodyDto.getError();
+            data = bodyDto.getData();
         }
-        return new BaseResponseDto<Object>(null, null, body);
+        else if (body instanceof Map) {
+            Map bodyMap = (Map)body;
+            if (bodyMap.containsKey("error")) {
+                error = bodyMap.get("error").toString();
+                bodyMap.remove("error");
+            }
+            if (bodyMap.containsKey("message")) {
+                message = bodyMap.get("message").toString();
+                bodyMap.remove("message");
+            }
+            if (bodyMap.containsKey("status")) {
+                httpStatus = HttpStatus.valueOf((int)bodyMap.get("status"));
+                bodyMap.remove("status");
+            }
+            data = body;
+        } else {
+            httpStatus = HttpStatus.OK;
+            data = body;
+        }
+
+        response.setStatusCode(httpStatus);
+        return new BaseResponseDto<>(message, error, data);
     }
 
 }

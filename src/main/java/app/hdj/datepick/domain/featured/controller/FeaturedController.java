@@ -5,10 +5,9 @@ import app.hdj.datepick.domain.featured.dto.response.FeaturedDetailResponseDto;
 import app.hdj.datepick.domain.featured.entity.Featured;
 import app.hdj.datepick.domain.featured.service.FeaturedService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.hibernate.annotations.Parameter;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,18 +20,18 @@ public class FeaturedController {
 
     // TODO: Paging 처리한 리스트 가져오는 API
     @GetMapping("")
-    public List<FeaturedMetaDto> getAllFeaturedMeta() {
-        return featuredService.getAllFeaturedMeta();
+    public List<FeaturedMetaDto> getFeaturedMetaList() {
+        return featuredService.getFeaturedList();
     }
 
     @GetMapping("/pinned")
-    public List<FeaturedMetaDto> getAllPinnedFeaturedMeta() {
-        return featuredService.getAllPinnedFeaturedMeta();
+    public List<FeaturedMetaDto> getPinnedFeaturedMetaList() {
+        return featuredService.getPinnedFeaturedList();
     }
 
     @GetMapping("/{featuredId}")
     public FeaturedDetailResponseDto getFeatured(@PathVariable Long featuredId) {
-        return featuredService.getFeaturedDetail(featuredId);
+        return featuredService.getFeatured(featuredId);
     }
 
 }

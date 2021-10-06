@@ -2,11 +2,9 @@ package app.hdj.datepick.domain.course.entity;
 
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.common.entity.BaseTimeEntity;
-import app.hdj.datepick.global.common.entity.CourseFeaturedRelation;
-import app.hdj.datepick.global.common.entity.CoursePlaceRelation;
+import app.hdj.datepick.global.common.entity.relation.CourseFeaturedRelation;
+import app.hdj.datepick.global.common.enums.Region;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -23,11 +21,12 @@ import java.util.List;
 @Entity(name = "course")
 public class Course extends BaseTimeEntity<Long> {
 
-    @Column(name = "title", columnDefinition = "varchar(100)", nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Column(name = "region", nullable = false)
-    private Byte region;
+    @Enumerated(EnumType.STRING)
+    private Region region;
 
     @Column(name = "expected_at", nullable = false)
     private LocalDateTime expectedAt;
@@ -44,9 +43,8 @@ public class Course extends BaseTimeEntity<Long> {
     @ColumnDefault("false")
     private Boolean isPrivate;
 
-    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn
     User user;
 
 //    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
