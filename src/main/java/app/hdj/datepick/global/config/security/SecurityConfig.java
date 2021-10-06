@@ -1,27 +1,28 @@
 package app.hdj.datepick.global.config.security;
 
-import app.hdj.datepick.global.config.security.filter.TokenAuthenticationFilter;
-import app.hdj.datepick.global.config.security.filter.service.FirebaseTokenService;
-import app.hdj.datepick.global.config.security.filter.service.TokenService;
+import app.hdj.datepick.global.config.security.filter.FirebaseAuthFilter;
+import app.hdj.datepick.global.config.security.util.FirebaseAuthTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
-    public TokenAuthenticationFilter tokenAuthenticationFilter() {
+    public FirebaseAuthFilter tokenAuthenticationFilter() {
         // Firebase Token Service 세팅
-        TokenService tokenService = new FirebaseTokenService();
-        return new TokenAuthenticationFilter(tokenService);
+        FirebaseAuthTokenUtil tokenUtil = new FirebaseAuthTokenUtil();
+        return new FirebaseAuthFilter(tokenUtil);
     }
 
     @Override
@@ -33,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .authorizeRequests()
                     .antMatchers("/v1/featured/**").permitAll()
+                    .antMatchers("/v1/users/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
