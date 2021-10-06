@@ -47,9 +47,9 @@ dependencies {
     // QueryDSL
     implementation 'com.querydsl:querydsl-core'
     implementation 'com.querydsl:querydsl-jpa'
-    annotationProcessor "com.querydsl:querydsl-apt::jpa"
-    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
-    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+    annotationProcessor 'com.querydsl:querydsl-apt::jpa'
+    annotationProcessor 'javax.persistence:javax.persistence-api'
+    annotationProcessor 'javax.annotation:javax.annotation-api'
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

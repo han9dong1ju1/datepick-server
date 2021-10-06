@@ -2,7 +2,7 @@ package app.hdj.datepick.domain.featured.entity;
 
 
 import app.hdj.datepick.global.common.entity.BaseTimeEntity;
-import app.hdj.datepick.global.common.entity.CourseFeaturedRelation;
+import app.hdj.datepick.global.common.entity.relation.CourseFeaturedRelation;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -18,7 +18,7 @@ import java.util.List;
 @Entity(name = "featured")
 public class Featured extends BaseTimeEntity<Long> {
 
-    @Column(name = "title", columnDefinition = "varchar(128)", nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Column(name = "description", nullable = false)
