@@ -1,6 +1,6 @@
 package app.hdj.datepick.global.config.security.filter;
 
-import app.hdj.datepick.global.config.security.filter.service.TokenService;
+import app.hdj.datepick.global.config.security.util.FirebaseAuthTokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
@@ -14,19 +14,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-public class TokenAuthenticationFilter extends OncePerRequestFilter {
+public class FirebaseAuthFilter extends OncePerRequestFilter {
 
-    private final TokenService tokenService;
+    private final FirebaseAuthTokenUtil tokenUtil;
 
-    public TokenAuthenticationFilter(TokenService tokenService) {
-        this.tokenService = tokenService;
+    public FirebaseAuthFilter(FirebaseAuthTokenUtil tokenUtil) {
+        this.tokenUtil = tokenUtil;
     }
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        Authentication authentication = tokenService.getAuthentication(request);
+        Authentication authentication = tokenUtil.getAuthentication(request);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
