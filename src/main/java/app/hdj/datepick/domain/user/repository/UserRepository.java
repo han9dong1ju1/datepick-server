@@ -13,4 +13,5 @@ public interface UserRepository extends JpaRepository<User, Long>, UserSupportRe
 
     List<User> findAll();
     Optional<User> findById(Long id);
+    boolean existsByUid(String uid);
 }

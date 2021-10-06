@@ -1,6 +1,9 @@
-package app.hdj.datepick.domain.user.dto;
+package app.hdj.datepick.domain.user.dto.request;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.NotNull;
@@ -9,9 +12,9 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCreateRequestDto {
+public class UserUpdateRequestDto {
 
-    private Character gender;
+    private Integer gender;
 
     @NotNull
     private String nickname;
