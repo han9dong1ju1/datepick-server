@@ -1,8 +1,9 @@
 package app.hdj.datepick.domain.user.controller;
 
-import app.hdj.datepick.domain.user.dto.request.UserUnregisterRequestDto;
-import app.hdj.datepick.domain.user.dto.request.UserUpdateRequestDto;
-import app.hdj.datepick.domain.user.dto.request.UserRegisterRequestDto;
+import app.hdj.datepick.domain.user.dto.UserMetaDto;
+import app.hdj.datepick.domain.user.dto.UserUnregisterDto;
+import app.hdj.datepick.domain.user.dto.UserModifyDto;
+import app.hdj.datepick.domain.user.dto.UserRegisterDto;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.service.UserService;
 import app.hdj.datepick.global.config.security.model.CustomUserDetails;
@@ -24,11 +25,10 @@ public class UserController {
 
     /**
      * 유저 프로필 정보 반환
-     * TODO: 반환 값 meta로 수정
      */
     @GetMapping("{userId}")
-    User getUser(@PathVariable Long userId) {
-        return userService.getUser(userId);
+    UserMetaDto getUser(@PathVariable Long userId) {
+        return userService.getUserPublic(userId);
     }
 
     /**
@@ -44,9 +44,9 @@ public class UserController {
      * 유저 등록
      */
     @PostMapping("register")
-    void registerUser(@Valid @RequestBody UserRegisterRequestDto userRegisterRequestDto) {
-        String provider = userRegisterRequestDto.getProvider();
-        String token = userRegisterRequestDto.getToken();
+    void registerUser(@Valid @RequestBody UserRegisterDto userRegisterDto) {
+        String provider = userRegisterDto.getProvider();
+        String token = userRegisterDto.getToken();
         userService.registerUser(provider, token);
     }
 
@@ -55,8 +55,8 @@ public class UserController {
      */
     @PreAuthorize("isAuthenticated()")      // TODO: 권한 수정
     @PatchMapping("{userId}")
-    User updateUser(@PathVariable Long userId, @Valid @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
-        return userService.updateUser(userId, userUpdateRequestDto);
+    User modifyUser(@PathVariable Long userId, @Valid @RequestBody UserModifyDto userModifyDto) {
+        return userService.modifyUser(userId, userModifyDto);
     }
 
     /**
@@ -65,7 +65,7 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")      // TODO: 권한 수정
     @PostMapping("unregister")
     void unregisterUser(@AuthenticationPrincipal CustomUserDetails userDetails,
-                        @Valid @RequestBody UserUnregisterRequestDto userUnregisterRequestDto) {
+                        @Valid @RequestBody UserUnregisterDto userUnregisterRequestDto) {
         userService.unregisterUser(userDetails.getId(), userDetails.getUid(), userUnregisterRequestDto);
     }
 

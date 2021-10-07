@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.user.dto.request;
+package app.hdj.datepick.domain.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +11,12 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserUnregisterRequestDto {
+public class UserRegisterDto {
 
     @NotNull
-    private String reason;
+    private String provider;
+
+    @NotNull
+    private String token;
 
 }
