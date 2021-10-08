@@ -9,6 +9,6 @@ public interface CourseRepository extends
         CourseCustomRepository,
         QuerydslPredicateExecutor<Course> {
 
-
+    void deleteById(Long courseId);
 
 }

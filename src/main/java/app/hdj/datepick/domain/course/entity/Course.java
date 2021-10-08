@@ -3,6 +3,7 @@ package app.hdj.datepick.domain.course.entity;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.common.entity.BaseTimeEntity;
 import app.hdj.datepick.global.common.entity.relation.CourseFeaturedRelation;
+import app.hdj.datepick.global.common.entity.relation.CoursePlaceRelation;
 import app.hdj.datepick.global.common.enums.Region;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
@@ -47,10 +48,15 @@ public class Course extends BaseTimeEntity<Long> {
     @JoinColumn
     User user;
 
-//    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    List<CoursePlaceRelation> coursePlaceRelations;
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<CoursePlaceRelation> coursePlaceRelations;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<CourseFeaturedRelation> courseFeaturedRelations;
 
+    public void modifyCourse(String title, Region region, LocalDateTime expectedAt){
+        this.title = title;
+        this.region = region;
+        this.expectedAt = expectedAt;
+    }
 }

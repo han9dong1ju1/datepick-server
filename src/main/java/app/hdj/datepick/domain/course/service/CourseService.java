@@ -3,12 +3,13 @@ package app.hdj.datepick.domain.course.service;
 import app.hdj.datepick.domain.course.dto.CourseDetailDto;
 import app.hdj.datepick.domain.course.dto.CourseMetaDto;
 import app.hdj.datepick.domain.course.dto.CoursePlaceRelationDto;
+import app.hdj.datepick.domain.course.dto.request.CourseModifyRequsetDto;
+import app.hdj.datepick.domain.course.dto.request.ModifyCourseDto;
+import app.hdj.datepick.domain.course.dto.request.ModifyCoursePlaceRelationDto;
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.course.repository.CourseRepository;
-import app.hdj.datepick.domain.pick.entity.CoursePick;
 import app.hdj.datepick.domain.pick.repository.CoursePickRepository;
-import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
-import app.hdj.datepick.domain.place.repository.PlaceRepository;
+import app.hdj.datepick.global.common.enums.Region;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -67,12 +68,22 @@ public class CourseService {
 
     // TODO: 파라미터 선정 및 구현
     public void removeCourse(Long courseId) {
-
+        courseRepository.deleteById(courseId);
     }
 
-    // TODO: 파라미터 선정 및 구현
-    public void modifyCourse(Long id) {
+    public CourseDetailDto modifyCourse(Long courseId, CourseModifyRequsetDto courseModifyRequsetDto) {
 
+        //course modify
+        ModifyCourseDto modifyCourseDto = courseModifyRequsetDto.getCourse();
+        Course course = courseRepository.findById(courseId).orElseThrow(); //TODO exception
+        course.modifyCourse(modifyCourseDto.getTitle(), Region.findByString(modifyCourseDto.getRegion()), modifyCourseDto.getExpectedAt());
+        courseRepository.save(course);
+
+        //course place relation modify
+        List<ModifyCoursePlaceRelationDto> modifyPlaceRelations = courseModifyRequsetDto.getPlaceRelations();
+        courseRepository.modifyCoursePlaceRelations(courseId, modifyPlaceRelations);
+        return getCourse(courseId);
     }
+
 
 }
