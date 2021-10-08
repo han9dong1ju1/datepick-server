@@ -4,11 +4,6 @@ import app.hdj.datepick.domain.course.dto.CourseDetailDto;
 import app.hdj.datepick.domain.course.dto.CourseMetaDto;
 import app.hdj.datepick.domain.course.dto.request.CourseModifyRequsetDto;
 import app.hdj.datepick.domain.course.service.CourseService;
-import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
-import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
-import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
-import app.hdj.datepick.domain.place.entity.Place;
-import app.hdj.datepick.domain.place.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -42,8 +37,7 @@ public class CourseController {
 
     @PostMapping("/modify/{courseId}")
     public CourseDetailDto modifyCourse(@PathVariable Long courseId, @RequestBody CourseModifyRequsetDto courseModifyRequsetDto){
-
-        return null;
+        return courseService.modifyCourse(courseId, courseModifyRequsetDto);
     }
 
 }

@@ -1,6 +1,7 @@
 package app.hdj.datepick.domain.course.repository;
 
 import app.hdj.datepick.domain.course.dto.*;
+import app.hdj.datepick.domain.course.dto.request.ModifyCoursePlaceRelationDto;
 import app.hdj.datepick.domain.course.entity.QCourse;
 import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
 import app.hdj.datepick.domain.place.dto.QPlaceMetaDto;
@@ -35,6 +36,7 @@ import static app.hdj.datepick.global.common.entity.relation.QCoursePlaceRelatio
 public class CourseCustomRepositoryImpl implements CourseCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
+
 
     @Override
     public List<Long> findPlaceIdListInCourse(Long courseId) {
@@ -133,6 +135,26 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
                 ))
                 .from(course)
                 .where(course.id.eq(courseId))
-                .fetchFirst();
+                .fetchOne();
+    }
+
+    @Override
+    public void modifyCoursePlaceRelations(Long courseId, List<ModifyCoursePlaceRelationDto> placeRelations) {
+        Long curPlaceCount = jpaQueryFactory.selectFrom(coursePlaceRelation).where(coursePlaceRelation.course.id.eq(courseId)).fetchCount();
+        Long newPlaceCount = placeRelations.stream().count();
+        for (int idx = 0; idx < curPlaceCount && idx < newPlaceCount ; idx++){
+            ModifyCoursePlaceRelationDto placeRelation = placeRelations.get(idx);
+            jpaQueryFactory.update(coursePlaceRelation)
+                    .set(coursePlaceRelation.placeOrder, placeRelation.getPlaceOrder())
+                    .set(coursePlaceRelation.memo, placeRelation.getMemo())
+                    .set(coursePlaceRelation.visitTime, placeRelation.getVisitTime())
+                    .set(coursePlaceRelation.place.id, placeRelation.getPlaceId())
+                    .execute();
+
+        }
+        for (int idx = curPlaceCount.intValue(); idx < newPlaceCount; idx++){
+            jpaQueryFactory.insert(coursePlaceRelation)
+        }
+
     }
 }
