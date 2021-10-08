@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -58,6 +59,7 @@ public class UserService {
         // Firebase User 삭제
         try {
             FirebaseAuth.getInstance().deleteUser(uid);
+            log.debug("Firebase User 삭제 완료");
         } catch (FirebaseAuthException e) {
             log.error("User Unregister 오류: {}", e.getMessage());
             throw new RuntimeException(e.getMessage());     // TODO: user register exception 만들기
@@ -67,13 +69,13 @@ public class UserService {
     @Transactional
     public void registerUser(String provider, String token) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseToken firebaseToken = null;
+        Optional<FirebaseToken> firebaseTokenOptional;
 
         // Firebase Token (google)
         if (Objects.equals(provider, "firebase")) {
             // token 유효성 검사
             try {
-                firebaseToken = Optional.of(firebaseAuth.verifyIdToken(token)).orElseThrow(RuntimeException::new);
+                firebaseTokenOptional = Optional.of(firebaseAuth.verifyIdToken(token));
             } catch (FirebaseAuthException e) {
                 log.error("Register 오류: {}",  e.getMessage());
                 throw new RuntimeException(e.getMessage(), e.getCause());   // TODO: user register exception 만들기
@@ -83,13 +85,19 @@ public class UserService {
         else {
             // TODO: Custom 토큰으로 firebase 유저 생성
             // firebaseAuth.createCustomToken(token);
-            firebaseToken = null;
+            firebaseTokenOptional = Optional.empty();
         }
 
         // Firebase Token 정보
+        FirebaseToken firebaseToken = firebaseTokenOptional.orElseThrow();      // TODO: user register exception 만들기
         String uid = firebaseToken.getUid();
         String name = firebaseToken.getName();
         String picture = firebaseToken.getPicture();
+
+        // 이미 생성된 계정이 있는지 중복 확인
+        if (userRepository.existsByUid(uid)) {
+            throw new RuntimeException("이미 생성된 계정 있음");     // TODO: user register exception 만들기
+        }
 
         // TODO: Nickname 없을 시 자동 생성
         if (name == null) {
@@ -109,16 +117,16 @@ public class UserService {
                 .build();
         user = userRepository.save(user);
 
-        // Custom Claim에 id 추가
-        Map<String, Object> customClaims = Map.of("id", user.getId());
+        // Custom Claim에 id 및 권한 추가
+        Map<String, Object> customClaims = Map.of(
+                "id", user.getId(),
+                "authorities", Set.of("USER"));
         try {
             firebaseAuth.setCustomUserClaims(uid, customClaims);
         } catch (FirebaseAuthException e) {
             log.error("Register Custom Claim 오류: {}", e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
-
-        // TODO: Custom Claim에 권한 추가
 
     }
 }

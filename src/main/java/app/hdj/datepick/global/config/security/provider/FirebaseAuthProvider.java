@@ -9,9 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -58,12 +63,12 @@ public class FirebaseAuthProvider implements AuthenticationProvider {
         // CustomUserDetails 객체 생성
         CustomUserDetails user = new CustomUserDetails(id, firebaseToken.getUid());
 
-
-        // 토큰에서 권한 가져오기
-
+        // 토큰에서 권한 가져오기 (Set 활용해서 중복 삭제)
+        Set<GrantedAuthority> authorities = ((List<String>) claims.get("authorities")).stream()
+                .map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
 
         // 위 정보로 새로운 CustomUserAuthToken 객체 생성 후 반환
-        return new FirebaseAuthToken(user, token, null);
+        return new FirebaseAuthToken(user, token, authorities);
     }
 
     @Override
