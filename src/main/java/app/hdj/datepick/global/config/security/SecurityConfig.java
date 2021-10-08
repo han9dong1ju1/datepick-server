@@ -29,12 +29,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors().disable()   // TODO: 적용
-                .csrf().disable()
+                .csrf().disable()   // TODO: 적용
                 .formLogin().disable()
                 .httpBasic().disable()
                 .authorizeRequests()
-                    .antMatchers("/v1/featured/**").permitAll()
+                    // User
                     .antMatchers("/v1/users/**").permitAll()
+                    // Featured
+                    .antMatchers("/v1/featured/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

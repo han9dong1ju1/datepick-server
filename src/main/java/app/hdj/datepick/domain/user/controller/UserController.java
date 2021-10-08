@@ -34,7 +34,7 @@ public class UserController {
     /**
      * 내 유저 정보 반환
      */
-    @PreAuthorize("isAuthenticated()")      // TODO: 권한 수정
+    @PreAuthorize("isAuthenticated() and hasAuthority('USER')")
     @GetMapping("me")
     User getUserMe(@AuthenticationPrincipal CustomUserDetails userDetails) {
         return userService.getUser(userDetails.getId());
@@ -53,16 +53,18 @@ public class UserController {
     /**
      * 유저 정보 수정
      */
-    @PreAuthorize("isAuthenticated()")      // TODO: 권한 수정
+    @PreAuthorize("isAuthenticated() and (hasAnyAuthority('USER') and #userDetails.id == #userId)")
     @PatchMapping("{userId}")
-    User modifyUser(@PathVariable Long userId, @Valid @RequestBody UserModifyDto userModifyDto) {
+    User modifyUser(@AuthenticationPrincipal CustomUserDetails userDetails,
+                    @PathVariable Long userId,
+                    @Valid @RequestBody UserModifyDto userModifyDto) {
         return userService.modifyUser(userId, userModifyDto);
     }
 
     /**
      * 유저 삭제
      */
-    @PreAuthorize("isAuthenticated()")      // TODO: 권한 수정
+    @PreAuthorize("isAuthenticated() and hasAuthority('USER')")
     @PostMapping("unregister")
     void unregisterUser(@AuthenticationPrincipal CustomUserDetails userDetails,
                         @Valid @RequestBody UserUnregisterDto userUnregisterRequestDto) {
