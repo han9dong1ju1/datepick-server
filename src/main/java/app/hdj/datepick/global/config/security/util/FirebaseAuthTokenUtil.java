@@ -8,7 +8,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
-public class FirebaseAuthTokenUtil {
+public class FirebaseAuthTokenUtil implements TokenUtil {
 
     public Authentication getAuthentication(HttpServletRequest request) {
         // Token 파싱
