@@ -1,7 +1,5 @@
 package app.hdj.datepick.global.config.security.model;
 
-import com.google.firebase.auth.FirebaseToken;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -10,7 +8,7 @@ import java.util.Collection;
 public class FirebaseAuthToken implements Authentication {
 
     // Custom User Details
-    private final CustomUserDetails user;
+    private final TokenUser user;
 
     // Bearer Token String
     private final String token;
@@ -28,7 +26,7 @@ public class FirebaseAuthToken implements Authentication {
     }
 
     public FirebaseAuthToken(
-            CustomUserDetails user,
+            TokenUser user,
             String token,
             Collection<GrantedAuthority> authorities) {
         this.user = user;

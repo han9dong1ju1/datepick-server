@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @RequiredArgsConstructor
 @Getter
-public class CustomUserDetails implements Serializable {
+public class TokenUser implements Serializable {
 
     private final Long id;
 

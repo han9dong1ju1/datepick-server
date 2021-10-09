@@ -1,6 +1,6 @@
 package app.hdj.datepick.global.config.security.provider;
 
-import app.hdj.datepick.global.config.security.model.CustomUserDetails;
+import app.hdj.datepick.global.config.security.model.TokenUser;
 import app.hdj.datepick.global.config.security.model.FirebaseAuthToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -11,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Component
 public class FirebaseAuthProvider implements AuthenticationProvider {
 
     @Override
@@ -61,7 +59,7 @@ public class FirebaseAuthProvider implements AuthenticationProvider {
         }
 
         // CustomUserDetails 객체 생성
-        CustomUserDetails user = new CustomUserDetails(id, firebaseToken.getUid());
+        TokenUser user = new TokenUser(id, firebaseToken.getUid());
 
         // 토큰에서 권한 가져오기 (Set 활용해서 중복 삭제)
         Set<GrantedAuthority> authorities = ((List<String>) claims.get("authorities")).stream()
