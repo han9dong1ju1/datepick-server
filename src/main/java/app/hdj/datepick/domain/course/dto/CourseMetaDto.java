@@ -1,6 +1,5 @@
 package app.hdj.datepick.domain.course.dto;
 
-import app.hdj.datepick.domain.user.dto.UserMetaDto;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 

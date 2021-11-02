@@ -1,14 +1,20 @@
 package app.hdj.datepick.domain.user.controller;
 
+import app.hdj.datepick.domain.user.dto.UserMetaDto;
+import app.hdj.datepick.domain.user.dto.UserModifyDto;
+import app.hdj.datepick.domain.user.dto.UserRegisterDto;
+import app.hdj.datepick.domain.user.dto.UserUnregisterDto;
 import app.hdj.datepick.domain.user.entity.User;
-import app.hdj.datepick.domain.user.dto.UserCreateRequestDto;
 import app.hdj.datepick.domain.user.service.UserService;
+import app.hdj.datepick.global.config.security.model.TokenUser;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("v1/users")
@@ -17,46 +23,48 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * 모든 유저 목록
-     * TODO
-     */
-    @GetMapping("")
-    List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
-
-    /**
-     * 유저 세부 정보 반환
-     * TODO
+     * 유저 프로필 정보 반환
      */
     @GetMapping("{userId}")
-    User getUser(@PathVariable Long userId) {
-        return userService.getUser(userId);
+    UserMetaDto getUser(@PathVariable Long userId) {
+        return userService.getUserPublic(userId);
     }
 
     /**
-     * 유저 생성
+     * 내 유저 정보 반환
      */
-    @PostMapping("")
-    User createUser(@Valid @RequestBody UserCreateRequestDto userCreateRequestDto) {
-        return null;
+    @GetMapping("me")
+    User getUserMe(@AuthenticationPrincipal TokenUser tokenUser) {
+        return userService.getUser(tokenUser);
     }
 
     /**
-     * 유저 세부 정보 수정
+     * 유저 등록
+     */
+    @PostMapping("register")
+    void registerUser(@Valid @RequestBody UserRegisterDto userRegisterDto) {
+        String provider = userRegisterDto.getProvider();
+        String token = userRegisterDto.getToken();
+        userService.registerUser(provider, token);
+    }
+
+    /**
+     * 유저 정보 수정
      */
     @PatchMapping("{userId}")
-    User updateUser(@PathVariable Long userId, @Valid @RequestBody UserCreateRequestDto userCreateRequestDto) {
-        return null;
+    User modifyUser(@AuthenticationPrincipal TokenUser tokenUser,
+                    @PathVariable Long userId,
+                    @Valid @RequestBody UserModifyDto userModifyDto) {
+        return userService.modifyUser(tokenUser, userId, userModifyDto);
     }
 
     /**
      * 유저 삭제
-     * TODO
      */
-    @DeleteMapping("{userId}")
-    void deleteUser(@PathVariable Long userId) {
-        userService.removeUser(userId);
+    @PostMapping("unregister")
+    void unregisterUser(@AuthenticationPrincipal TokenUser tokenUser,
+                        @Valid @RequestBody UserUnregisterDto userUnregisterRequestDto) {
+        userService.unregisterUser(tokenUser, userUnregisterRequestDto);
     }
 
 }
