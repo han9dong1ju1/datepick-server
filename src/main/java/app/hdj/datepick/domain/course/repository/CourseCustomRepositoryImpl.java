@@ -2,14 +2,11 @@ package app.hdj.datepick.domain.course.repository;
 
 import app.hdj.datepick.domain.course.dto.*;
 import app.hdj.datepick.domain.course.dto.request.ModifyCoursePlaceRelationDto;
-import app.hdj.datepick.domain.course.entity.QCourse;
-import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
 import app.hdj.datepick.domain.place.dto.QPlaceMetaDto;
-import app.hdj.datepick.global.common.entity.relation.QCoursePlaceRelation;
+import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -28,7 +25,7 @@ import java.util.List;
 
 import static app.hdj.datepick.domain.course.entity.QCourse.course;
 import static app.hdj.datepick.domain.place.entity.QPlace.place;
-import static app.hdj.datepick.global.common.entity.relation.QCoursePlaceRelation.coursePlaceRelation;
+import static app.hdj.datepick.domain.relation.entity.QCoursePlaceRelation.coursePlaceRelation;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -91,7 +88,7 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     }
 
     @Override
-    public List<CoursePlaceRelationDto> findPlaceRelationInCourse(Long courseId, List<Long> placeIds) {
+    public List<CoursePlaceRelationDto> findPlaceRelationDtoInCourse(Long courseId, List<Long> placeIds) {
         return jpaQueryFactory
                 .select(new QCoursePlaceRelationDto(
                         coursePlaceRelation.placeOrder,
@@ -139,22 +136,52 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     }
 
     @Override
-    public void modifyCoursePlaceRelations(Long courseId, List<ModifyCoursePlaceRelationDto> placeRelations) {
-        Long curPlaceCount = jpaQueryFactory.selectFrom(coursePlaceRelation).where(coursePlaceRelation.course.id.eq(courseId)).fetchCount();
-        Long newPlaceCount = placeRelations.stream().count();
-        for (int idx = 0; idx < curPlaceCount && idx < newPlaceCount ; idx++){
-            ModifyCoursePlaceRelationDto placeRelation = placeRelations.get(idx);
-            jpaQueryFactory.update(coursePlaceRelation)
+    public List<CoursePlaceRelation> findPlaceRelationByCourseId(Long courseId){
+        return jpaQueryFactory
+                .selectFrom(coursePlaceRelation)
+                .where(coursePlaceRelation.course.id.eq(courseId))
+                .fetchAll().fetch();
+    }
+
+    @Override
+    public void updatePlaceRelations(Long courseId, ModifyCoursePlaceRelationDto placeRelation) {
+        jpaQueryFactory.update(coursePlaceRelation)
+                .where(coursePlaceRelation.course.id.eq(courseId))
+                .where(coursePlaceRelation.placeOrder.eq(placeRelation.getPlaceOrder()))
+                .set(coursePlaceRelation.placeOrder, placeRelation.getPlaceOrder())
+                .set(coursePlaceRelation.memo, placeRelation.getMemo())
+                .set(coursePlaceRelation.visitTime, placeRelation.getVisitTime())
+                .set(coursePlaceRelation.place.id, placeRelation.getPlaceId())
+                .execute();
+    }
+
+    @Override
+    public void insertPlaceRelations(Long courseId, ModifyCoursePlaceRelationDto placeRelation) {
+        jpaQueryFactory.insert(coursePlaceRelation)
+                .set(coursePlaceRelation.placeOrder, placeRelation.getPlaceOrder())
+                .set(coursePlaceRelation.memo, placeRelation.getMemo())
+                .set(coursePlaceRelation.visitTime, placeRelation.getVisitTime())
+                .set(coursePlaceRelation.place.id, placeRelation.getPlaceId())
+                .execute();
+    }
+
+    @Override
+    public Long deletePlaceRelations(Long courseId, List<Long> newPlaceIds) {
+        return jpaQueryFactory.delete(coursePlaceRelation)
+                .where(coursePlaceRelation.course.id.eq(courseId))
+                .where(coursePlaceRelation.place.id.notIn(newPlaceIds))
+                .execute();
+    }
+
+    @Override
+    public void createCoursePlaceRelation(Long courseId, List<ModifyCoursePlaceRelationDto> placeRelations) {
+        for (ModifyCoursePlaceRelationDto placeRelation: placeRelations){
+            jpaQueryFactory.insert(coursePlaceRelation)
                     .set(coursePlaceRelation.placeOrder, placeRelation.getPlaceOrder())
                     .set(coursePlaceRelation.memo, placeRelation.getMemo())
                     .set(coursePlaceRelation.visitTime, placeRelation.getVisitTime())
                     .set(coursePlaceRelation.place.id, placeRelation.getPlaceId())
                     .execute();
-
         }
-        for (int idx = curPlaceCount.intValue(); idx < newPlaceCount; idx++){
-            jpaQueryFactory.insert(coursePlaceRelation)
-        }
-
     }
 }

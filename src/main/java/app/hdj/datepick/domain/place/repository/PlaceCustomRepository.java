@@ -2,6 +2,7 @@ package app.hdj.datepick.domain.place.repository;
 
 import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
 import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
+import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +36,8 @@ public interface PlaceCustomRepository {
      */
     PlaceDetailDto findPlaceDetail(Long placeId, Boolean isPicked, List<PlaceReviewDto> reviews);
 
+
+    List<Place> findPlacesByIdOrderByIdAsc(List<Long> placeId);
     /*
     List<String> findReviewPhotoUrls(Long placeId);
 

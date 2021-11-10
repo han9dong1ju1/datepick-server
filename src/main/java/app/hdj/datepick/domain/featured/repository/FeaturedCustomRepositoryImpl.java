@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static app.hdj.datepick.domain.course.entity.QCourse.course;
-import static app.hdj.datepick.global.common.entity.relation.QCourseFeaturedRelation.courseFeaturedRelation;
+import static app.hdj.datepick.domain.relation.entity.QCourseFeaturedRelation.courseFeaturedRelation;
 
 @Slf4j
 @Transactional(readOnly = true)

@@ -5,9 +5,10 @@ import java.util.Map;
 
 public enum Region {
     지역,
-    서울,
+    정서울,
     지역2,
     지역3;
+
 
     private static final Map<String, Region> stringToRegion = new HashMap<String, Region>();
     static {
