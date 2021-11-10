@@ -1,6 +1,7 @@
 package app.hdj.datepick.domain.place.repository;
 import app.hdj.datepick.domain.place.dto.*;
 import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
+import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
@@ -119,6 +120,15 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
                 )
                 .from(place)
                 .where(place.id.in(placeIds))
+                .fetch();
+    }
+
+    @Override
+    public List<Place> findPlacesByIdOrderByIdAsc(List<Long> placeId) {
+        return jpaQueryFactory
+                .selectFrom(place)
+                .where(place.id.in(placeId))
+                .orderBy(place.id.asc())
                 .fetch();
     }
 }

@@ -25,7 +25,6 @@ public class CourseController {
 
     @GetMapping("")
     public Page<CourseMetaDto> getCourses(@RequestParam(value = "request_type") String requestType , Pageable pageable){
-        System.out.println(requestType);
         if(requestType.equals("picked")){
             return courseService.getPickedCoursePage(pageable);
         }else if (requestType.equals("recommended")){
@@ -35,9 +34,20 @@ public class CourseController {
         return null;
     }
 
-    @PostMapping("/modify/{courseId}")
+    @PatchMapping("/{courseId}")
     public CourseDetailDto modifyCourse(@PathVariable Long courseId, @RequestBody CourseModifyRequsetDto courseModifyRequsetDto){
         return courseService.modifyCourse(courseId, courseModifyRequsetDto);
     }
+
+    @PostMapping("")
+    public CourseDetailDto createCourse(@RequestBody CourseModifyRequsetDto courseModifyRequsetDto){
+        return courseService.addCourse(courseModifyRequsetDto);
+    }
+
+    @DeleteMapping("/{courseId}")
+    public void deleteCourse(@PathVariable Long courseId){
+        courseService.deleteCourse(courseId);
+    }
+
 
 }
