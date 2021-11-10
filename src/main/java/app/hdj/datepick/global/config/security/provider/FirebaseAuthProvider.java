@@ -62,8 +62,13 @@ public class FirebaseAuthProvider implements AuthenticationProvider {
         TokenUser user = new TokenUser(id, firebaseToken.getUid());
 
         // 토큰에서 권한 가져오기 (Set 활용해서 중복 삭제)
-        Set<GrantedAuthority> authorities = ((List<String>) claims.get("authorities")).stream()
-                .map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        Set<GrantedAuthority> authorities;
+        try {
+            authorities = ((List<String>) claims.get("authorities")).stream()
+                    .map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        } catch (NullPointerException e) {
+            throw new RuntimeException("토큰에 권한이 없음 - 토큰 갱신 바람");
+        }
 
         // 위 정보로 새로운 CustomUserAuthToken 객체 생성 후 반환
         return new FirebaseAuthToken(user, token, authorities);

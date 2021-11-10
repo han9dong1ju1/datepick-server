@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // API 인증
                 .authorizeRequests()
                     // User
-                    .antMatchers(HttpMethod.GET, "/v1/users/me").hasAnyAuthority("ADMIN")
+                    .antMatchers(HttpMethod.GET, "/v1/users/me").hasAuthority("USER")
                     .antMatchers(HttpMethod.POST, "/v1/users/unregister").hasAuthority("USER")
                     .antMatchers(HttpMethod.PATCH, "/v1/users/{\\d+}").hasAuthority("USER")
                     .anyRequest().permitAll()
