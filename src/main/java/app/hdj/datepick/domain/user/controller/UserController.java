@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -43,11 +42,10 @@ public class UserController {
      * 유저 등록
      */
     @PostMapping("register")
-    void registerUser(@Valid @ModelAttribute UserRegisterDto userRegisterDto) {
+    void registerUser(@Valid @RequestBody UserRegisterDto userRegisterDto) {
         String provider = userRegisterDto.getProvider();
         String token = userRegisterDto.getToken();
-        MultipartFile image = userRegisterDto.getImage();
-        userService.registerUser(provider, token, image);
+        userService.registerUser(provider, token);
     }
 
     /**

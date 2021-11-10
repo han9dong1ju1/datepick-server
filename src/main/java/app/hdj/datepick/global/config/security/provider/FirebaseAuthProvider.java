@@ -47,28 +47,25 @@ public class FirebaseAuthProvider implements AuthenticationProvider {
         // 인증 변수 세팅
         Long id = null;
         String uid = firebaseToken.getUid();
+        Set<GrantedAuthority> authorities;
         Map<String, Object> claims = firebaseToken.getClaims();
         try {
+            // 토큰에서 id 가져오기
             id = Long.valueOf(claims.get("id").toString());
+            // 토큰에서 권한 가져오기 (Set 활용해서 중복 삭제)
+            authorities = ((List<String>) claims.get("authorities")).stream()
+                    .map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
         } catch (NumberFormatException e) {
             log.error("id parsing 오류: {}", e.getMessage());
             return null;
         } catch (NullPointerException e) {
-            // getClaims에 id가 없을 경우 오류 (Firebase 유저 생성 후 users/register api 콜 안한 것)
+            // getClaims에 id/권한 없을 경우 오류 (Firebase 유저 생성 후 users/register api 콜 안함 or 토큰 갱신 안함)
             log.error("Firebase claim에 id 없음: {}", e.getMessage());
+            throw new RuntimeException("토큰에 정보 없음 - register 혹은 토큰 갱신 바람");
         }
 
         // CustomUserDetails 객체 생성
         TokenUser user = new TokenUser(id, firebaseToken.getUid());
-
-        // 토큰에서 권한 가져오기 (Set 활용해서 중복 삭제)
-        Set<GrantedAuthority> authorities;
-        try {
-            authorities = ((List<String>) claims.get("authorities")).stream()
-                    .map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
-        } catch (NullPointerException e) {
-            throw new RuntimeException("토큰에 권한이 없음 - 토큰 갱신 바람");
-        }
 
         // 위 정보로 새로운 CustomUserAuthToken 객체 생성 후 반환
         return new FirebaseAuthToken(user, token, authorities);

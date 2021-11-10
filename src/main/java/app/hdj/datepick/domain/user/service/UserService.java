@@ -51,8 +51,20 @@ public class UserService {
     public User modifyUser(TokenUser tokenUser, Long userId, UserModifyDto userModifyDto, Boolean removePhoto) {
         User user = userRepository.findById(userId).orElseThrow();
 
-        if (removePhoto) {
-            amazonS3Service.remove(user.getProfileUrl());
+        MultipartFile image = userModifyDto.getImage();
+        String imageKey = user.getProfileUrl();
+        if (image != null) {
+            if (imageKey != null) {
+                amazonS3Service.remove(imageKey);
+            }
+            try {
+                String updatedKey = amazonS3Service.add(image, String.format("profile-image/%s", user.getUid()));
+                user.setProfileUrl(updatedKey);
+            } catch (IOException e) {
+                throw new RuntimeException("S3 프로필 이미지 없로드 실패");
+            }
+        } else if (removePhoto && imageKey != null) {
+            amazonS3Service.remove(imageKey);
             user.setProfileUrl(null);
         }
 
@@ -63,24 +75,32 @@ public class UserService {
 
     @Transactional
     public void unregisterUser(TokenUser tokenUser, UserUnregisterDto userUnregisterRequestDto) {
+        User user = userRepository.findById(tokenUser.getId()).orElseThrow();
+
         // TODO: 삭제 사유 DB에 저장
         log.debug("User Delete 삭제 사유: {}", userUnregisterRequestDto.getReason());
 
         // User 삭제
-        userRepository.deleteById(tokenUser.getId());
+        userRepository.deleteById(user.getId());
 
         // Firebase User 삭제
         try {
-            FirebaseAuth.getInstance().deleteUser(tokenUser.getUid());
+            FirebaseAuth.getInstance().deleteUser(user.getUid());
             log.debug("Firebase User 삭제 완료");
         } catch (FirebaseAuthException e) {
             log.error("User Unregister 오류: {}", e.getMessage());
             throw new RuntimeException(e.getMessage());     // TODO: user custom exception 만들기
         }
+
+        // S3 프로필 사진 삭제
+        String profileUrl = user.getProfileUrl();
+        if (profileUrl != null) {
+            amazonS3Service.remove(profileUrl);
+        }
     }
 
     @Transactional
-    public void registerUser(String provider, String token, MultipartFile image) {
+    public void registerUser(String provider, String token) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         Optional<FirebaseToken> firebaseTokenOptional;
 
@@ -121,19 +141,10 @@ public class UserService {
             name = name.substring(0, 15);
         }
 
-        // 프로필 사진 설정
-        String imageKey = null;
-        try {
-            imageKey = amazonS3Service.add(image, String.format("profile-image/%s", uid));
-        } catch (IOException e) {
-            throw new RuntimeException("S3 프로필 이미지 없로드 실패");
-        }
-
         // DB User 생성
         User user = User.builder()
                 .uid(uid)
                 .nickname(name)
-                .profileUrl(imageKey)
                 .build();
         user = userRepository.save(user);
 
@@ -147,6 +158,6 @@ public class UserService {
             log.error("Register Custom Claim 오류: {}", e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
-
     }
+
 }

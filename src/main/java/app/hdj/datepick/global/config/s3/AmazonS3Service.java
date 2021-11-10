@@ -28,6 +28,10 @@ public class AmazonS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    public boolean exists(String key) {
+        return amazonS3Client.doesObjectExist(bucket, key);
+    }
+
     private Optional<File> convert(MultipartFile file) throws IOException {
         File convertFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
         if (convertFile.createNewFile()) { // 바로 위에서 지정한 경로에 File이 생성됨 (경로가 잘못되었다면 생성 불가능)
