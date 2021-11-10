@@ -23,6 +23,18 @@ firebase:
   account:
     key-path: firebase-config.json
 
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAYWWDOMJ3F57AQYLI
+      secret-key: 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
+    s3:
+      bucket: datepick-storage
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
 security:
   firebase-props:
     database-url: ${FIREBASE_DATABASE}
@@ -77,7 +89,6 @@ security:
 
 --- # dev 환경
 
-
 spring:
   config:
     activate:
@@ -94,6 +105,11 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration
 
 --- # prod 환경
 

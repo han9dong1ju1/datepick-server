@@ -51,6 +51,9 @@ dependencies {
     annotationProcessor 'javax.persistence:javax.persistence-api'
     annotationProcessor 'javax.annotation:javax.annotation-api'
 
+    // AWS
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
