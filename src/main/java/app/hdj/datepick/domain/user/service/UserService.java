@@ -5,6 +5,7 @@ import app.hdj.datepick.domain.user.dto.UserModifyDto;
 import app.hdj.datepick.domain.user.dto.UserUnregisterDto;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.repository.UserRepository;
+import app.hdj.datepick.global.config.s3.AmazonS3Service;
 import app.hdj.datepick.global.config.security.model.TokenUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -14,7 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,6 +29,8 @@ import java.util.Set;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final AmazonS3Service amazonS3Service;
 
     public User getUser(TokenUser tokenUser) {
         return userRepository.findById(tokenUser.getId()).orElseThrow();
@@ -43,11 +48,16 @@ public class UserService {
 
     @Transactional
     @PreAuthorize("#tokenUser.id == #userId")
-    public User modifyUser(TokenUser tokenUser, Long userId, UserModifyDto userModifyDto) {
+    public User modifyUser(TokenUser tokenUser, Long userId, UserModifyDto userModifyDto, Boolean removePhoto) {
         User user = userRepository.findById(userId).orElseThrow();
+
+        if (removePhoto) {
+            amazonS3Service.remove(user.getProfileUrl());
+            user.setProfileUrl(null);
+        }
+
         user.setGender(userModifyDto.getGender());
         user.setNickname(userModifyDto.getNickname());
-        user.setProfileUrl(userModifyDto.getProfileUrl());
         return userRepository.save(user);
     }
 
@@ -70,7 +80,7 @@ public class UserService {
     }
 
     @Transactional
-    public void registerUser(String provider, String token) {
+    public void registerUser(String provider, String token, MultipartFile image) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         Optional<FirebaseToken> firebaseTokenOptional;
 
@@ -95,7 +105,6 @@ public class UserService {
         FirebaseToken firebaseToken = firebaseTokenOptional.orElseThrow();      // TODO: user custom exception 만들기
         String uid = firebaseToken.getUid();
         String name = firebaseToken.getName();
-        String picture = firebaseToken.getPicture();
 
         // 이미 생성된 계정이 있는지 중복 확인
         if (userRepository.existsByUid(uid)) {
@@ -112,11 +121,19 @@ public class UserService {
             name = name.substring(0, 15);
         }
 
+        // 프로필 사진 설정
+        String imageKey = null;
+        try {
+            imageKey = amazonS3Service.add(image, String.format("profile-image/%s", uid));
+        } catch (IOException e) {
+            throw new RuntimeException("S3 프로필 이미지 없로드 실패");
+        }
+
         // DB User 생성
         User user = User.builder()
                 .uid(uid)
                 .nickname(name)
-                .profileUrl(picture)
+                .profileUrl(imageKey)
                 .build();
         user = userRepository.save(user);
 

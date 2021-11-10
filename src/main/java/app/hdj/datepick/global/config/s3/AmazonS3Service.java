@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -58,7 +59,7 @@ public class AmazonS3Service {
     public String add(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("[Error] AWS S3 MultipartFile - File conversion failed"));
-        String key = dirName + "/" + UUID.randomUUID() + uploadFile.getName();
+        String key = dirName + "/" + UUID.randomUUID() + "." + StringUtils.getFilenameExtension(uploadFile.getName());
 
         return upload(uploadFile, key);
     }
