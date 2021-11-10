@@ -33,8 +33,7 @@ public class User extends BaseTimeEntity<Long> {
     @ColumnDefault("U")
     private Gender gender;
 
-    @Column(name = "photo_url", nullable = false)
-    @ColumnDefault("''")    // TODO: 기본 프로필 사진 링크 추가
+    @Column(name = "photo_url")
     private String profileUrl;
 
 }
