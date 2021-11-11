@@ -3,8 +3,6 @@ package app.hdj.datepick.domain.place.entity;
 import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
 import app.hdj.datepick.domain.review.entity.PlaceReview;
 import app.hdj.datepick.global.common.entity.BaseEntity;
-import app.hdj.datepick.global.common.entity.BaseTimeEntity;
-import app.hdj.datepick.global.common.entity.relation.CoursePlaceRelation;
 import app.hdj.datepick.global.common.enums.Region;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;

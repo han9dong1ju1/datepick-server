@@ -1,6 +1,7 @@
 package app.hdj.datepick.domain.place.repository;
 import app.hdj.datepick.domain.place.dto.*;
 import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
+import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
@@ -31,26 +32,6 @@ import static app.hdj.datepick.domain.place.entity.QPlace.place;
 public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
-
-    /**
-     *
-     * @param placeId 타깃 place id
-     * @param userId 타깃 user id
-     * @return user가 place를 pick 했는지 여부
-     */
-    @Override
-    public Boolean isUserPickedPlace(Long placeId, Long userId){
-        Long isExistUserId = jpaQueryFactory
-                .select(placePick.user.id)
-                .from(placePick)
-                .where(placePick.user.id.eq(userId), placePick.place.id.eq(placeId))
-                .fetchFirst();
-        Boolean isPicked = true;
-        if (isExistUserId == null){
-            isPicked = false;
-        }
-        return isPicked;
-    }
 
     /**
      *
@@ -88,7 +69,7 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
     }
 
     @Override
-    public Page<PlaceMetaDto> findPlaceMetaListById(List<Long> placeIds, Pageable pageable) {
+    public Page<PlaceMetaDto> findPlaceMetaPageById(List<Long> placeIds, Pageable pageable) {
 
         JPAQuery<PlaceMetaDto> query = jpaQueryFactory
                 .select(
@@ -118,6 +99,37 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
         QueryResults<PlaceMetaDto> results = query.fetchResults();
 
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
+
+    @Override
+    public List<PlaceMetaDto> findPlaceMetaListById(List<Long> placeIds) {
+        return jpaQueryFactory
+                .select(
+                        new QPlaceMetaDto(
+                                place.id,
+                                place.kakaoId,
+                                place.name,
+                                place.rating,
+                                place.address,
+                                place.latitude,
+                                place.longitude,
+                                place.type,
+                                place.subtype,
+                                place.category
+                        )
+                )
+                .from(place)
+                .where(place.id.in(placeIds))
+                .fetch();
+    }
+
+    @Override
+    public List<Place> findPlacesByIdOrderByIdAsc(List<Long> placeId) {
+        return jpaQueryFactory
+                .selectFrom(place)
+                .where(place.id.in(placeId))
+                .orderBy(place.id.asc())
+                .fetch();
     }
 }
 
