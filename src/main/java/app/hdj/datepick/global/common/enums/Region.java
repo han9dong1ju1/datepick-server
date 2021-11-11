@@ -5,7 +5,7 @@ import java.util.Map;
 
 public enum Region {
     지역,
-    정서울,
+    서울,
     지역2,
     지역3;
 
