@@ -18,8 +18,9 @@ repositories {
     mavenCentral()
 }
 
+// JAR 생성 세팅
 bootJar {
-    enabled = false
+    enabled = true
 }
 
 dependencies {
