@@ -2,15 +2,13 @@ package app.hdj.datepick.domain.search.controller;
 
 import app.hdj.datepick.domain.course.dto.CourseMetaDto;
 import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
-import app.hdj.datepick.domain.search.dto.SearchRequestDto;
+import app.hdj.datepick.domain.search.dto.GeoPointDto;
 import app.hdj.datepick.domain.search.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -22,13 +20,21 @@ public class SearchController {
 
     private final SearchService searchService;
 
-    @GetMapping("place")
-    public Page<PlaceMetaDto> searchPlace(@Valid @RequestBody SearchRequestDto searchRequestDto) {
+    // Place 키워드 검색
+    @GetMapping("place/keyword/{keyword}")
+    public Page<PlaceMetaDto> keywordSearchPlace(@PathVariable String keyword, @RequestParam Pageable pageable) {
         return null;
     }
 
-    @GetMapping("course")
-    public Page<CourseMetaDto> searchCourse(@Valid @RequestBody SearchRequestDto searchRequestDto) {
+    // Place 위치 기반 검색
+    @GetMapping("place/geo")
+    public Page<PlaceMetaDto> geoSearchPlace(@Valid @ModelAttribute GeoPointDto geopointDto, Pageable pageable) {
+        return searchService.geoSearchPlace(geopointDto, pageable);
+    }
+
+    // Course 키워드 검색
+    @GetMapping("course/keyword/{keyword}")
+    public Page<CourseMetaDto> keywordSearchCourse(@PathVariable String keyword, @RequestParam Pageable pageable) {
         return null;
     }
 

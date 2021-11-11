@@ -4,6 +4,7 @@ import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
 import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
 import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
+import app.hdj.datepick.domain.search.dto.GeoPointDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -38,17 +39,7 @@ public interface PlaceCustomRepository {
 
 
     List<Place> findPlacesByIdOrderByIdAsc(List<Long> placeId);
-    /*
-    List<String> findReviewPhotoUrls(Long placeId);
 
-    //TODO security user id
-    List<Long> findPickedPlaceIds(Long userId);
-    List<PlaceMetaDto> findPlaceMetasWithIds(List<Long> placeIds);
-
-    List<PlaceCourseMetaDto> findPlaceCourseMetas(Long courseId);
-
-    PlaceMetaDto patch(PlaceRequestDto placeRequestDto);
-    PlaceMetaDto post(PlaceRequestDto placeRequestDto);
-     */
+    Page<PlaceMetaDto> findPlaceMetaPageByGeoPoint(GeoPointDto geopointDto, Pageable pageable);
 
 }

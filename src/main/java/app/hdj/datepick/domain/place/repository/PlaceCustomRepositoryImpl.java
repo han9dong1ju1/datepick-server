@@ -1,12 +1,17 @@
 package app.hdj.datepick.domain.place.repository;
-import app.hdj.datepick.domain.place.dto.*;
-import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
+
+import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
+import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
+import app.hdj.datepick.domain.place.dto.QPlaceDetailDto;
+import app.hdj.datepick.domain.place.dto.QPlaceMetaDto;
 import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
+import app.hdj.datepick.domain.search.dto.GeoPointDto;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,13 +22,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static app.hdj.datepick.domain.pick.entity.QPlacePick.placePick;
 import static app.hdj.datepick.domain.place.entity.QPlace.place;
+import static com.querydsl.core.types.dsl.MathExpressions.*;
 
 
 @Slf4j
@@ -130,6 +133,53 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
                 .where(place.id.in(placeId))
                 .orderBy(place.id.asc())
                 .fetch();
+    }
+
+    @Override
+    public Page<PlaceMetaDto> findPlaceMetaPageByGeoPoint(GeoPointDto geopointDto, Pageable pageable) {
+        NumberExpression<Double> lat = Expressions.asNumber(geopointDto.getLatitude());
+        NumberExpression<Double> lng = Expressions.asNumber(geopointDto.getLongitude());
+        NumberExpression<Double> formula =
+                power(
+                    lat.subtract(place.latitude.castToNum(Double.class)), 2)
+                .multiply(4637.61)
+                .add(
+                power(
+                    lng.subtract(place.longitude.castToNum(Double.class)), 2)
+                .multiply(2819.61)
+                ).sqrt().multiply(1.609);
+
+
+
+        JPAQuery<PlaceMetaDto> query = jpaQueryFactory
+                .select(
+                        new QPlaceMetaDto(
+                                place.id,
+                                place.kakaoId,
+                                place.name,
+                                place.rating,
+                                place.address,
+                                place.latitude,
+                                place.longitude,
+                                place.type,
+                                place.subtype,
+                                place.category
+                        )
+                )
+                .from(place)
+                .where(formula.lt(geopointDto.getDistanceLimit()))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        //정렬 적용
+        for (Sort.Order o : pageable.getSort()) {
+            PathBuilder pathBuilder = new PathBuilder(place.getType(), place.getMetadata());
+            query.orderBy(new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
+        }
+
+        QueryResults<PlaceMetaDto> results = query.fetchResults();
+
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
 }
 
