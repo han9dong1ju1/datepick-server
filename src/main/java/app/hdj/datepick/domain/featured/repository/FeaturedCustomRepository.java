@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface FeaturedCustomRepository {
 
-    List<FeaturedCourseDto> findCourseMetaById(Long id);
+    List<FeaturedCourseDto> findCourseInFeaturedById(Long featuredId);
 
 }

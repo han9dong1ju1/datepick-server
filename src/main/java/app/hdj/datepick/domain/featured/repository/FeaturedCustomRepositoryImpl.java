@@ -1,5 +1,6 @@
 package app.hdj.datepick.domain.featured.repository;
 
+import app.hdj.datepick.domain.course.dto.CourseMetaDto;
 import app.hdj.datepick.domain.course.dto.QCourseMetaDto;
 import app.hdj.datepick.domain.featured.dto.FeaturedCourseDto;
 import app.hdj.datepick.domain.featured.dto.QFeaturedCourseDto;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static app.hdj.datepick.domain.course.entity.QCourse.course;
-import static app.hdj.datepick.global.common.entity.relation.QCourseFeaturedRelation.courseFeaturedRelation;
+import static app.hdj.datepick.domain.relation.entity.QCourseFeaturedRelation.courseFeaturedRelation;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -23,21 +24,25 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<FeaturedCourseDto> findCourseMetaById(Long id) {
+    public List<FeaturedCourseDto> findCourseInFeaturedById(Long featuredId) {
         return jpaQueryFactory
                 .select(new QFeaturedCourseDto(
                         courseFeaturedRelation.order,
                         new QCourseMetaDto(
                                 course.id,
                                 course.title,
+                                course.region.stringValue(),
+                                course.expectedAt,
                                 course.pickCount,
                                 course.importCount,
-                                course.user.id)))
+                                course.user.id
+                        )))
                 .from(courseFeaturedRelation)
                 .innerJoin(courseFeaturedRelation.course, course)
                 .where(
-                        courseFeaturedRelation.featured.id.eq(id)
+                        courseFeaturedRelation.featured.id.eq(featuredId)
                 )
+                .orderBy(courseFeaturedRelation.order.asc())
                 .fetch();
     }
 }

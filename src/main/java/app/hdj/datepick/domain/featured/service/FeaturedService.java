@@ -31,11 +31,11 @@ public class FeaturedService {
     // TODO: 파라미터 선정 및 구현
     public void getFeaturedPage() {}
 
-    public FeaturedDetailResponseDto getFeatured(Long id) {
+    public FeaturedDetailResponseDto getFeatured(Long featuredId) {
         FeaturedDetailDto featuredDetailDto
-                = featuredRepository.findById(id, FeaturedDetailDto.class).orElseThrow(FeaturedNotFoundException::new);
+                = featuredRepository.findById(featuredId, FeaturedDetailDto.class).orElseThrow(FeaturedNotFoundException::new);
         List<FeaturedCourseDto> featuredCourseMetaDtos
-                = featuredRepository.findCourseMetaById(id);
+                = featuredRepository.findCourseInFeaturedById(featuredId);
         return new FeaturedDetailResponseDto(featuredDetailDto, featuredCourseMetaDtos);
     }
 

@@ -18,7 +18,7 @@ import javax.persistence.*;
 @Entity(name = "place_review")
 public class PlaceReview extends BaseTimeEntity<Long> {
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id")
     private Diary diary;
 
@@ -32,7 +32,7 @@ public class PlaceReview extends BaseTimeEntity<Long> {
     @ColumnDefault("''")
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
 

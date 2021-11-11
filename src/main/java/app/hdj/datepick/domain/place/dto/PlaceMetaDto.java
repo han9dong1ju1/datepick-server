@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PlaceMetaDto {
+    //TODO region 추가
     private Long id;
     private String kakaoId;
     private String name;
