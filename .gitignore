@@ -38,3 +38,9 @@ out/
 
 ### OS ###
 .DS_Store
+
+### Log ###
+/log
+
+### Generated ###
+/src/main/generated/

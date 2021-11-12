@@ -1,0 +1,120 @@
+# Common 공통 설정
+spring:
+  profiles:
+    active: dev   # 환경 선택
+  servlet:
+    multipart:
+      enabled: true             # TODO
+      max-file-size: 10MB       # TODO
+      max-request-size: 215MB   # TODO
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+  error:
+    include-exception: true
+    include-binding-errors: always
+    include-message: always
+    whitelabel:
+      enabled: false
+
+firebase:
+  account:
+    key-path: firebase-config.json
+
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAYWWDOMJ3F57AQYLI
+      secret-key: 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
+    s3:
+      bucket: datepick-storage
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+security:
+  firebase-props:
+    database-url: ${FIREBASE_DATABASE}
+    enable-strict-server-session: false
+    enable-check-session-revoked: false
+    enable-logout-everywhere: false
+    session-expiry-in-days: 5
+  cookie-props:
+    max-age-in-minutes: 7200
+    http-only: true
+    secure: true
+    domain: ${DOMAIN}
+    path: /
+  allow-credentials: true
+  allowed-origins:
+    - https://${DOMAIN}
+    - http://localhost:8080
+  allowed-methods:
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
+  allowed-headers:
+    - Authorization
+    - Origin
+    - Content-Type
+    - Accept
+    - Accept-Encoding
+    - Accept-Language
+    - Access-Control-Allow-Origin
+    - Access-Control-Allow-Headers
+    - Access-Control-Request-Method
+    - X-Requested-With
+    - X-Auth-Token
+    - X-Xsrf-Token
+    - Cache-Control
+    - Id-Token
+  allowed-public-apis:
+    - /favicon.ico
+    - /session/login
+    - /public/**
+  exposed-headers:
+    - X-Xsrf-Token
+
+--- # local 환경
+
+#spring:
+#  config:
+#    activate:
+#      on-profile: local
+
+--- # dev 환경
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:mariadb://datepickdb.cbwheay2prg8.ap-northeast-2.rds.amazonaws.com:3306/datepick_dummy_db_utf8
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: hdjadmin
+    password: tlrmsldpf2773
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration
+
+--- # prod 환경
+
+#spring:
+#  profiles:
+#    active:
+#      on-profile: prod
+
