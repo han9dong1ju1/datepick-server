@@ -1,7 +1,7 @@
 name: AWS-EC2-CI
 
 env:
-  S3_BUCKET_NAME: datepick-storage/build
+  S3_BUCKET_NAME: datepick-server-build
 
 on:
   push:
@@ -46,5 +46,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       
-      - name: Upload to S3
+      - name: Upload to AWS S3
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
+        
+      - name: Code Deploy
+        run: aws deploy create-deployment --application-name datepick-deploy-app --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name datepick-server-group --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
