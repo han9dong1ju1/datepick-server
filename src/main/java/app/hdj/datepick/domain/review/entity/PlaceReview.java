@@ -3,6 +3,7 @@ package app.hdj.datepick.domain.review.entity;
 
 import app.hdj.datepick.domain.diary.entity.Diary;
 import app.hdj.datepick.domain.place.entity.Place;
+import app.hdj.datepick.domain.review.dto.ModifyPlaceReviewDto;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.common.entity.BaseTimeEntity;
 import lombok.*;
@@ -23,7 +24,7 @@ public class PlaceReview extends BaseTimeEntity<Long> {
     private Diary diary;
 
     @Column(name = "review_order", nullable = false)
-    private Byte inDiaryOrder;
+    private Byte placeOrder;
 
     @Column(name = "rating", nullable = false)
     private Byte rating;
@@ -40,4 +41,8 @@ public class PlaceReview extends BaseTimeEntity<Long> {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public void modifyPlaceReview(ModifyPlaceReviewDto modifyPlaceReviewDto){
+        this.content = modifyPlaceReviewDto.getContent();
+        this.rating = modifyPlaceReviewDto.getRating();
+    }
 }

@@ -15,16 +15,19 @@ import java.util.List;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PlaceReviewDto {
 
-    private Byte inDiaryOrder;
+
+    private Byte placeOrder;
     private Byte rating;
     private String content;
+    private Long placeId;
 //    private List<PhotoUrl> photoUrls;
 
     @QueryProjection
-    public PlaceReviewDto(Byte inDiaryOrder, Byte rating, String content) {
-        this.inDiaryOrder = inDiaryOrder;
+    public PlaceReviewDto(Byte placeOrder, Byte rating, String content, Long placeId) {
+        this.placeOrder = placeOrder;
         this.rating = rating;
         this.content = content;
+        this.placeId = placeId;
     }
 
 }

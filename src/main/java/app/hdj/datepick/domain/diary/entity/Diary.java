@@ -2,6 +2,7 @@ package app.hdj.datepick.domain.diary.entity;
 
 
 import app.hdj.datepick.domain.course.entity.Course;
+import app.hdj.datepick.domain.diary.dto.ModifyDiaryDto;
 import app.hdj.datepick.domain.review.entity.PlaceReview;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.common.entity.BaseTimeEntity;
@@ -13,7 +14,9 @@ import javax.persistence.*;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@Builder
+@NoArgsConstructor//(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "diary")
 public class Diary extends BaseTimeEntity<Long> {
@@ -39,5 +42,10 @@ public class Diary extends BaseTimeEntity<Long> {
 
     @OneToMany(mappedBy = "diary", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<PlaceReview> placeReviews;
+
+    public void modifyDiary(ModifyDiaryDto modifyDiaryDto){
+        this.style = Style.findByString(modifyDiaryDto.getStyle());
+        this.title = modifyDiaryDto.getTitle();
+    }
 
 }
