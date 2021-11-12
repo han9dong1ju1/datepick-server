@@ -19,6 +19,10 @@ repositories {
 }
 
 // JAR 생성 세팅
+jar {
+    enabled = false
+}
+
 bootJar {
     enabled = true
 }

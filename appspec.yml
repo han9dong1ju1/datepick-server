@@ -3,10 +3,9 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ubuntu/datepick-server
+    destination: /deploy
 permissions:
-  - object: /
-    pattern: "**"
+  - object: /deploy
     owner: ubuntu
     group: ubuntu
     mode: 755
