@@ -8,8 +8,11 @@ import app.hdj.datepick.domain.diary.dto.DiaryModifyRequestDto;
 import app.hdj.datepick.domain.diary.dto.ModifyDiaryDto;
 import app.hdj.datepick.domain.diary.entity.Diary;
 import app.hdj.datepick.domain.diary.repository.DiaryRepository;
+import app.hdj.datepick.domain.place.dto.request.PlaceWithOrderDto;
 import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.place.repository.PlaceRepository;
+import app.hdj.datepick.domain.relation.dto.CoursePlaceRelationDto;
+import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import app.hdj.datepick.domain.review.dto.ModifyPlaceReviewDto;
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
 import app.hdj.datepick.domain.review.entity.PlaceReview;
@@ -60,16 +63,25 @@ public class DiaryService {
 
         ModifyDiaryDto diaryDto = diaryModifyRequestDto.getDiary();
         List<ModifyPlaceReviewDto> placeReviewDtos = diaryModifyRequestDto.getPlaceReviews();
+        placeReviewDtos.stream().sorted(Comparator.comparing(ModifyPlaceReviewDto::getPlaceOrder));
+
+        System.out.println(placeReviewDtos.toString());
 
         //User 받아오기
         Long userId = 12L; //TODO user id
         User user = userRepository.findById(userId).orElseThrow(); //TODO exception
 
+        System.out.println("123123123");
         //Course 받아오기
         Long courseId = diaryDto.getCourseId();
         Course course = courseRepository.findById(courseId).orElseThrow(); //TODO exception
 
+        //유효성 relation 검사
+        if (!checkValidationAddDiary(courseId, placeReviewDtos)){
+            new RuntimeException("다이어리 유효성 검사 실패");
+        }
 
+        System.out.println("123123123");
         //다이어리 생성
         Diary diary = Diary.builder()
                 .course(course)
@@ -80,23 +92,22 @@ public class DiaryService {
                 .build();
         diary = diaryRepository.save(diary);
 
+
         //Place Reviews 생성
-        //place 생성
-        List<Place> places = placeRepository.findPlacesByIdOrderByIdAsc(
-                placeReviewDtos.stream().map(ModifyPlaceReviewDto::getPlaceId).collect(Collectors.toList())
-        );
+        List<PlaceWithOrderDto> placeAndOrders = placeRepository.findOrderAndPlaceInCourse(courseId);
+        System.out.println(placeAndOrders.stream().count());
         List<PlaceReview> placeReviews = new ArrayList<>();
 
         for (int idx = 0; idx < placeReviewDtos.stream().count(); idx++){
             ModifyPlaceReviewDto modifyPlaceReviewDto = placeReviewDtos.get(idx);
-            Place place = places.get(idx);
+            PlaceWithOrderDto placeAndOrder = placeAndOrders.get(idx);
 
             PlaceReview placeReview = PlaceReview.builder()
                     .diary(diary)
-                    .placeOrder(modifyPlaceReviewDto.getPlaceOrder())
+                    .placeOrder(placeAndOrder.getPlaceOrder())
                     .rating(modifyPlaceReviewDto.getRating())
                     .content(modifyPlaceReviewDto.getContent())
-                    .place(place)
+                    .place(placeAndOrder.getPlace())
                     .user(user)
                     .build();
             placeReviews.add(placeReviewRepository.save(placeReview));
@@ -141,6 +152,30 @@ public class DiaryService {
         }
         return getDiary(diaryId);
 
+    }
+
+    Boolean checkValidationAddDiary(Long courseId, List<ModifyPlaceReviewDto> modifyPlaceReviewDtos){
+
+
+        //Order 기준으로 정렬
+        List<CoursePlaceRelationDto> coursePlaceRelations = courseRepository.findPlaceRelationDtoByCourseId(courseId);
+        coursePlaceRelations.stream().sorted(Comparator.comparing(CoursePlaceRelationDto::getPlaceOrder));
+
+        Long placeCountInCourse = coursePlaceRelations.stream().count();
+        Long reviewCountInDiary = modifyPlaceReviewDtos.stream().count();
+
+        if (placeCountInCourse != reviewCountInDiary){
+            return Boolean.FALSE;
+        }
+        for(int idx = 0; idx < placeCountInCourse; idx++){
+            CoursePlaceRelationDto coursePlaceRelationDto = coursePlaceRelations.get(idx);
+            ModifyPlaceReviewDto placeReviewDto = modifyPlaceReviewDtos.get(idx);
+            if(coursePlaceRelationDto.getPlaceOrder() != placeReviewDto.getPlaceOrder()){
+                return Boolean.FALSE;
+            }
+        }
+
+        return Boolean.TRUE;
     }
 
 }

@@ -59,7 +59,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(HttpMethod.GET, "/v1/users/me").hasAuthority("USER")
                     .antMatchers(HttpMethod.POST, "/v1/users/unregister").hasAuthority("USER")
                     .antMatchers(HttpMethod.PATCH, "/v1/users/{\\d+}").hasAuthority("USER")
-                    .anyRequest().permitAll()
+                    .antMatchers("/v1/users/*").permitAll()
+                    // Diary
+                    //.antMatchers("/v1/diary//{\\d+}").hasAuthority("USER")
+                .anyRequest().permitAll()
                 .and()
                 // 예외 처리
                 .exceptionHandling()

@@ -35,7 +35,6 @@ import static app.hdj.datepick.domain.review.entity.QPlaceReview.placeReview;
 public class DiaryCustomRepositoryImpl implements DiaryCustomRepository{
 
     private final JPAQueryFactory jpaQueryFactory;
-
     @Override
     public Page<DiaryMetaDto> findMyDiariesPage(Pageable pageable) {
 

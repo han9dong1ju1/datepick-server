@@ -8,9 +8,9 @@ import lombok.Getter;
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ModifyPlaceReviewDto {
+    //place Order 만 지정하면 place Id 는 알아서 지정해주도록.
     private Byte placeOrder;
     private Byte rating;
     private String content;
-    private Long placeId;
 }
 
