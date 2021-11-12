@@ -19,4 +19,4 @@ else
 fi
 
 echo "> $JAR_PATH 배포"
-sudo nohup java -jar $JAR_PATH --spring.profiles.active=dev > /dev/null 2> /dev/null < /dev/null &
+sudo nohup java -jar $JAR_PATH --spring.profiles.active=prod > /dev/null 2> /dev/null < /dev/null &
