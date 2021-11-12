@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
@@ -32,6 +34,9 @@ public class UserService {
 
     private final AmazonS3Service amazonS3Service;
 
+    @PersistenceContext
+    private final EntityManager em;
+
     public User getUser(TokenUser tokenUser) {
         return userRepository.findById(tokenUser.getId()).orElseThrow();
     }
@@ -42,7 +47,7 @@ public class UserService {
                 user.getId(),
                 user.getNickname(),
                 user.getGender(),
-                user.getProfileUrl()
+                user.getProfileImage()
         );
     }
 
@@ -52,20 +57,20 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow();
 
         MultipartFile image = userModifyDto.getImage();
-        String imageKey = user.getProfileUrl();
+        String imageKey = user.getProfileImage();
         if (image != null) {
             if (imageKey != null) {
                 amazonS3Service.remove(imageKey);
             }
             try {
                 String updatedKey = amazonS3Service.add(image, String.format("profile-image/%s", user.getUid()));
-                user.setProfileUrl(updatedKey);
+                user.setProfileImage(updatedKey);
             } catch (IOException e) {
                 throw new RuntimeException("S3 프로필 이미지 없로드 실패");
             }
         } else if (removePhoto && imageKey != null) {
             amazonS3Service.remove(imageKey);
-            user.setProfileUrl(null);
+            user.setProfileImage(null);
         }
 
         user.setGender(userModifyDto.getGender());
@@ -93,14 +98,14 @@ public class UserService {
         }
 
         // S3 프로필 사진 삭제
-        String profileUrl = user.getProfileUrl();
+        String profileUrl = user.getProfileImage();
         if (profileUrl != null) {
             amazonS3Service.remove(profileUrl);
         }
     }
 
     @Transactional
-    public void registerUser(String provider, String token) {
+    public User registerUser(String provider, String token) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         Optional<FirebaseToken> firebaseTokenOptional;
 
@@ -125,6 +130,7 @@ public class UserService {
         FirebaseToken firebaseToken = firebaseTokenOptional.orElseThrow();      // TODO: user custom exception 만들기
         String uid = firebaseToken.getUid();
         String name = firebaseToken.getName();
+        String picture = firebaseToken.getPicture();
 
         // 이미 생성된 계정이 있는지 중복 확인
         if (userRepository.existsByUid(uid)) {
@@ -145,8 +151,10 @@ public class UserService {
         User user = User.builder()
                 .uid(uid)
                 .nickname(name)
+                .profileImage(picture)
                 .build();
         user = userRepository.save(user);
+        em.refresh(user);
 
         // Custom Claim에 id 및 권한 추가
         Map<String, Object> customClaims = Map.of(
@@ -158,6 +166,8 @@ public class UserService {
             log.error("Register Custom Claim 오류: {}", e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
+
+        return user;
     }
 
 }
