@@ -21,7 +21,7 @@ public class ImageFileValidator implements ConstraintValidator<ImageFile, Multip
             if(!isSupportedContentType(Objects.requireNonNull(contentType))) {
                 context.disableDefaultConstraintViolation();
                 context.buildConstraintViolationWithTemplate(
-                                "Only PNG or JPG images are allowed.")
+                                "Only images are allowed.")
                         .addConstraintViolation();
 
                 result = false;
@@ -32,8 +32,6 @@ public class ImageFileValidator implements ConstraintValidator<ImageFile, Multip
     }
 
     private boolean isSupportedContentType(String contentType) {
-        return contentType.equals("image/png")
-                || contentType.equals("image/jpg")
-                || contentType.equals("image/jpeg");
+        return contentType.equals("image/*");
     }
 }
