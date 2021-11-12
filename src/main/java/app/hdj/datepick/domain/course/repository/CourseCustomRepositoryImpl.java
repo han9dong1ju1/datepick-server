@@ -2,7 +2,10 @@ package app.hdj.datepick.domain.course.repository;
 
 import app.hdj.datepick.domain.course.dto.*;
 import app.hdj.datepick.domain.course.dto.request.ModifyCoursePlaceRelationDto;
+import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.place.dto.QPlaceMetaDto;
+import app.hdj.datepick.domain.relation.dto.CoursePlaceRelationDto;
+import app.hdj.datepick.domain.relation.dto.QCoursePlaceRelationDto;
 import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
@@ -88,9 +91,9 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     }
 
     @Override
-    public List<CoursePlaceRelationDto> findPlaceRelationDtoInCourse(Long courseId, List<Long> placeIds) {
+    public List<CoursePlaceDetailRelationDto> findPlaceRelationDtoInCourse(Long courseId, List<Long> placeIds) {
         return jpaQueryFactory
-                .select(new QCoursePlaceRelationDto(
+                .select(new QCoursePlaceDetailRelationDto(
                         coursePlaceRelation.placeOrder,
                         coursePlaceRelation.visitTime,
                         coursePlaceRelation.memo,
@@ -115,7 +118,7 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     }
 
     @Override
-    public CourseDetailDto findCourseDetail(Long courseId, Boolean isPicked, List<CoursePlaceRelationDto> placeRelations) {
+    public CourseDetailDto findCourseDetail(Long courseId, Boolean isPicked, List<CoursePlaceDetailRelationDto> placeRelations) {
         return jpaQueryFactory
                 .select(new QCourseDetailDto(
                         course.id,
@@ -139,6 +142,21 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     public List<CoursePlaceRelation> findPlaceRelationByCourseId(Long courseId){
         return jpaQueryFactory
                 .selectFrom(coursePlaceRelation)
+                .where(coursePlaceRelation.course.id.eq(courseId))
+                .fetchAll().fetch();
+    }
+
+    @Override
+    public List<CoursePlaceRelationDto> findPlaceRelationDtoByCourseId(Long courseId){
+        return jpaQueryFactory
+                .select(new QCoursePlaceRelationDto(
+                        coursePlaceRelation.course.id,
+                        coursePlaceRelation.place.id,
+                        coursePlaceRelation.placeOrder,
+                        coursePlaceRelation.visitTime,
+                        coursePlaceRelation.memo
+                ))
+                .from(coursePlaceRelation)
                 .where(coursePlaceRelation.course.id.eq(courseId))
                 .fetchAll().fetch();
     }

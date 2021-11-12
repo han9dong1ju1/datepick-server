@@ -2,7 +2,7 @@ package app.hdj.datepick.domain.course.service;
 
 import app.hdj.datepick.domain.course.dto.CourseDetailDto;
 import app.hdj.datepick.domain.course.dto.CourseMetaDto;
-import app.hdj.datepick.domain.course.dto.CoursePlaceRelationDto;
+import app.hdj.datepick.domain.course.dto.CoursePlaceDetailRelationDto;
 import app.hdj.datepick.domain.course.dto.request.CourseModifyRequsetDto;
 import app.hdj.datepick.domain.course.dto.request.ModifyCourseDto;
 import app.hdj.datepick.domain.course.dto.request.ModifyCoursePlaceRelationDto;
@@ -21,8 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -71,7 +71,7 @@ public class CourseService {
         //course에 포함된 place id list
         List<Long> placeIds = courseRepository.findPlaceIdListInCourse(courseId);
         //place 와 course의 relation 정보 list
-        List<CoursePlaceRelationDto> placeRelations = courseRepository.findPlaceRelationDtoInCourse(courseId, placeIds);
+        List<CoursePlaceDetailRelationDto> placeRelations = courseRepository.findPlaceRelationDtoInCourse(courseId, placeIds);
         //course meta 정보 조회 및 detail 정보 조립
         CourseDetailDto courseDetail = courseRepository.findCourseDetail(courseId, isPicked, placeRelations);
 
@@ -123,6 +123,7 @@ public class CourseService {
                     .build();
             placeRelations.add(coursePlaceRelationRepository.save(placeRelation));
         }
+
         course.setCoursePlaceRelations(placeRelations);
 
         return getCourse(course.getId());

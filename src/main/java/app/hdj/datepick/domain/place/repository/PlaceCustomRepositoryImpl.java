@@ -4,7 +4,10 @@ import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
 import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
 import app.hdj.datepick.domain.place.dto.QPlaceDetailDto;
 import app.hdj.datepick.domain.place.dto.QPlaceMetaDto;
+import app.hdj.datepick.domain.place.dto.request.PlaceWithOrderDto;
+import app.hdj.datepick.domain.place.dto.request.QPlaceWithOrderDto;
 import app.hdj.datepick.domain.place.entity.Place;
+import app.hdj.datepick.domain.relation.entity.QCoursePlaceRelation;
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
 import app.hdj.datepick.domain.search.dto.GeoPointDto;
 import com.querydsl.core.QueryResults;
@@ -24,8 +27,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 import static app.hdj.datepick.domain.place.entity.QPlace.place;
+import static app.hdj.datepick.domain.relation.entity.QCoursePlaceRelation.coursePlaceRelation;
 import static com.querydsl.core.types.dsl.MathExpressions.*;
 
 
@@ -180,6 +185,20 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
         QueryResults<PlaceMetaDto> results = query.fetchResults();
 
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
+
+    @Override
+    public List<PlaceWithOrderDto> findOrderAndPlaceInCourse(Long courseId) {
+
+        return jpaQueryFactory.select(new QPlaceWithOrderDto(
+                        coursePlaceRelation.course.id,
+                        coursePlaceRelation.placeOrder,
+                        coursePlaceRelation.place
+        ))
+                .from(coursePlaceRelation)
+                .innerJoin(coursePlaceRelation.place, place)
+                .where(coursePlaceRelation.course.id.eq(courseId))
+                .fetch();
     }
 }
 
