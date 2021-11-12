@@ -3,7 +3,7 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ubuntu/
+    destination: /home/ubuntu/datepick-server
 permissions:
   - object: /
     pattern: "**"
