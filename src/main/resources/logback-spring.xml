@@ -22,12 +22,6 @@
 
 
     <!-- 스프링 프로필 로깅 레벨 설정 -->
-    <springProfile name="local">
-        <logger name="app.hdj.datepick" level="TRACE"/>
-        <root level="INFO">
-            <appender-ref ref="STDOUT"/>
-        </root>
-    </springProfile>
     <springProfile name="dev">
         <logger name="app.hdj.datepick" level="TRACE"/>
         <root level="INFO">
