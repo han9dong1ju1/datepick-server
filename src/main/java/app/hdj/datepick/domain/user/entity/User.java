@@ -33,7 +33,7 @@ public class User extends BaseTimeEntity<Long> {
     @ColumnDefault("U")
     private Gender gender;
 
-    @Column(name = "photo_url")
-    private String profileUrl;
+    @Column(name = "profile_image")
+    private String profileImage;
 
 }

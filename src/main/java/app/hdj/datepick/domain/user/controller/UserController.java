@@ -42,10 +42,10 @@ public class UserController {
      * 유저 등록
      */
     @PostMapping("register")
-    void registerUser(@Valid @RequestBody UserRegisterDto userRegisterDto) {
+    User registerUser(@Valid @RequestBody UserRegisterDto userRegisterDto) {
         String provider = userRegisterDto.getProvider();
         String token = userRegisterDto.getToken();
-        userService.registerUser(provider, token);
+        return userService.registerUser(provider, token);
     }
 
     /**
