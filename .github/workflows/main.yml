@@ -1,7 +1,7 @@
 name: AWS-EC2-CI
 
 env:
-  S3_BUCKET_NAME: datepick-storage
+  S3_BUCKET_NAME: datepick-storage/build
 
 on:
   push:
