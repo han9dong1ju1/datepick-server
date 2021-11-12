@@ -1,6 +1,7 @@
 package app.hdj.datepick.domain.review.repository;
 
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
+import app.hdj.datepick.domain.review.entity.PlaceReview;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -23,5 +24,9 @@ public interface PlaceReviewCustomRepository {
      * @return Place에 포함된 Photo Url의 Page 객체
      */
     Page<String> findAllPhotoUrls(Long placeId, Pageable pageable);
+
+    List<PlaceReview> findAllByDiaryId(Long diaryId);
+
+    List<PlaceReviewDto> findPlaceReviewDtoByDiaryId(Long diaryId);
 
 }

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,10 +24,10 @@ public class CourseDetailDto {
 
     private Boolean isPicked;
     //Place Relatation Info
-    private List<CoursePlaceRelationDto> placeRelations;
+    private List<CoursePlaceDetailRelationDto> placeRelations;
 
     @QueryProjection
-    public CourseDetailDto(Long id, String title, String region, LocalDateTime expectedAt, Integer pickCount, Integer importCount, Long userId, String thumbNailUrl, Boolean isPicked, List<CoursePlaceRelationDto> placeRelations) {
+    public CourseDetailDto(Long id, String title, String region, LocalDateTime expectedAt, Integer pickCount, Integer importCount, Long userId, String thumbNailUrl, Boolean isPicked, List<CoursePlaceDetailRelationDto> placeRelations) {
         this.id = id;
         this.title = title;
         this.region = region;

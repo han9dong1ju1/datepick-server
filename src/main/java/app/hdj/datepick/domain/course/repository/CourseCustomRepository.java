@@ -2,8 +2,10 @@ package app.hdj.datepick.domain.course.repository;
 
 import app.hdj.datepick.domain.course.dto.CourseDetailDto;
 import app.hdj.datepick.domain.course.dto.CourseMetaDto;
-import app.hdj.datepick.domain.course.dto.CoursePlaceRelationDto;
+import app.hdj.datepick.domain.course.dto.CoursePlaceDetailRelationDto;
 import app.hdj.datepick.domain.course.dto.request.ModifyCoursePlaceRelationDto;
+import app.hdj.datepick.domain.course.entity.Course;
+import app.hdj.datepick.domain.relation.dto.CoursePlaceRelationDto;
 import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +43,7 @@ public interface CourseCustomRepository{
      * @param placeIds
      * @return
      */
-    List<CoursePlaceRelationDto> findPlaceRelationDtoInCourse(Long courseId, List<Long> placeIds);
+    List<CoursePlaceDetailRelationDto> findPlaceRelationDtoInCourse(Long courseId, List<Long> placeIds);
 
     /**
      *
@@ -50,10 +52,11 @@ public interface CourseCustomRepository{
      * @param placeRelations
      * @return
      */
-    CourseDetailDto findCourseDetail(Long courseId, Boolean isPicked, List<CoursePlaceRelationDto> placeRelations);
+    CourseDetailDto findCourseDetail(Long courseId, Boolean isPicked, List<CoursePlaceDetailRelationDto> placeRelations);
 
 
     List<CoursePlaceRelation> findPlaceRelationByCourseId(Long courseId);
+    List<CoursePlaceRelationDto> findPlaceRelationDtoByCourseId(Long courseId);
 
     void updatePlaceRelations(Long courseId, ModifyCoursePlaceRelationDto placeRelation);
 

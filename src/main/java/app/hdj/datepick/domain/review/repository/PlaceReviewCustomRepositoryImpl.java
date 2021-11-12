@@ -4,6 +4,7 @@ package app.hdj.datepick.domain.review.repository;
 import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
 import app.hdj.datepick.domain.review.dto.QPlaceReviewDto;
+import app.hdj.datepick.domain.review.entity.PlaceReview;
 import app.hdj.datepick.domain.review.entity.QPlaceReview;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +30,10 @@ public class PlaceReviewCustomRepositoryImpl implements PlaceReviewCustomReposit
     public List<PlaceReviewDto> findConstReviewsWithPlaceId(Long placeId) {
         List<PlaceReviewDto> placeReviewDtos = jpaQueryFactory
                 .select(new QPlaceReviewDto(
-                        placeReview.inDiaryOrder,
+                        placeReview.placeOrder,
                         placeReview.rating,
-                        placeReview.content
+                        placeReview.content,
+                        placeReview.place.id
                 ))
                 .from(placeReview)
                 .where(placeReview.place.id.eq(placeId))
@@ -44,5 +46,23 @@ public class PlaceReviewCustomRepositoryImpl implements PlaceReviewCustomReposit
     @Override
     public Page<String> findAllPhotoUrls(Long placeId, Pageable pageable) {
         return null;
+    }
+
+    @Override
+    public List<PlaceReview> findAllByDiaryId(Long diaryId) {
+        return jpaQueryFactory.selectFrom(placeReview).where(placeReview.diary.id.eq(diaryId)).fetch();
+    }
+
+    @Override
+    public List<PlaceReviewDto> findPlaceReviewDtoByDiaryId(Long diaryId) {
+        return jpaQueryFactory.select(
+                new QPlaceReviewDto(
+                        placeReview.placeOrder,
+                        placeReview.rating,
+                        placeReview.content,
+                        placeReview.place.id
+                ))
+                .from(placeReview)
+                .where(placeReview.diary.id.eq(diaryId)).fetch();
     }
 }

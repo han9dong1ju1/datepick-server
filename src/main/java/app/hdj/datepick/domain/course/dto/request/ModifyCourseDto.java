@@ -9,7 +9,6 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 
 
-@ToString
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ModifyCourseDto {
