@@ -66,8 +66,15 @@ security:
     - X-Xsrf-Token
 # Spring
 spring:
+  profiles:
+    default: dev
   servlet:
     multipart:
       enabled: true
       max-file-size: 10MB       # TODO
       max-request-size: 215MB   # TODO
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration

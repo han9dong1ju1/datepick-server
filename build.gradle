@@ -64,5 +64,6 @@ dependencies {
 }
 
 test {
+    systemProperty("spring.profiles.active", project.properties.get("profile"))
     useJUnitPlatform()
 }
