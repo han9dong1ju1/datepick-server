@@ -21,19 +21,19 @@ public class SearchController {
     private final SearchService searchService;
 
     // Place 키워드 검색
-    @GetMapping("place/keyword/{keyword}")
+    @GetMapping("places/keyword/{keyword}")
     public Page<PlaceMetaDto> keywordSearchPlace(@PathVariable String keyword, @RequestParam Pageable pageable) {
         return null;
     }
 
     // Place 위치 기반 검색
-    @GetMapping("place/geo")
+    @GetMapping("places/geo")
     public Page<PlaceMetaDto> geoSearchPlace(@Valid @ModelAttribute GeoPointDto geopointDto, Pageable pageable) {
         return searchService.geoSearchPlace(geopointDto, pageable);
     }
 
     // Course 키워드 검색
-    @GetMapping("course/keyword/{keyword}")
+    @GetMapping("courses/keyword/{keyword}")
     public Page<CourseMetaDto> keywordSearchCourse(@PathVariable String keyword, @RequestParam Pageable pageable) {
         return null;
     }
