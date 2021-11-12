@@ -66,6 +66,8 @@ security:
     - X-Xsrf-Token
 # Spring
 spring:
+  profiles:
+    default: dev
   servlet:
     multipart:
       enabled: true
