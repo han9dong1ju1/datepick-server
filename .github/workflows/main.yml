@@ -31,7 +31,7 @@ jobs:
         shell: bash
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build -Pprofile=prod
         shell: bash
         
       - name: Make zip file
