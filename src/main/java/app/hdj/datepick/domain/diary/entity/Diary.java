@@ -1,11 +1,10 @@
 package app.hdj.datepick.domain.diary.entity;
 
-
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.diary.dto.ModifyDiaryDto;
 import app.hdj.datepick.domain.review.entity.PlaceReview;
 import app.hdj.datepick.domain.user.entity.User;
-import app.hdj.datepick.global.common.entity.BaseTimeEntity;
+import app.hdj.datepick.global.common.entity.BaseAllTimeEntity;
 import app.hdj.datepick.global.common.enums.Style;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -16,10 +15,21 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor//(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity(name = "diary")
-public class Diary extends BaseTimeEntity<Long> {
+@Entity
+public class Diary extends BaseAllTimeEntity<Long> {
+
+    @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Long likeCount;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Style style;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn
@@ -28,17 +38,6 @@ public class Diary extends BaseTimeEntity<Long> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private User user;
-
-    @Column(name = "title", nullable = false)
-    private String title;
-
-    @Column(name = "like_count", nullable = false)
-    @ColumnDefault("0")
-    private Integer likeCount;
-
-    @Column(name = "style", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Style style;
 
     @OneToMany(mappedBy = "diary", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<PlaceReview> placeReviews;

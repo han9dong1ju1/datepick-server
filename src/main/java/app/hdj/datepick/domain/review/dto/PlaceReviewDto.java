@@ -17,13 +17,13 @@ public class PlaceReviewDto {
 
 
     private Byte placeOrder;
-    private Byte rating;
+    private Float rating;
     private String content;
     private Long placeId;
 //    private List<PhotoUrl> photoUrls;
 
     @QueryProjection
-    public PlaceReviewDto(Byte placeOrder, Byte rating, String content, Long placeId) {
+    public PlaceReviewDto(Byte placeOrder, Float rating, String content, Long placeId) {
         this.placeOrder = placeOrder;
         this.rating = rating;
         this.content = content;

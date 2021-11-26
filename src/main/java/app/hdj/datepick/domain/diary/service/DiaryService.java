@@ -9,10 +9,8 @@ import app.hdj.datepick.domain.diary.dto.ModifyDiaryDto;
 import app.hdj.datepick.domain.diary.entity.Diary;
 import app.hdj.datepick.domain.diary.repository.DiaryRepository;
 import app.hdj.datepick.domain.place.dto.request.PlaceWithOrderDto;
-import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.place.repository.PlaceRepository;
-import app.hdj.datepick.domain.relation.dto.CoursePlaceRelationDto;
-import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
+import app.hdj.datepick.global.relation.dto.CoursePlaceRelationDto;
 import app.hdj.datepick.domain.review.dto.ModifyPlaceReviewDto;
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
 import app.hdj.datepick.domain.review.entity.PlaceReview;
@@ -20,7 +18,6 @@ import app.hdj.datepick.domain.review.repository.PlaceReviewRepository;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.repository.UserRepository;
 import app.hdj.datepick.global.common.enums.Style;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -87,7 +84,7 @@ public class DiaryService {
                 .course(course)
                 .user(user)
                 .title(diaryDto.getTitle())
-                .likeCount(0)
+                .likeCount(0L)
                 .style(Style.findByString(diaryDto.getStyle()))
                 .build();
         diary = diaryRepository.save(diary);

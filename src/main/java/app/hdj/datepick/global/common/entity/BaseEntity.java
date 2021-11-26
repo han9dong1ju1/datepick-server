@@ -13,6 +13,6 @@ import java.io.Serializable;
 public class BaseEntity<ID extends Serializable> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column
     private ID id;
 }

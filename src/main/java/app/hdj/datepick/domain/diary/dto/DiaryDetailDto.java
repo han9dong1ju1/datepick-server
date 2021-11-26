@@ -20,12 +20,12 @@ public class DiaryDetailDto {
     private Long courseId;
     private Long userId;
     private String title;
-    private Integer likeCount;
+    private Long likeCount;
     private String style;
     private List<PlaceReviewDto> placeReviews;
 
     @QueryProjection
-    public DiaryDetailDto(Long id, Long courseId, Long userId, String title, Integer likeCount, String style, List<PlaceReviewDto> placeReviews) {
+    public DiaryDetailDto(Long id, Long courseId, Long userId, String title, Long likeCount, String style, List<PlaceReviewDto> placeReviews) {
         this.id = id;
         this.courseId = courseId;
         this.userId = userId;

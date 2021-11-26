@@ -1,7 +1,8 @@
 package app.hdj.datepick.domain.user.entity;
 
-import app.hdj.datepick.global.common.entity.BaseTimeEntity;
+import app.hdj.datepick.global.common.entity.BaseAllTimeEntity;
 import app.hdj.datepick.global.common.enums.Gender;
+import app.hdj.datepick.global.common.enums.Provider;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
@@ -11,29 +12,43 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@DynamicInsert
+@DynamicUpdate
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@DynamicInsert
-@DynamicUpdate
-@Entity(name = "user")
-public class User extends BaseTimeEntity<Long> {
+@Entity
+public class User extends BaseAllTimeEntity<Long> {
 
-    @Column(name = "uid", columnDefinition = "varchar(128)", nullable = false, unique = true)
+    @Column(columnDefinition = "varchar(128)", nullable = false, unique = true)
     private String uid;
 
-    @Column(name = "nickname", columnDefinition = "varchar(16)", nullable = false)
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
+
+    @Column(columnDefinition = "varchar(16)", nullable = false)
     private String nickname;
 
-    @Column(name = "gender", nullable = false)
-    @ColumnDefault("U")
+    @Column(nullable = false)
+    @ColumnDefault("'U'")
     private Gender gender;
 
-    @Column(name = "profile_image")
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private Boolean isBanned;
+
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private Boolean isDeleted;
+
+    @Column
     private String profileImage;
 
 }

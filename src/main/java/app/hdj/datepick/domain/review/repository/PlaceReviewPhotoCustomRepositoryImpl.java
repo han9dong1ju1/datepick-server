@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.photo.repository;
+package app.hdj.datepick.domain.review.repository;
 
 
 
@@ -16,10 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 import static app.hdj.datepick.domain.photo.entity.QPlaceReviewPhoto.placeReviewPhoto;
-import static app.hdj.datepick.domain.place.entity.QPlace.place;
 
 @Slf4j
 @RequiredArgsConstructor

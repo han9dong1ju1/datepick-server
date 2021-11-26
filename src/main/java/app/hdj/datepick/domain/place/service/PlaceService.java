@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.place.service;
 
-import app.hdj.datepick.domain.photo.repository.PlaceReviewPhotoRepository;
+import app.hdj.datepick.domain.review.repository.PlaceReviewPhotoRepository;
 import app.hdj.datepick.domain.pick.repository.PlacePickRepository;
 import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
 import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
@@ -12,7 +12,6 @@ import app.hdj.datepick.domain.review.repository.PlaceReviewRepository;
 import app.hdj.datepick.global.common.dto.GeoPointDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
