@@ -9,6 +9,7 @@ import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.place.repository.PlaceRepository;
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
 import app.hdj.datepick.domain.review.repository.PlaceReviewRepository;
+import app.hdj.datepick.global.common.dto.GeoPointDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,11 @@ public class PlaceService {
 
         //Place에 작성된 Review의 Image List를 가져온다.
         return placeReviewPhotoRepository.getPlaceReviewPhotoPage(placeId, pageable);
+    }
+
+    public Page<PlaceMetaDto> geoSearchPlace(GeoPointDto geopointDto, Pageable pageable) {
+        Double distanceLimit = 0.1;  // 검색 반경 제한 (KM)
+        return placeRepository.findPlaceMetaPageByGeoPoint(geopointDto, pageable);
     }
 
 }
