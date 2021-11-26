@@ -7,9 +7,8 @@ import app.hdj.datepick.domain.place.dto.QPlaceMetaDto;
 import app.hdj.datepick.domain.place.dto.request.PlaceWithOrderDto;
 import app.hdj.datepick.domain.place.dto.request.QPlaceWithOrderDto;
 import app.hdj.datepick.domain.place.entity.Place;
-import app.hdj.datepick.domain.relation.entity.QCoursePlaceRelation;
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
-import app.hdj.datepick.domain.search.dto.GeoPointDto;
+import app.hdj.datepick.global.common.dto.GeoPointDto;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -27,7 +26,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 import static app.hdj.datepick.domain.place.entity.QPlace.place;
 import static app.hdj.datepick.domain.relation.entity.QCoursePlaceRelation.coursePlaceRelation;

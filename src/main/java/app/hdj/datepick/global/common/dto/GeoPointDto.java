@@ -1,7 +1,5 @@
-package app.hdj.datepick.domain.search.dto;
+package app.hdj.datepick.global.common.dto;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
