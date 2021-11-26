@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.photo.repository;
+package app.hdj.datepick.domain.review.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,6 +1,6 @@
-package app.hdj.datepick.domain.relation.repository;
+package app.hdj.datepick.global.relation.repository;
 
-import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
+import app.hdj.datepick.global.relation.entity.CoursePlaceRelation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;

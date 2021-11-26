@@ -50,10 +50,9 @@ public class PlaceRequestDto {//Post, Patch 에 사용
                 .category(this.category)
                 //String -> Region Enum , Exception
                 .region(Region.findByString(this.region))
-                .homepage("")
-                .blogReviewCount(0)
-                .reviewCount(0)
-                .pickCount(0)
+                .blogReviewCount(0L)
+                .reviewCount(0L)
+                .pickCount(0L)
                 .build();
     }
 

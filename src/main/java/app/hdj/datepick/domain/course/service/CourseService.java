@@ -11,10 +11,10 @@ import app.hdj.datepick.domain.course.repository.CourseRepository;
 import app.hdj.datepick.domain.pick.repository.CoursePickRepository;
 import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.place.repository.PlaceRepository;
-import app.hdj.datepick.domain.relation.repository.CoursePlaceRelationRepository;
+import app.hdj.datepick.global.relation.repository.CoursePlaceRelationRepository;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.repository.UserRepository;
-import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
+import app.hdj.datepick.global.relation.entity.CoursePlaceRelation;
 import app.hdj.datepick.global.common.enums.Region;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -93,8 +93,7 @@ public class CourseService {
 
         //코스 생성
         ModifyCourseDto modifyCourseDto = courseModifyRequsetDto.getCourse();
-        Course course = new Course();
-        course.newCourse(modifyCourseDto, user);
+        Course course = new Course(modifyCourseDto, user);
         course = courseRepository.save(course);
 
 

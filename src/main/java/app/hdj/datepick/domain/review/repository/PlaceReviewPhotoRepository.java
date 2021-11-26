@@ -1,6 +1,6 @@
-package app.hdj.datepick.domain.photo.repository;
+package app.hdj.datepick.domain.review.repository;
 
-import app.hdj.datepick.domain.photo.entity.PlaceReviewPhoto;
+import app.hdj.datepick.domain.review.entity.PlaceReviewPhoto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PlaceReviewPhotoRepository extends

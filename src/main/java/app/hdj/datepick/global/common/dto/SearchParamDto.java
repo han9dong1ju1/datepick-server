@@ -1,7 +1,6 @@
 package app.hdj.datepick.global.common.dto;
 
 import app.hdj.datepick.global.common.enums.Category;
-import app.hdj.datepick.global.common.enums.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,6 +16,6 @@ public class SearchParamDto {
 
     Category category;
 
-    Tag tag;
+    // TODO: Tags
 
 }

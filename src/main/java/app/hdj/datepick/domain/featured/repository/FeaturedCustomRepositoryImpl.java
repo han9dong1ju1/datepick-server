@@ -1,6 +1,5 @@
 package app.hdj.datepick.domain.featured.repository;
 
-import app.hdj.datepick.domain.course.dto.CourseMetaDto;
 import app.hdj.datepick.domain.course.dto.QCourseMetaDto;
 import app.hdj.datepick.domain.featured.dto.FeaturedCourseDto;
 import app.hdj.datepick.domain.featured.dto.QFeaturedCourseDto;
@@ -27,14 +26,13 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
     public List<FeaturedCourseDto> findCourseInFeaturedById(Long featuredId) {
         return jpaQueryFactory
                 .select(new QFeaturedCourseDto(
-                        courseFeaturedRelation.order,
+                        courseFeaturedRelation.courseOrder,
                         new QCourseMetaDto(
                                 course.id,
                                 course.title,
                                 course.region.stringValue(),
                                 course.expectedAt,
                                 course.pickCount,
-                                course.importCount,
                                 course.user.id
                         )))
                 .from(courseFeaturedRelation)
@@ -42,7 +40,7 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
                 .where(
                         courseFeaturedRelation.featured.id.eq(featuredId)
                 )
-                .orderBy(courseFeaturedRelation.order.asc())
+                .orderBy(courseFeaturedRelation.courseOrder.asc())
                 .fetch();
     }
 }

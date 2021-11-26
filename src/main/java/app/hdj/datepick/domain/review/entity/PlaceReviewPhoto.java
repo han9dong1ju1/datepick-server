@@ -1,6 +1,5 @@
-package app.hdj.datepick.domain.photo.entity;
+package app.hdj.datepick.domain.review.entity;
 
-import app.hdj.datepick.domain.review.entity.PlaceReview;
 import app.hdj.datepick.global.common.entity.BaseEntity;
 import lombok.*;
 
@@ -18,10 +17,10 @@ public class PlaceReviewPhoto extends BaseEntity<Long> {
     @JoinColumn(name = "review_id")
     private PlaceReview placeReview;
 
-    @Column(name = "photo_order", nullable = false)
+    @Column(nullable = false)
     private Byte photoOrder;
 
-    @Column(name = "photo_url", nullable = false)
+    @Column(nullable = false)
     private String photoUrl;
 
 }

@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.relation.entity;
+package app.hdj.datepick.global.relation.entity;
 
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.featured.entity.Featured;
@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity(name = "course_featured_relation")
+@Entity
 public class CourseFeaturedRelation extends BaseEntity<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -23,6 +23,6 @@ public class CourseFeaturedRelation extends BaseEntity<Long> {
     @JoinColumn(name = "course_id",nullable = false)
     private Course course;
 
-    @Column(name = "order", nullable = false)
-    private Byte order;
+    @Column(nullable = false)
+    private Byte courseOrder;
 }
