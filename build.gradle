@@ -45,9 +45,9 @@ dependencies {
     testImplementation 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
-    // MapStruct
-    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+    // Logback (보안 업데이트)
+    implementation 'ch.qos.logback:logback-classic:1.2.9'
+    implementation 'ch.qos.logback:logback-core:1.2.9'
 
     // QueryDSL
     implementation 'com.querydsl:querydsl-core'
@@ -55,6 +55,8 @@ dependencies {
     annotationProcessor 'com.querydsl:querydsl-apt::jpa'
     annotationProcessor 'javax.persistence:javax.persistence-api'
     annotationProcessor 'javax.annotation:javax.annotation-api'
+
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.12'
 
     // AWS
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
