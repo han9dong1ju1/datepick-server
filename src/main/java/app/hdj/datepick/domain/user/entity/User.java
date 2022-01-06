@@ -30,7 +30,7 @@ public class User extends BaseTimeEntity<Long> {
     private String nickname;
 
     @Column(name = "gender", nullable = false)
-    @ColumnDefault("U")
+    @ColumnDefault("'U'")
     private Gender gender;
 
     @Column(name = "profile_image")

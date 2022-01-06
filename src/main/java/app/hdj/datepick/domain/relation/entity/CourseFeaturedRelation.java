@@ -23,6 +23,6 @@ public class CourseFeaturedRelation extends BaseEntity<Long> {
     @JoinColumn(name = "course_id",nullable = false)
     private Course course;
 
-    @Column(name = "order", nullable = false)
-    private Byte order;
+    @Column(name = "course_order", nullable = false)
+    private Byte courseOrder;
 }
