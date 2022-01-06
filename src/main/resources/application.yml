@@ -8,10 +8,6 @@ server:
     include-message: always
     whitelabel:
       enabled: false
-# Firebase
-firebase:
-  account:
-    key-path: firebase-config.json
 # AWS S3
 cloud:
   aws:
