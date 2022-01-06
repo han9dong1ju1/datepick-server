@@ -27,7 +27,7 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
     public List<FeaturedCourseDto> findCourseInFeaturedById(Long featuredId) {
         return jpaQueryFactory
                 .select(new QFeaturedCourseDto(
-                        courseFeaturedRelation.order,
+                        courseFeaturedRelation.courseOrder,
                         new QCourseMetaDto(
                                 course.id,
                                 course.title,
@@ -42,7 +42,7 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
                 .where(
                         courseFeaturedRelation.featured.id.eq(featuredId)
                 )
-                .orderBy(courseFeaturedRelation.order.asc())
+                .orderBy(courseFeaturedRelation.courseOrder.asc())
                 .fetch();
     }
 }
