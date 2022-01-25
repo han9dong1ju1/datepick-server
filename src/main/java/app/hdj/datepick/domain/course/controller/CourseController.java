@@ -2,7 +2,7 @@ package app.hdj.datepick.domain.course.controller;
 
 import app.hdj.datepick.domain.course.dto.CourseDetailDto;
 import app.hdj.datepick.domain.course.dto.CourseMetaDto;
-import app.hdj.datepick.domain.course.dto.request.CourseModifyRequsetDto;
+import app.hdj.datepick.domain.course.dto.CourseModifyRequsetDto;
 import app.hdj.datepick.domain.course.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

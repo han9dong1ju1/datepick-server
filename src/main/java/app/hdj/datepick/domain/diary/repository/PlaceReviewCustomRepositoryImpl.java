@@ -1,11 +1,9 @@
-package app.hdj.datepick.domain.review.repository;
+package app.hdj.datepick.domain.diary.repository;
 
 
-import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
-import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
-import app.hdj.datepick.domain.review.dto.QPlaceReviewDto;
-import app.hdj.datepick.domain.review.entity.PlaceReview;
-import app.hdj.datepick.domain.review.entity.QPlaceReview;
+import app.hdj.datepick.domain.diary.dto.PlaceReviewDto;
+import app.hdj.datepick.domain.diary.dto.QPlaceReviewDto;
+import app.hdj.datepick.domain.diary.entity.PlaceReview;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static app.hdj.datepick.domain.review.entity.QPlaceReview.placeReview;
+import static app.hdj.datepick.domain.diary.entity.QPlaceReview.placeReview;
 
 
 @Slf4j

@@ -1,14 +1,14 @@
 package app.hdj.datepick.domain.place.service;
 
-import app.hdj.datepick.domain.review.repository.PlaceReviewPhotoRepository;
-import app.hdj.datepick.domain.pick.repository.PlacePickRepository;
+import app.hdj.datepick.domain.diary.repository.PlaceReviewPhotoRepository;
+import app.hdj.datepick.domain.place.repository.PlacePickRepository;
 import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
 import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
 import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
 import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.place.repository.PlaceRepository;
-import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
-import app.hdj.datepick.domain.review.repository.PlaceReviewRepository;
+import app.hdj.datepick.domain.diary.dto.PlaceReviewDto;
+import app.hdj.datepick.domain.diary.repository.PlaceReviewRepository;
 import app.hdj.datepick.global.common.dto.GeoPointDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

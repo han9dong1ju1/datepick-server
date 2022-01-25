@@ -1,7 +1,6 @@
 package app.hdj.datepick.domain.course.repository;
 
 import app.hdj.datepick.domain.course.dto.*;
-import app.hdj.datepick.domain.course.dto.request.ModifyCoursePlaceRelationDto;
 import app.hdj.datepick.domain.place.dto.QPlaceMetaDto;
 import app.hdj.datepick.domain.relation.dto.CoursePlaceRelationDto;
 import app.hdj.datepick.domain.relation.dto.QCoursePlaceRelationDto;
@@ -17,9 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-
-import org.springframework.data.domaiÏn.Pageable;
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 

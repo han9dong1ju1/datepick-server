@@ -2,7 +2,6 @@ package app.hdj.datepick.domain.diary.entity;
 
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.diary.dto.ModifyDiaryDto;
-import app.hdj.datepick.domain.review.entity.PlaceReview;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.common.entity.BaseAllTimeEntity;
 import app.hdj.datepick.global.common.enums.Style;

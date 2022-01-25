@@ -3,7 +3,7 @@ package app.hdj.datepick.domain.featured.service;
 import app.hdj.datepick.domain.featured.dto.FeaturedCourseDto;
 import app.hdj.datepick.domain.featured.dto.FeaturedDetailDto;
 import app.hdj.datepick.domain.featured.dto.FeaturedMetaDto;
-import app.hdj.datepick.domain.featured.dto.response.FeaturedDetailResponseDto;
+import app.hdj.datepick.domain.featured.dto.FeaturedDetailResponseDto;
 import app.hdj.datepick.domain.featured.repository.FeaturedRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

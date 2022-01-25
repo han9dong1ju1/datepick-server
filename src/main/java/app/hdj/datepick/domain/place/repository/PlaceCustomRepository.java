@@ -4,7 +4,7 @@ import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
 import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
 import app.hdj.datepick.domain.place.dto.request.PlaceWithOrderDto;
 import app.hdj.datepick.domain.place.entity.Place;
-import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
+import app.hdj.datepick.domain.diary.dto.PlaceReviewDto;
 import app.hdj.datepick.global.common.dto.GeoPointDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

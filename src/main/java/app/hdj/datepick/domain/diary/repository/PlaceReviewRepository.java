@@ -1,10 +1,8 @@
-package app.hdj.datepick.domain.review.repository;
+package app.hdj.datepick.domain.diary.repository;
 
-import app.hdj.datepick.domain.review.entity.PlaceReview;
+import app.hdj.datepick.domain.diary.entity.PlaceReview;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
-
-import java.util.List;
 
 
 public interface PlaceReviewRepository  extends

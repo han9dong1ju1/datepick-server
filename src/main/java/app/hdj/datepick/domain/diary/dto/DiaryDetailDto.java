@@ -1,10 +1,6 @@
 package app.hdj.datepick.domain.diary.dto;
 
 
-import app.hdj.datepick.domain.course.dto.CourseMetaDto;
-import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
-import app.hdj.datepick.domain.review.entity.PlaceReview;
-import app.hdj.datepick.global.common.enums.Style;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.querydsl.core.annotations.QueryProjection;
