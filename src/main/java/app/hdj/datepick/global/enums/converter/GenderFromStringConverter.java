@@ -1,6 +1,6 @@
-package app.hdj.datepick.global.common.enums.converter;
+package app.hdj.datepick.global.enums.converter;
 
-import app.hdj.datepick.global.common.enums.Gender;
+import app.hdj.datepick.global.enums.Gender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
 

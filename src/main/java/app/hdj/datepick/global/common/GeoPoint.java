@@ -1,4 +1,4 @@
-package app.hdj.datepick.global.common.dto;
+package app.hdj.datepick.global.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @AllArgsConstructor
-public class GeoPointDto {
+public class GeoPoint {
 
     @NotNull
     private Double latitude;

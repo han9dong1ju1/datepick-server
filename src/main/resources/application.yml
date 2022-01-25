@@ -1,7 +1,5 @@
 # Server
 server:
-  servlet:
-    context-path: /api
   error:
     include-exception: true
     include-binding-errors: always
