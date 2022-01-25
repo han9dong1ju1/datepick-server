@@ -62,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/v1/users/*").permitAll()
                     // Diary
                     //.antMatchers("/v1/diary//{\\d+}").hasAuthority("USER")
-                .anyRequest().permitAll()
+                    .anyRequest().permitAll()
                 .and()
                 // 예외 처리
                 .exceptionHandling()

@@ -1,4 +1,4 @@
-package app.hdj.datepick.global.relation.dto;
+package app.hdj.datepick.domain.relation.dto;
 
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;

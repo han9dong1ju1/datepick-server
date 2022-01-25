@@ -10,7 +10,7 @@ import app.hdj.datepick.domain.diary.entity.Diary;
 import app.hdj.datepick.domain.diary.repository.DiaryRepository;
 import app.hdj.datepick.domain.place.dto.request.PlaceWithOrderDto;
 import app.hdj.datepick.domain.place.repository.PlaceRepository;
-import app.hdj.datepick.global.relation.dto.CoursePlaceRelationDto;
+import app.hdj.datepick.domain.relation.dto.CoursePlaceRelationDto;
 import app.hdj.datepick.domain.review.dto.ModifyPlaceReviewDto;
 import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
 import app.hdj.datepick.domain.review.entity.PlaceReview;
