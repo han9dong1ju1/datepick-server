@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.tag.entity;
+package app.hdj.datepick.domain.place.entity;
 
 import app.hdj.datepick.global.common.entity.BaseEntity;
 import lombok.*;
@@ -13,13 +13,13 @@ import javax.persistence.Entity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Tag extends BaseEntity<Byte> {
+public class Category extends BaseEntity<Long> {
 
-    @Column(nullable = false)
+    @Column
     private String name;
 
     @Column
     @ColumnDefault("0")
-    private Long courseCount;
+    private Long placeCount;
 
 }

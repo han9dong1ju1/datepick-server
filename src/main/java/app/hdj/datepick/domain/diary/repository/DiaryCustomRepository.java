@@ -11,8 +11,8 @@ import java.util.List;
 
 public interface DiaryCustomRepository{
 
-    Page<DiaryMetaDto> findMyDiariesPage(Pageable pageable);
-
-    DiaryDetailDto findDiaryDetail(Long diaryId, List<PlaceReviewDto> placeReviews);
+//    Page<DiaryMetaDto> findMyDiariesPage(Pageable pageable);
+//
+//    DiaryDetailDto findDiaryDetail(Long diaryId, List<PlaceReviewDto> placeReviews);
 
 }
