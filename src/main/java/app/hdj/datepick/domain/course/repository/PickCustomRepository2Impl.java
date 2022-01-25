@@ -14,28 +14,28 @@ import static app.hdj.datepick.domain.course.entity.QCoursePick.coursePick;
 @Repository
 public class PickCustomRepository2Impl implements PickCustomRepository2 {
 
-    private final JPAQueryFactory jpaQueryFactory;
-
-    @Override
-    public List<Long> findPickedCourseIds(Long userId) {
-        return jpaQueryFactory
-                .select(coursePick.course.id)
-                .from(coursePick)
-                .where(coursePick.user.id.eq(userId))
-                .fetch();
-    }
-
-    @Override
-    public Boolean isUserPickedCourse(Long courseId, Long userId) {
-        Long isExistUserId = jpaQueryFactory
-                .select(coursePick.user.id)
-                .from(coursePick)
-                .where(coursePick.user.id.eq(userId), coursePick.course.id.eq(courseId))
-                .fetchFirst();
-        Boolean isPicked = true;
-        if (isExistUserId == null){
-            isPicked = false;
-        }
-        return isPicked;
-    }
+//    private final JPAQueryFactory jpaQueryFactory;
+//
+//    @Override
+//    public List<Long> findPickedCourseIds(Long userId) {
+//        return jpaQueryFactory
+//                .select(coursePick.course.id)
+//                .from(coursePick)
+//                .where(coursePick.user.id.eq(userId))
+//                .fetch();
+//    }
+//
+//    @Override
+//    public Boolean isUserPickedCourse(Long courseId, Long userId) {
+//        Long isExistUserId = jpaQueryFactory
+//                .select(coursePick.user.id)
+//                .from(coursePick)
+//                .where(coursePick.user.id.eq(userId), coursePick.course.id.eq(courseId))
+//                .fetchFirst();
+//        Boolean isPicked = true;
+//        if (isExistUserId == null){
+//            isPicked = false;
+//        }
+//        return isPicked;
+//    }
 }

@@ -18,4 +18,8 @@ public class BaseTimeEntity<ID extends Serializable> extends BaseEntity<ID> {
     @Column(updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
+
+    @Column
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }

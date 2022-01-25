@@ -1,6 +1,5 @@
 package app.hdj.datepick.domain.place.entity;
 
-import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.common.entity.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;

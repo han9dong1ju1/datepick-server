@@ -47,7 +47,7 @@ public class UserService {
                 user.getId(),
                 user.getNickname(),
                 user.getGender(),
-                user.getProfileImage()
+                user.getImageUrl()
         );
     }
 
@@ -57,20 +57,20 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow();
 
         MultipartFile image = userModifyDto.getImage();
-        String imageKey = user.getProfileImage();
+        String imageKey = user.getImageUrl();
         if (image != null) {
             if (imageKey != null) {
                 amazonS3Service.remove(imageKey);
             }
             try {
                 String updatedKey = amazonS3Service.add(image, String.format("profile-image/%s", user.getUid()));
-                user.setProfileImage(updatedKey);
+                user.setImageUrl(updatedKey);
             } catch (IOException e) {
                 throw new RuntimeException("S3 프로필 이미지 없로드 실패");
             }
         } else if (removePhoto && imageKey != null) {
             amazonS3Service.remove(imageKey);
-            user.setProfileImage(null);
+            user.setImageUrl(null);
         }
 
         user.setGender(userModifyDto.getGender());
@@ -98,7 +98,7 @@ public class UserService {
         }
 
         // S3 프로필 사진 삭제
-        String profileUrl = user.getProfileImage();
+        String profileUrl = user.getImageUrl();
         if (profileUrl != null) {
             amazonS3Service.remove(profileUrl);
         }
@@ -151,7 +151,7 @@ public class UserService {
         User user = User.builder()
                 .uid(uid)
                 .nickname(name)
-                .profileImage(picture)
+                .imageUrl(picture)
                 .build();
         user = userRepository.save(user);
         em.refresh(user);

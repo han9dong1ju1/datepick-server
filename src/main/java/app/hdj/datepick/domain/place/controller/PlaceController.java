@@ -18,33 +18,33 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("v1/places")
 public class PlaceController {
 
-    private final PlaceService placeService;
-
-    @GetMapping("/{placeId}")
-    public PlaceDetailDto getPlace(@PathVariable Long placeId){
-        return placeService.getPlace(placeId);
-    }
-
-    @GetMapping("/{placeId}/photos")
-    public Page<String> getPlacePhotos(@PathVariable Long placeId, Pageable pageable){
-        return placeService.getPlaceImagePage(placeId, pageable);
-    }
-
-    @GetMapping("")
-    public Page<PlaceMetaDto> getPlaces(@RequestParam(value = "request_type") String requestType , Pageable pageable){
-        if(requestType.equals("picked")){
-            return placeService.getPickedPlacePage(pageable);
-        }else if (requestType.equals("recommended")){
-            return placeService.getRecommendedPlaceList(pageable);
-        }else {
-            //TODO RequestParam Validation Exception
-            return null;
-        }
-    }
-
-    @PostMapping("/add")
-    public Place addPlace(@RequestBody PlaceRequestDto placeRequestDto){
-        return placeService.addPlace(placeRequestDto);
-    }
+//    private final PlaceService placeService;
+//
+//    @GetMapping("/{placeId}")
+//    public PlaceDetailDto getPlace(@PathVariable Long placeId){
+//        return placeService.getPlace(placeId);
+//    }
+//
+//    @GetMapping("/{placeId}/photos")
+//    public Page<String> getPlacePhotos(@PathVariable Long placeId, Pageable pageable){
+//        return placeService.getPlaceImagePage(placeId, pageable);
+//    }
+//
+//    @GetMapping("")
+//    public Page<PlaceMetaDto> getPlaces(@RequestParam(value = "request_type") String requestType , Pageable pageable){
+//        if(requestType.equals("picked")){
+//            return placeService.getPickedPlacePage(pageable);
+//        }else if (requestType.equals("recommended")){
+//            return placeService.getRecommendedPlaceList(pageable);
+//        }else {
+//            //TODO RequestParam Validation Exception
+//            return null;
+//        }
+//    }
+//
+//    @PostMapping("/add")
+//    public Place addPlace(@RequestBody PlaceRequestDto placeRequestDto){
+//        return placeService.addPlace(placeRequestDto);
+//    }
 
 }

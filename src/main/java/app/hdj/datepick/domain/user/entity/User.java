@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.user.entity;
 
-import app.hdj.datepick.global.common.entity.BaseAllTimeEntity;
+import app.hdj.datepick.global.common.entity.BaseTimeEntity;
 import app.hdj.datepick.global.common.enums.Gender;
 import app.hdj.datepick.global.common.enums.Provider;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -24,7 +24,7 @@ import javax.persistence.Enumerated;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class User extends BaseAllTimeEntity<Long> {
+public class User extends BaseTimeEntity<Long> {
 
     @Column(columnDefinition = "varchar(128)", nullable = false, unique = true)
     private String uid;
@@ -36,8 +36,7 @@ public class User extends BaseAllTimeEntity<Long> {
     @Column(columnDefinition = "varchar(16)", nullable = false)
     private String nickname;
 
-    @Column(nullable = false)
-    @ColumnDefault("'U'")
+    @Column
     private Gender gender;
 
     @Column(nullable = false)
@@ -49,6 +48,6 @@ public class User extends BaseAllTimeEntity<Long> {
     private Boolean isDeleted;
 
     @Column
-    private String profileImage;
+    private String imageUrl;
 
 }

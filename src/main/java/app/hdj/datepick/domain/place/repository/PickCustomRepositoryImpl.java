@@ -15,30 +15,30 @@ import static app.hdj.datepick.domain.place.entity.QPlacePick.placePick;
 @Repository
 public class PickCustomRepositoryImpl implements PickCustomRepository {
 
-    private final JPAQueryFactory jpaQueryFactory;
-
-    @Override
-    public List<Long> findPickedPlaceIds(Long userId) {
-        return jpaQueryFactory
-                .select(placePick.place.id)
-                .from(placePick)
-                .where(placePick.user.id.eq(userId))
-                .fetch();
-    }
-
-
-    @Override
-    public Boolean isUserPickedPlace(Long placeId, Long userId) {
-        Long isExistUserId = jpaQueryFactory
-                .select(placePick.user.id)
-                .from(placePick)
-                .where(placePick.user.id.eq(userId), placePick.place.id.eq(placeId))
-                .fetchFirst();
-        Boolean isPicked = true;
-        if (isExistUserId == null){
-            isPicked = false;
-        }
-        return isPicked;
-    }
+//    private final JPAQueryFactory jpaQueryFactory;
+//
+//    @Override
+//    public List<Long> findPickedPlaceIds(Long userId) {
+//        return jpaQueryFactory
+//                .select(placePick.place.id)
+//                .from(placePick)
+//                .where(placePick.user.id.eq(userId))
+//                .fetch();
+//    }
+//
+//
+//    @Override
+//    public Boolean isUserPickedPlace(Long placeId, Long userId) {
+//        Long isExistUserId = jpaQueryFactory
+//                .select(placePick.user.id)
+//                .from(placePick)
+//                .where(placePick.user.id.eq(userId), placePick.place.id.eq(placeId))
+//                .fetchFirst();
+//        Boolean isPicked = true;
+//        if (isExistUserId == null){
+//            isPicked = false;
+//        }
+//        return isPicked;
+//    }
 
 }

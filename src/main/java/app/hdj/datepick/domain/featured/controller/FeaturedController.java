@@ -13,22 +13,22 @@ import java.util.List;
 @RequestMapping("v1/featured")
 public class FeaturedController {
 
-    private final FeaturedService featuredService;
-
-    // TODO: Paging 처리한 리스트 가져오는 API
-    @GetMapping("")
-    public List<FeaturedMetaDto> getFeaturedMetaList() {
-        return featuredService.getFeaturedList();
-    }
-
-    @GetMapping("/pinned")
-    public List<FeaturedMetaDto> getPinnedFeaturedMetaList() {
-        return featuredService.getPinnedFeaturedList();
-    }
-
-    @GetMapping("/{featuredId}")
-    public FeaturedDetailResponseDto getFeatured(@PathVariable Long featuredId) {
-        return featuredService.getFeatured(featuredId);
-    }
+//    private final FeaturedService featuredService;
+//
+//    // TODO: Paging 처리한 리스트 가져오는 API
+//    @GetMapping("")
+//    public List<FeaturedMetaDto> getFeaturedMetaList() {
+//        return featuredService.getFeaturedList();
+//    }
+//
+//    @GetMapping("/pinned")
+//    public List<FeaturedMetaDto> getPinnedFeaturedMetaList() {
+//        return featuredService.getPinnedFeaturedList();
+//    }
+//
+//    @GetMapping("/{featuredId}")
+//    public FeaturedDetailResponseDto getFeatured(@PathVariable Long featuredId) {
+//        return featuredService.getFeatured(featuredId);
+//    }
 
 }
