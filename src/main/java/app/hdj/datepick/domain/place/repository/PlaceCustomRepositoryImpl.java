@@ -1,35 +1,14 @@
 package app.hdj.datepick.domain.place.repository;
 
-import app.hdj.datepick.domain.place.dto.PlaceDetailDto;
-import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
 import app.hdj.datepick.domain.place.dto.QPlaceDetailDto;
 import app.hdj.datepick.domain.place.dto.QPlaceMetaDto;
-import app.hdj.datepick.domain.place.dto.request.PlaceWithOrderDto;
 import app.hdj.datepick.domain.place.dto.request.QPlaceWithOrderDto;
-import app.hdj.datepick.domain.place.entity.Place;
-import app.hdj.datepick.domain.diary.dto.PlaceReviewDto;
-import app.hdj.datepick.global.common.dto.GeoPointDto;
-import com.querydsl.core.QueryResults;
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberExpression;
-import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 import static app.hdj.datepick.domain.place.entity.QPlace.place;
 import static app.hdj.datepick.domain.relation.entity.QCoursePlaceRelation.coursePlaceRelation;
-import static com.querydsl.core.types.dsl.MathExpressions.*;
 
 
 @Slf4j

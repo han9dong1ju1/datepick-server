@@ -1,4 +1,4 @@
-package app.hdj.datepick.global.common.enums.converter;
+package app.hdj.datepick.global.enums.converter;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;

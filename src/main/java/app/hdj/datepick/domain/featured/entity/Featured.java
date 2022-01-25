@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.featured.entity;
 
-import app.hdj.datepick.global.common.entity.BaseTimeEntity;
+import app.hdj.datepick.global.entity.BaseTimeEntity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 

@@ -1,8 +1,8 @@
 package app.hdj.datepick.domain.user.entity;
 
-import app.hdj.datepick.global.common.entity.BaseTimeEntity;
-import app.hdj.datepick.global.common.enums.Gender;
-import app.hdj.datepick.global.common.enums.Provider;
+import app.hdj.datepick.global.entity.BaseTimeEntity;
+import app.hdj.datepick.global.enums.Gender;
+import app.hdj.datepick.global.enums.Provider;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;

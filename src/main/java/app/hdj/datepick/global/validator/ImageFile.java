@@ -1,4 +1,4 @@
-package app.hdj.datepick.global.common.validator;
+package app.hdj.datepick.global.validator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

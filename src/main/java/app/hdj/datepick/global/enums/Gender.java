@@ -1,4 +1,4 @@
-package app.hdj.datepick.global.common.enums;
+package app.hdj.datepick.global.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

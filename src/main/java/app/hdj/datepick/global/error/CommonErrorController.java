@@ -1,6 +1,6 @@
 package app.hdj.datepick.global.error;
 
-import app.hdj.datepick.global.common.dto.BaseResponseDto;
+import app.hdj.datepick.global.common.BaseResponse;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,8 @@ public class CommonErrorController extends AbstractErrorController {
     }
 
     @RequestMapping
-    public ResponseEntity<BaseResponseDto<Object>> error(HttpServletRequest request) {
-        return new ResponseEntity<>(new BaseResponseDto<>("Wrong path", null, null), getStatus(request));
+    public ResponseEntity<BaseResponse<Object>> error(HttpServletRequest request) {
+        return new ResponseEntity<>(new BaseResponse<>("Wrong path", null, null), getStatus(request));
     }
 
 }

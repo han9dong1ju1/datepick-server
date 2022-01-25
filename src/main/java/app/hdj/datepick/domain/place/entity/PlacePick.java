@@ -1,7 +1,7 @@
 package app.hdj.datepick.domain.place.entity;
 
 import app.hdj.datepick.domain.user.entity.User;
-import app.hdj.datepick.global.common.entity.BaseTimeEntity;
+import app.hdj.datepick.global.entity.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 

@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.user.entity;
 
-import app.hdj.datepick.global.common.entity.BaseTimeEntity;
+import app.hdj.datepick.global.entity.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.Column;
