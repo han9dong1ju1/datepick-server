@@ -4,8 +4,8 @@ import app.hdj.datepick.domain.course.dto.CourseDetailDto;
 import app.hdj.datepick.domain.course.dto.CourseMetaDto;
 import app.hdj.datepick.domain.course.dto.CoursePlaceDetailRelationDto;
 import app.hdj.datepick.domain.course.dto.request.ModifyCoursePlaceRelationDto;
-import app.hdj.datepick.global.relation.dto.CoursePlaceRelationDto;
-import app.hdj.datepick.global.relation.entity.CoursePlaceRelation;
+import app.hdj.datepick.domain.relation.dto.CoursePlaceRelationDto;
+import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -1,7 +1,7 @@
 package app.hdj.datepick.domain.featured.entity;
 
 import app.hdj.datepick.global.common.entity.BaseAllTimeEntity;
-import app.hdj.datepick.global.relation.entity.CourseFeaturedRelation;
+import app.hdj.datepick.domain.relation.entity.CourseFeaturedRelation;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 

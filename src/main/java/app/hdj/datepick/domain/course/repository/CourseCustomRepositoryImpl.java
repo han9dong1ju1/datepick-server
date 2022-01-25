@@ -3,9 +3,9 @@ package app.hdj.datepick.domain.course.repository;
 import app.hdj.datepick.domain.course.dto.*;
 import app.hdj.datepick.domain.course.dto.request.ModifyCoursePlaceRelationDto;
 import app.hdj.datepick.domain.place.dto.QPlaceMetaDto;
-import app.hdj.datepick.global.relation.dto.CoursePlaceRelationDto;
-import app.hdj.datepick.global.relation.dto.QCoursePlaceRelationDto;
-import app.hdj.datepick.global.relation.entity.CoursePlaceRelation;
+import app.hdj.datepick.domain.relation.dto.CoursePlaceRelationDto;
+import app.hdj.datepick.domain.relation.dto.QCoursePlaceRelationDto;
+import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domaiÏn.Pageable;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
@@ -27,7 +27,7 @@ import java.util.List;
 
 import static app.hdj.datepick.domain.course.entity.QCourse.course;
 import static app.hdj.datepick.domain.place.entity.QPlace.place;
-import static app.hdj.datepick.global.relation.entity.QCoursePlaceRelation.coursePlaceRelation;
+import static app.hdj.datepick.domain.relation.entity.QCoursePlaceRelation.coursePlaceRelation;
 
 @Slf4j
 @RequiredArgsConstructor
