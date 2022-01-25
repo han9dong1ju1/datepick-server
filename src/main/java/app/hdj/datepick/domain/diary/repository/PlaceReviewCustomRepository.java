@@ -1,7 +1,7 @@
-package app.hdj.datepick.domain.review.repository;
+package app.hdj.datepick.domain.diary.repository;
 
-import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
-import app.hdj.datepick.domain.review.entity.PlaceReview;
+import app.hdj.datepick.domain.diary.dto.PlaceReviewDto;
+import app.hdj.datepick.domain.diary.entity.PlaceReview;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

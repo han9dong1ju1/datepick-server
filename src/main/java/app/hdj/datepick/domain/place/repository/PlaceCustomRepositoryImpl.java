@@ -7,7 +7,7 @@ import app.hdj.datepick.domain.place.dto.QPlaceMetaDto;
 import app.hdj.datepick.domain.place.dto.request.PlaceWithOrderDto;
 import app.hdj.datepick.domain.place.dto.request.QPlaceWithOrderDto;
 import app.hdj.datepick.domain.place.entity.Place;
-import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
+import app.hdj.datepick.domain.diary.dto.PlaceReviewDto;
 import app.hdj.datepick.global.common.dto.GeoPointDto;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;

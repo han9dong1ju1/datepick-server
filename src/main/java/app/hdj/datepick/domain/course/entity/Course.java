@@ -1,8 +1,7 @@
 package app.hdj.datepick.domain.course.entity;
 
-import app.hdj.datepick.domain.course.dto.request.ModifyCourseDto;
+import app.hdj.datepick.domain.course.dto.ModifyCourseDto;
 import app.hdj.datepick.domain.diary.entity.Diary;
-import app.hdj.datepick.domain.pick.entity.CoursePick;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.common.entity.BaseAllTimeEntity;
 import app.hdj.datepick.domain.relation.entity.CourseFeaturedRelation;

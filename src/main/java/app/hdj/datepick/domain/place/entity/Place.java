@@ -1,7 +1,7 @@
 package app.hdj.datepick.domain.place.entity;
 
 import app.hdj.datepick.domain.place.dto.request.PlaceRequestDto;
-import app.hdj.datepick.domain.review.entity.PlaceReview;
+import app.hdj.datepick.domain.diary.entity.PlaceReview;
 import app.hdj.datepick.global.common.entity.BaseAllTimeEntity;
 import app.hdj.datepick.global.common.enums.Region;
 import lombok.*;

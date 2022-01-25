@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.review.service;
+package app.hdj.datepick.domain.diary.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

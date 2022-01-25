@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.review.repository;
+package app.hdj.datepick.domain.diary.repository;
 
 
 

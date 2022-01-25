@@ -5,10 +5,7 @@ import app.hdj.datepick.domain.diary.dto.DiaryDetailDto;
 import app.hdj.datepick.domain.diary.dto.DiaryMetaDto;
 import app.hdj.datepick.domain.diary.dto.QDiaryDetailDto;
 import app.hdj.datepick.domain.diary.dto.QDiaryMetaDto;
-import app.hdj.datepick.domain.diary.entity.QDiary;
-import app.hdj.datepick.domain.review.dto.PlaceReviewDto;
-import app.hdj.datepick.domain.review.entity.PlaceReview;
-import app.hdj.datepick.domain.review.entity.QPlaceReview;
+import app.hdj.datepick.domain.diary.dto.PlaceReviewDto;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -27,7 +24,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static app.hdj.datepick.domain.diary.entity.QDiary.diary;
-import static app.hdj.datepick.domain.review.entity.QPlaceReview.placeReview;
 
 @Slf4j
 @RequiredArgsConstructor

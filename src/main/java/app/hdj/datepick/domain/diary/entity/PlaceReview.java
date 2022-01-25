@@ -1,12 +1,11 @@
-package app.hdj.datepick.domain.review.entity;
+package app.hdj.datepick.domain.diary.entity;
 
 import app.hdj.datepick.domain.diary.entity.Diary;
 import app.hdj.datepick.domain.place.entity.Place;
-import app.hdj.datepick.domain.review.dto.ModifyPlaceReviewDto;
+import app.hdj.datepick.domain.diary.dto.ModifyPlaceReviewDto;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.common.entity.BaseAllTimeEntity;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
