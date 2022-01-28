@@ -16,4 +16,4 @@ spring:
 # Firebase
 firebase:
   account:
-    key-path: firebase-config.json
+    key-path: firebase-config-prod.json

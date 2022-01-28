@@ -6,6 +6,22 @@ server:
     include-message: always
     whitelabel:
       enabled: false
+
+# Spring
+spring:
+  profiles:
+    default: dev
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB       # TODO
+      max-request-size: 215MB   # TODO
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration
+
 # AWS S3
 cloud:
   aws:
@@ -18,6 +34,7 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
+
 # Security
 security:
   firebase-props:
@@ -58,17 +75,3 @@ security:
     - Id-Token
   exposed-headers:
     - X-Xsrf-Token
-# Spring
-spring:
-  profiles:
-    default: dev
-  servlet:
-    multipart:
-      enabled: true
-      max-file-size: 10MB       # TODO
-      max-request-size: 215MB   # TODO
-  autoconfigure:
-    exclude:
-      - org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration
-      - org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration
-      - org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration
