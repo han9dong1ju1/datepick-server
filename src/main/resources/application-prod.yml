@@ -8,10 +8,15 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     username: hdjadmin
     password: tlrmsldpf2773
+    redis:
+      host: datepick-redis-001.cz4fdc.0001.apn2.cache.amazonaws.com
+      port: 6379
+
   jpa:
     hibernate:
       ddl-auto: none
     show-sql: false
+
 
 # Firebase
 firebase:
