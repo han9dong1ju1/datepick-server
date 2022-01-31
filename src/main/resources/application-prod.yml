@@ -12,6 +12,9 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: false
+  redis:
+    host: datepick-redis-001.cz4fdc.0001.apn2.cache.amazonaws.com
+    port: 6379
 
 # Firebase
 firebase:

@@ -21,6 +21,11 @@ spring:
       - org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration
       - org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration
       - org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration
+  datasource:
+    redis:
+      host: localhost
+      port: 6379
+
 
 # AWS S3
 cloud:
