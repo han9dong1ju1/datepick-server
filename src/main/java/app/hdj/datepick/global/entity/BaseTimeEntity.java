@@ -1,6 +1,7 @@
 package app.hdj.datepick.global.entity;
 
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,11 +16,13 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class BaseTimeEntity<ID extends Serializable> extends BaseEntity<ID> {
-    @Column(updatable = false)
+    @Column(updatable = false, nullable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @Column
+    @Column(nullable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     @LastModifiedDate
     private LocalDateTime updatedAt;
 }
