@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Getter
 @MappedSuperclass
 @EqualsAndHashCode(of = {"id"})
-public class BaseEntity<ID extends Serializable> {
+public class BaseEntity<ID extends Serializable> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
