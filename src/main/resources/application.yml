@@ -1,12 +1,3 @@
-# Server
-server:
-  error:
-    include-exception: true
-    include-binding-errors: always
-    include-message: always
-    whitelabel:
-      enabled: false
-
 # Spring
 spring:
   profiles:
