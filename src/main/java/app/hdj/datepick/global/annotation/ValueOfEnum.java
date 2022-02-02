@@ -1,4 +1,6 @@
-package app.hdj.datepick.global.validator;
+package app.hdj.datepick.global.annotation;
+
+import app.hdj.datepick.global.annotation.validator.ValueOfEnumValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -9,11 +11,10 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {ImageFileValidator.class})
-public @interface ImageFile {
-    String message() default "Invalid image file";
-
+@Constraint(validatedBy = ValueOfEnumValidator.class)
+public @interface ValueOfEnum {
+    Class<? extends Enum<?>> enumClass();
+    String message() default "{enumClass} 타입이 아닙니다";
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 }
