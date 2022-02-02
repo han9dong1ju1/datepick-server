@@ -1,10 +1,11 @@
 package app.hdj.datepick.global.config.security.handler;
 
+import app.hdj.datepick.global.common.BaseResponse;
+import app.hdj.datepick.global.error.enums.ErrorCode;
+import com.fasterxml.jackson.core.json.JsonWriteFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 import javax.servlet.ServletException;
@@ -15,12 +16,20 @@ import java.io.IOException;
 @Slf4j
 public class AuthorizationExceptionHandler implements AccessDeniedHandler {
 
+    private final ObjectMapper objectMapper;
+
+    public AuthorizationExceptionHandler() {
+        objectMapper = new ObjectMapper();
+        objectMapper.getFactory().configure(JsonWriteFeature.ESCAPE_NON_ASCII.mappedFeature(), true);
+    }
+
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         if (!response.isCommitted()) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            log.debug("{}", authentication);
-            response.sendError(HttpStatus.FORBIDDEN.value(), "권한이 없습니다: " + accessDeniedException.getMessage());
+            response.setStatus(ErrorCode.ACCESS_DENIED.getStatus());
+            response.getWriter().print(objectMapper.writeValueAsString(
+                    new BaseResponse<>(ErrorCode.ACCESS_DENIED.getMessage(), ErrorCode.ACCESS_DENIED.toString()))
+            );
         }
     }
 

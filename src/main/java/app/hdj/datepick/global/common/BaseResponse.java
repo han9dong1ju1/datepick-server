@@ -17,6 +17,12 @@ public class BaseResponse<T> {
         this.data = data;
     }
 
+    public BaseResponse(String message, String error) {
+        this.message = message;
+        this.error = error;
+        this.data = null;
+    }
+
     // 커스텀 예외 응답 생성
     public BaseResponse(ErrorCode errorCode) {
         this.message = errorCode.getMessage();

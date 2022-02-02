@@ -6,6 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface TokenUtil {
 
-    public Authentication getAuthentication(HttpServletRequest request);
+    Authentication getAuthentication(HttpServletRequest request);
 
 }
