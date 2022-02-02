@@ -23,12 +23,17 @@ public class FeaturedController {
 
     @GetMapping("")
     public Page<Featured> getFeaturedMetaList(@RequestParam(value = "is_pinned") Boolean isPinned,
-                                              @RequestParam(value = "course_id") Long courseId,
+                                              @RequestParam(value = "course_id", required = false) Long courseId,
                                               Pageable pageable
                                                     ) {
 
         //FeaturedRequestParam requestParam = new FeaturedRequestParam(isPinned, courseId);
-        return featuredService.getFeaturedPage(isPinned, pageable);
+        if (courseId == null) {
+            return featuredService.getFeaturedPage(isPinned, pageable);
+        } else {
+            return featuredService.getFeaturedPage(isPinned, courseId, pageable);
+        }
+
     }
 //
 //    @GetMapping("/pinned")

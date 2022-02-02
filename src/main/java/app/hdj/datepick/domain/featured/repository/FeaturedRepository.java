@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FeaturedRepository extends
-        JpaRepository<Featured, Long> {
-        //FeaturedCustomRepository,
-        //QuerydslPredicateExecutor<Featured> {
+        JpaRepository<Featured, Long>,
+        FeaturedCustomRepository,
+        QuerydslPredicateExecutor<Featured> {
 
     Page<Featured> findByIsPinnedOrderByCreatedAtAsc(Boolean isPinned, Pageable pageable);
 //    <T> List<T> findAllBy(Class<T> type);
