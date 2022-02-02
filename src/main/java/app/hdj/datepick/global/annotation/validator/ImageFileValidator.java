@@ -1,5 +1,6 @@
-package app.hdj.datepick.global.validator;
+package app.hdj.datepick.global.annotation.validator;
 
+import app.hdj.datepick.global.annotation.ImageFile;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

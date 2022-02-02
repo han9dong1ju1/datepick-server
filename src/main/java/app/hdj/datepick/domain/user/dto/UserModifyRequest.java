@@ -1,31 +1,23 @@
 package app.hdj.datepick.domain.user.dto;
 
+import app.hdj.datepick.global.annotation.ValueOfEnum;
 import app.hdj.datepick.global.enums.Gender;
-import app.hdj.datepick.global.validator.ImageFile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserModifyDto {
+public class UserModifyRequest {
 
-    @NotNull
-    private Gender gender;
+    @ValueOfEnum(enumClass = Gender.class)
+    private String gender;
 
-    @NotEmpty
     @Length(max = 16)
     private String nickname;
-
-    @ImageFile
-    private MultipartFile image;
 
 }
