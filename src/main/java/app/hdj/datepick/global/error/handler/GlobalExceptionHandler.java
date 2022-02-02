@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,10 +38,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(response, status);
     }
 
+    //
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public BaseResponse<Object> handleAccessDeniedException(AccessDeniedException e) {
+        return new BaseResponse<>(ErrorCode.ACCESS_DENIED);
+    }
+
     // 커스텀 예외 처리
     @ExceptionHandler(CustomException.class)
     public BaseResponse<Object> handleCustomException(CustomException e) {
-        return new BaseResponse<>(e.getErrorCode());
+        return new BaseResponse<>(e.getMessage(), e.getCode());
     }
 
     // 그 외 모든 예외 처리

@@ -1,7 +1,7 @@
 package app.hdj.datepick.global.config.security.filter;
 
-import app.hdj.datepick.global.config.security.util.FirebaseAuthTokenUtil;
 import app.hdj.datepick.global.config.security.util.TokenUtil;
+import app.hdj.datepick.global.error.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
@@ -15,11 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-public class TokenAuthFilter extends OncePerRequestFilter {
+public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenUtil tokenUtil;
 
-    public TokenAuthFilter(TokenUtil tokenUtil) {
+    public TokenAuthenticationFilter(TokenUtil tokenUtil) {
         this.tokenUtil = tokenUtil;
     }
 
@@ -27,9 +27,24 @@ public class TokenAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        Authentication authentication = tokenUtil.getAuthentication(request);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Authentication authentication = getAuthentication(request);
+        if (authentication != null) {
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
         filterChain.doFilter(request, response);
+    }
+
+    private Authentication getAuthentication(HttpServletRequest request) {
+        Authentication auth = null;
+
+        try {
+            auth = tokenUtil.getAuthentication(request);
+        } catch (CustomException e) {
+            log.debug("caught auth exception");
+            request.setAttribute("TokenException", e);
+        }
+
+        return auth;
     }
 
 }
