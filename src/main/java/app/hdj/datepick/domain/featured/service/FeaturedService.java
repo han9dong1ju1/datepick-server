@@ -20,8 +20,7 @@ public class FeaturedService {
         return featuredRepository.findByIsPinnedOrderByCreatedAtAsc(isPinned, pageable);
     }
     public Page<Featured> getFeaturedPage(Boolean isPinned, Long courseId, Pageable pageable) {
-
-        return null;
+        return featuredRepository.findFeaturedByIsPinnedAndCourseId(isPinned, courseId, pageable);
     }
 //    public List<FeaturedMetaDto> getFeaturedList() {
 //        return featuredRepository.findAllBy(FeaturedMetaDto.class);
