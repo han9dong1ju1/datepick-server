@@ -1,10 +1,14 @@
 package app.hdj.datepick.domain.featured.controller;
 
+import app.hdj.datepick.domain.featured.entity.Featured;
 import app.hdj.datepick.domain.featured.params.FeaturedRequestParam;
 import app.hdj.datepick.domain.featured.service.FeaturedService;
 import app.hdj.datepick.global.common.PagingParam;
 import app.hdj.datepick.global.enums.Sort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,17 +22,13 @@ public class FeaturedController {
     private final FeaturedService featuredService;
 
     @GetMapping("")
-    public FeaturedRequestParam getFeaturedMetaList(@RequestParam(value = "is_pinned") Boolean isPinned,
-                                                    @RequestParam(value = "course_id") Long courseId,
-                                                    @RequestParam(value = "page") Long page,
-                                                    @RequestParam(value = "size") Long size,
-                                                    @RequestParam(value = "sort") String sort
+    public Page<Featured> getFeaturedMetaList(@RequestParam(value = "is_pinned") Boolean isPinned,
+                                              @RequestParam(value = "course_id") Long courseId,
+                                              Pageable pageable
                                                     ) {
 
-        FeaturedRequestParam requestParam = new FeaturedRequestParam(isPinned, courseId);
-        PagingParam pagingParam = new PagingParam(page, size, Sort.from(sort));
-
-        return requestParam;
+        //FeaturedRequestParam requestParam = new FeaturedRequestParam(isPinned, courseId);
+        return featuredService.getFeaturedPage(isPinned, pageable);
     }
 //
 //    @GetMapping("/pinned")

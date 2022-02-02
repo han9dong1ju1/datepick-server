@@ -3,15 +3,18 @@ package app.hdj.datepick.domain.featured.repository;
 import app.hdj.datepick.domain.course.dto.QCourseMetaDto;
 import app.hdj.datepick.domain.featured.dto.FeaturedCourseDto;
 import app.hdj.datepick.domain.featured.dto.QFeaturedCourseDto;
+import app.hdj.datepick.domain.featured.entity.Featured;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static app.hdj.datepick.domain.course.entity.QCourse.course;
+import static app.hdj.datepick.domain.featured.entity.QFeatured.featured;
 import static app.hdj.datepick.domain.relation.entity.QCourseFeaturedRelation.courseFeaturedRelation;
 
 @Slf4j
@@ -19,15 +22,8 @@ import static app.hdj.datepick.domain.relation.entity.QCourseFeaturedRelation.co
 @RequiredArgsConstructor
 @Repository
 public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
-
     private final JPAQueryFactory jpaQueryFactory;
-
-    @Override
-    public List<FeaturedCourseDto> findCourseInFeaturedById(Long featuredId) {
-        return null;
-    }
-
-    //    @Override
+//    @Override
 //    public List<FeaturedCourseDto> findCourseInFeaturedById(Long featuredId) {
 //        return jpaQueryFactory
 //                .select(new QFeaturedCourseDto(
