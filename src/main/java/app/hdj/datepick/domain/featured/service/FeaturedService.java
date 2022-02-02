@@ -1,5 +1,6 @@
 package app.hdj.datepick.domain.featured.service;
 
+import app.hdj.datepick.domain.featured.repository.FeaturedRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class FeaturedService {
 
-//    private final FeaturedRepository featuredRepository;
-//
+    private final FeaturedRepository featuredRepository;
+
 //    // TODO: 삭제
 //    public List<FeaturedMetaDto> getFeaturedList() {
 //        return featuredRepository.findAllBy(FeaturedMetaDto.class);
