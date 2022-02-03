@@ -6,9 +6,12 @@ import app.hdj.datepick.domain.user.dto.UserRegisterRequest;
 import app.hdj.datepick.domain.user.dto.UserUnregisterDto;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.repository.UserRepository;
-import app.hdj.datepick.global.config.s3.AmazonS3Service;
+import app.hdj.datepick.global.common.ImageUrl;
+import app.hdj.datepick.global.config.file.FileService;
 import app.hdj.datepick.global.enums.Gender;
 import app.hdj.datepick.global.enums.Provider;
+import app.hdj.datepick.global.error.enums.ErrorCode;
+import app.hdj.datepick.global.error.exception.CustomException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -16,10 +19,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -30,13 +35,13 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final AmazonS3Service amazonS3Service;
+    private final FileService fileService;
 
     @PersistenceContext
     private final EntityManager em;
 
     public UserPublic getPublicUser(Long id) {
-        User user = userRepository.findUserByIsDeletedFalseAndIsBannedFalseAndId(id).orElseThrow();
+        User user = userRepository.findById(id).orElseThrow();
         return new UserPublic(
                 user.getId(),
                 user.getNickname(),
@@ -63,6 +68,35 @@ public class UserService {
         }
 
         return userRepository.save(user);
+    }
+
+    @Transactional
+    public ImageUrl addUserImage(Long userId, MultipartFile image) {
+        User user = userRepository.findById(userId).orElseThrow();
+        String imageUrl = user.getImageUrl();
+
+        if (imageUrl != null) {
+            throw new CustomException(ErrorCode.FILE_ALREADY_EXISTS);
+        }
+        imageUrl = fileService.add(image, "profile-image/" + userId);
+        user.setImageUrl(imageUrl);
+        userRepository.save(user);
+
+        return new ImageUrl(imageUrl);
+    }
+
+    @Transactional
+    public void removeUserImage(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        String imageUrl = user.getImageUrl();
+        if (imageUrl == null) {
+            throw new NoSuchElementException();
+        }
+
+        user.setImageUrl(null);
+        userRepository.save(user);
+
+        fileService.remove(imageUrl);
     }
 
     @Transactional
@@ -138,6 +172,7 @@ public class UserService {
     @Transactional
     public void unregisterUser(Long userId, UserUnregisterDto userUnregisterRequestDto) {
         User user = userRepository.findById(userId).orElseThrow();
+        String imageUrl = user.getImageUrl();
 
         // TODO: 삭제 사유 DB에 저장
         log.debug("User Delete 삭제 사유: {}", userUnregisterRequestDto.getReason());
@@ -155,9 +190,8 @@ public class UserService {
         }
 
         // S3 프로필 사진 삭제
-        String profileUrl = user.getImageUrl();
-        if (profileUrl != null) {
-            amazonS3Service.remove(profileUrl);
+        if (imageUrl != null) {
+            fileService.remove(imageUrl);
         }
     }
 
