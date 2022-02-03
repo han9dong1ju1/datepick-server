@@ -4,15 +4,13 @@ import app.hdj.datepick.domain.featured.entity.Featured;
 import app.hdj.datepick.domain.featured.params.FeaturedRequestParam;
 import app.hdj.datepick.domain.featured.service.FeaturedService;
 import app.hdj.datepick.global.common.PagingParam;
-import app.hdj.datepick.global.enums.Sort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -24,7 +22,7 @@ public class FeaturedController {
     @GetMapping("")
     public Page<Featured> getFeaturedMetaList(@RequestParam(value = "is_pinned") Boolean isPinned,
                                               @RequestParam(value = "course_id", required = false) Long courseId,
-                                              Pageable pageable
+                                              @PageableDefault(sort="created_at", direction = Sort.Direction.DESC) Pageable pageable
                                                     ) {
 
         //FeaturedRequestParam requestParam = new FeaturedRequestParam(isPinned, courseId);
@@ -35,6 +33,11 @@ public class FeaturedController {
         }
 
     }
+    @GetMapping("{featuredId}")
+    public Featured getFeaturedMetaList(@PathVariable Long featuredId) {
+        return featuredService.getFeatured(featuredId);
+    }
+
 //
 //    @GetMapping("/pinned")
 //    public List<FeaturedMetaDto> getPinnedFeaturedMetaList() {

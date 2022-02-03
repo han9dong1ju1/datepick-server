@@ -17,11 +17,16 @@ public class FeaturedService {
     private final FeaturedRepository featuredRepository;
 
     public Page<Featured> getFeaturedPage(Boolean isPinned, Pageable pageable) {
-        return featuredRepository.findByIsPinnedOrderByCreatedAtAsc(isPinned, pageable);
+        return featuredRepository.findByIsPinned(isPinned, pageable);
     }
     public Page<Featured> getFeaturedPage(Boolean isPinned, Long courseId, Pageable pageable) {
-        return featuredRepository.findFeaturedByIsPinnedAndCourseId(isPinned, courseId, pageable);
+        return featuredRepository.findFeaturedByIds(featuredRepository.findFeaturedIdsByIsPinnedAndCourseId(isPinned, courseId), pageable);
     }
+
+    public Featured getFeatured(Long featuredId) {
+        return featuredRepository.findFeaturedById(featuredId);
+    }
+
 //    public List<FeaturedMetaDto> getFeaturedList() {
 //        return featuredRepository.findAllBy(FeaturedMetaDto.class);
 //    }
