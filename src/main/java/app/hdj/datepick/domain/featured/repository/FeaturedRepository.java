@@ -16,7 +16,8 @@ public interface FeaturedRepository extends
         FeaturedCustomRepository,
         QuerydslPredicateExecutor<Featured> {
 
-    Page<Featured> findByIsPinnedOrderByCreatedAtAsc(Boolean isPinned, Pageable pageable);
+    Page<Featured> findByIsPinned(Boolean isPinned, Pageable pageable);
+    Featured findFeaturedById(Long featuredId);
 //    <T> List<T> findAllBy(Class<T> type);
 //
 //    <T> List<T> findAllByIsPinnedTrue(Class<T> type);
