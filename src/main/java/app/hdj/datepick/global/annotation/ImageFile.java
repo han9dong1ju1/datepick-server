@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ImageFileValidator.class)
 public @interface ImageFile {
-    String message() default "유효하지 않은 이미지 파일입니다";
+    String message() default "유효하지 않은 이미지 파일 형식입니다";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
