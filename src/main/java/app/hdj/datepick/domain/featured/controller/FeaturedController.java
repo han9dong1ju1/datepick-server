@@ -3,12 +3,11 @@ package app.hdj.datepick.domain.featured.controller;
 import app.hdj.datepick.domain.featured.entity.Featured;
 import app.hdj.datepick.domain.featured.params.FeaturedRequestParam;
 import app.hdj.datepick.domain.featured.service.FeaturedService;
+import app.hdj.datepick.domain.relation.entity.CourseFeaturedRelation;
 import app.hdj.datepick.global.common.PagingParam;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +19,20 @@ public class FeaturedController {
     private final FeaturedService featuredService;
 
     @GetMapping("")
-    public Page<Featured> getFeaturedMetaList(@RequestParam(value = "is_pinned") Boolean isPinned,
+    public Page<Featured> getFeaturedMetaList(@RequestParam(value = "is_pinned", defaultValue = "true") Boolean isPinned,
                                               @RequestParam(value = "course_id", required = false) Long courseId,
-                                              @PageableDefault(sort="created_at", direction = Sort.Direction.DESC) Pageable pageable
+                                              @RequestParam(value = "page", defaultValue = "1") int page,
+                                              @RequestParam(value = "size", defaultValue = "20") int size,
+                                              @RequestParam(value = "sort", required = false) String sort
                                                     ) {
+        Pageable pageable;
+        if (sort.toLowerCase() == "asc"){
+            pageable = PageRequest.of(page, size, Sort.by("created_at").ascending());
+        }else{
+            pageable = PageRequest.of(page, size, Sort.by("created_at").descending());
+        }
 
-        //FeaturedRequestParam requestParam = new FeaturedRequestParam(isPinned, courseId);
+
         if (courseId == null) {
             return featuredService.getFeaturedPage(isPinned, pageable);
         } else {
@@ -33,11 +40,10 @@ public class FeaturedController {
         }
 
     }
-    @GetMapping("{featuredId}")
+    @GetMapping("/{featuredId}")
     public Featured getFeaturedMetaList(@PathVariable Long featuredId) {
         return featuredService.getFeatured(featuredId);
     }
-
 //
 //    @GetMapping("/pinned")
 //    public List<FeaturedMetaDto> getPinnedFeaturedMetaList() {
