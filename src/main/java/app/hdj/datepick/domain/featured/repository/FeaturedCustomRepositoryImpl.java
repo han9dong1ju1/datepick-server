@@ -1,6 +1,7 @@
 package app.hdj.datepick.domain.featured.repository;
 
 import app.hdj.datepick.domain.featured.entity.Featured;
+import app.hdj.datepick.domain.relation.entity.CourseFeaturedRelation;
 import app.hdj.datepick.domain.relation.repository.CourseFeaturedRelationRepository;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
@@ -33,25 +34,42 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<Featured> findFeaturedByIds(List<Long> featuredIds, Pageable pageable) {
+    public Page<Featured> findFeaturedPageByIsPinnedAndCourseId(Boolean isPinned, Long courseId, Pageable pageable) {
 
         List<Featured> results = jpaQueryFactory
-                .selectFrom(featured)
-                .where(featured.id.in(featuredIds))
-                .fetch();
-        System.out.println(pageable.toString());
-        return new PageImpl<>(results, pageable, results.size());
-    }
-
-    @Override
-    public List<Long> findFeaturedIdsByIsPinnedAndCourseId(Boolean isPinned, Long courseId) {
-        return jpaQueryFactory
-                .select(courseFeaturedRelation.featured.id)
+                .select(featured)
                 .from(courseFeaturedRelation)
+                .innerJoin(courseFeaturedRelation.featured, featured)
                 .where(courseFeaturedRelation.course.id.eq(courseId))
-                .where(courseFeaturedRelation.featured.isPinned.eq(isPinned))
+                .where(featured.isPinned.eq(isPinned))
+                .distinct()
                 .fetch();
+
+        return new PageImpl<>(results, pageable, results.size());
+
     }
+//    @Override
+//    public Page<Featured> findFeaturedByIds(List<Long> featuredIds, Pageable pageable) {
+//
+//        List<Featured> results = jpaQueryFactory
+//                .selectFrom(featured)
+//                .where(featured.id.in(featuredIds))
+//                .fetch();
+//        System.out.println(pageable.toString());
+//        return new PageImpl<>(results, pageable, results.size());
+//    }
+//
+//    @Override
+//    public List<Long> findFeaturedIdsByIsPinnedAndCourseId(Boolean isPinned, Long courseId) {
+//        return jpaQueryFactory
+//                .select(courseFeaturedRelation.featured.id)
+//                .from(courseFeaturedRelation)
+//                .where(courseFeaturedRelation.course.id.eq(courseId))
+//                .where(courseFeaturedRelation.featured.isPinned.eq(isPinned))
+//                .fetch();
+//    }
+
+
 
 //                .offset(pageable.getOffset())
 //                .limit(pageable.getPageSize());

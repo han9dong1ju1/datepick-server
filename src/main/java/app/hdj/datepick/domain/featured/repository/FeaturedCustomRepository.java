@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface FeaturedCustomRepository {
-    List<Long> findFeaturedIdsByIsPinnedAndCourseId(Boolean isPinned, Long courseId);
-    Page<Featured> findFeaturedByIds(List<Long> featuredIds, Pageable pageable);
+    Page<Featured> findFeaturedPageByIsPinnedAndCourseId(Boolean isPinned, Long courseId, Pageable pageable);
 
 }
