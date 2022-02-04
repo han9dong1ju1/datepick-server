@@ -32,12 +32,7 @@ public class FeaturedController {
             pageable = PageRequest.of(page, size, Sort.by("created_at").descending());
         }
 
-
-        if (courseId == null) {
-            return featuredService.getFeaturedPage(isPinned, pageable);
-        } else {
-            return featuredService.getFeaturedPage(isPinned, courseId, pageable);
-        }
+        return featuredService.getFeaturedPage(isPinned, courseId, pageable);
 
     }
     @GetMapping("/{featuredId}")

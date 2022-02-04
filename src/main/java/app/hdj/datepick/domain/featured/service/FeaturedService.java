@@ -18,11 +18,14 @@ public class FeaturedService {
 
     private final FeaturedRepository featuredRepository;
 
-    public Page<Featured> getFeaturedPage(Boolean isPinned, Pageable pageable) {
-        return featuredRepository.findByIsPinned(isPinned, pageable);
-    }
     public Page<Featured> getFeaturedPage(Boolean isPinned, Long courseId, Pageable pageable) {
-        return featuredRepository.findFeaturedByIds(featuredRepository.findFeaturedIdsByIsPinnedAndCourseId(isPinned, courseId), pageable);
+
+        if (courseId == null){
+            return featuredRepository.findByIsPinned(isPinned, pageable);
+        }else{
+            return featuredRepository.findFeaturedByIds(featuredRepository.findFeaturedIdsByIsPinnedAndCourseId(isPinned, courseId), pageable);
+        }
+        
     }
 
     public Featured getFeatured(Long featuredId) {
