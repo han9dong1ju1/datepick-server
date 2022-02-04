@@ -1,7 +1,9 @@
 package app.hdj.datepick.domain.featured.service;
 
+import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.featured.entity.Featured;
 import app.hdj.datepick.domain.featured.repository.FeaturedRepository;
+import app.hdj.datepick.domain.relation.entity.CourseFeaturedRelation;
 import app.hdj.datepick.global.common.PagingParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +28,6 @@ public class FeaturedService {
     public Featured getFeatured(Long featuredId) {
         return featuredRepository.findFeaturedById(featuredId);
     }
-
 //    public List<FeaturedMetaDto> getFeaturedList() {
 //        return featuredRepository.findAllBy(FeaturedMetaDto.class);
 //    }
