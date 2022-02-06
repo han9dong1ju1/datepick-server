@@ -26,6 +26,9 @@ public class AmazonS3FileService implements FileService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    @Value("${cloud.aws.cloudfront.host}")
+    private String cdnHost;
+
     public String add(MultipartFile multipartFile, String path) {
         String key = path + "/" + UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
 
@@ -35,12 +38,12 @@ public class AmazonS3FileService implements FileService {
             throw new CustomException(ErrorCode.FILE_UPLOAD_FAILED);
         }
 
-        return amazonS3Client.getUrl(bucket, key).getFile();
+        return "https://" + cdnHost + amazonS3Client.getUrl(bucket, key).getFile();
     }
 
     public void remove(String key) {
-        if (key.charAt(0) == '/') {
-            key = key.substring(1);
+        if (key.startsWith("https://")) {
+            key = key.substring(("https://" + cdnHost).length() + 1);
         }
 
         amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, key));
