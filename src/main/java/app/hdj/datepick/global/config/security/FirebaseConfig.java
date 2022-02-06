@@ -23,6 +23,11 @@ public class FirebaseConfig {
     @Value("${firebase.account.key-path}")
     private String apiKeyPath;
 
+    @Bean
+    public FirebaseAuth firebaseInstance() {
+        return FirebaseAuth.getInstance();
+    }
+
     @PostConstruct
     public void initFirebase() throws IOException {
         InputStream firebaseKey = new ClassPathResource(apiKeyPath).getInputStream();

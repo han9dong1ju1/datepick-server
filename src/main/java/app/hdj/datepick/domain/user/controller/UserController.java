@@ -3,7 +3,7 @@ package app.hdj.datepick.domain.user.controller;
 import app.hdj.datepick.domain.user.dto.UserModifyRequest;
 import app.hdj.datepick.domain.user.dto.UserPublic;
 import app.hdj.datepick.domain.user.dto.UserRegisterRequest;
-import app.hdj.datepick.domain.user.dto.UserUnregisterDto;
+import app.hdj.datepick.domain.user.dto.UserUnregisterRequest;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.service.UserService;
 import app.hdj.datepick.global.common.ImageUploadRequest;
@@ -58,8 +58,8 @@ public class UserController {
 
     @PostMapping("unregister")
     void unregisterUser(@AuthenticationPrincipal Long userId,
-                        @Valid @RequestBody UserUnregisterDto userUnregisterRequestDto) {
-        userService.unregisterUser(userId, userUnregisterRequestDto);
+                        @Valid @RequestBody UserUnregisterRequest userUnregisterRequest) {
+        userService.unregisterUser(userId, userUnregisterRequest);
     }
 
 }
