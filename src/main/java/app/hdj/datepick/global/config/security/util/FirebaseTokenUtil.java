@@ -33,9 +33,8 @@ public class FirebaseTokenUtil implements TokenUtil {
     }
 
     private FirebaseToken getFirebaseToken(String token) {
-        FirebaseToken firebaseToken = null;
         try {
-            firebaseToken = firebaseAuth.verifyIdToken(token);
+            return firebaseAuth.verifyIdToken(token, true);
         } catch (com.google.firebase.auth.FirebaseAuthException e) {
             AuthErrorCode errorCode = e.getAuthErrorCode();
             if (errorCode.equals(AuthErrorCode.EXPIRED_ID_TOKEN)) {
@@ -46,7 +45,6 @@ public class FirebaseTokenUtil implements TokenUtil {
                 throw new FirebaseAuthException(errorCode);
             }
         }
-        return firebaseToken;
     }
 
     @Override

@@ -13,11 +13,18 @@ public enum ErrorCode {
     ACCESS_DENIED(403, "접근 권한이 없습니다."),
     ENTITY_NOT_FOUND(404, "요청한 자원을 찾을 수 없습니다."),
     INTERNAL_SERVER_ERROR(500, "서버에 오류가 생겼습니다."),
+    NOT_IMPLEMENTED(501, "아직 구현되지 않은 기능입니다."),
 
     // AWS
     FILE_NOT_EXISTS(400, "첨부된 파일이 없습니다."),
     FILE_ALREADY_EXISTS(409, "파일이 이미 존재합니다."),
     FILE_UPLOAD_FAILED(500, "파일 업로드에 실패하였습니다."),
+
+    // User
+    USER_ALREADY_EXISTS(409, "유저가 이미 존재합니다."),
+    USER_REGISTER_FAILED(500, "유저 가입에 실패했습니다."),
+    USER_UNREGISTER_FAILED(500, "유저 탈퇴에 실패했습니다."),
+    USER_UNREGISTERED(404, "탈퇴한 유저입니다."),
     ;
 
     private final int status;
