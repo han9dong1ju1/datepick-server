@@ -1,6 +1,8 @@
 package app.hdj.datepick.domain.featured.service;
 
 import app.hdj.datepick.domain.course.entity.Course;
+import app.hdj.datepick.domain.featured.dto.FeaturedPage;
+import app.hdj.datepick.domain.featured.dto.FeaturedPagingParam;
 import app.hdj.datepick.domain.featured.entity.Featured;
 import app.hdj.datepick.domain.featured.repository.FeaturedRepository;
 import app.hdj.datepick.domain.relation.entity.CourseFeaturedRelation;
@@ -22,12 +24,11 @@ public class FeaturedService {
 
     private final FeaturedRepository featuredRepository;
 
-    public Page<Featured> getFeaturedPage(Boolean isPinned, Long courseId, Pageable pageable) {
+    public FeaturedPage getFeaturedPage(Boolean isPinned, Long courseId, FeaturedPagingParam featuredPagingParam) {
         if (courseId == null){
-            return featuredRepository.findByIsPinned(isPinned, pageable);
-        }else{
-            return featuredRepository.findFeaturedPageByIsPinnedAndCourseId(isPinned, courseId, pageable);
+            return featuredRepository.findFeaturedPageByIsPinned(isPinned, featuredPagingParam);
         }
+        return featuredRepository.findFeaturedPageByIsPinnedAndCourseId(isPinned, courseId, featuredPagingParam);
     }
 
     public Featured getFeatured(Long featuredId) {
