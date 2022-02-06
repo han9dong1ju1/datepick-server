@@ -1,15 +1,8 @@
 package app.hdj.datepick.domain.featured.repository;
 
 import app.hdj.datepick.domain.featured.dto.FeaturedPage;
-import app.hdj.datepick.domain.featured.dto.FeaturedPagingParam;
+import app.hdj.datepick.domain.featured.dto.FeaturedPagingRequest;
 import app.hdj.datepick.domain.featured.entity.Featured;
-import app.hdj.datepick.domain.relation.entity.CourseFeaturedRelation;
-import app.hdj.datepick.domain.relation.repository.CourseFeaturedRelationRepository;
-import com.querydsl.core.QueryResults;
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +10,6 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
 import java.util.List;
 
 import static app.hdj.datepick.domain.featured.entity.QFeatured.featured;
@@ -33,7 +25,7 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public FeaturedPage findFeaturedPageByIsPinnedAndCourseId(Boolean isPinned, Long courseId, FeaturedPagingParam featuredPagingParam) {
+    public FeaturedPage findFeaturedPageByIsPinnedAndCourseId(Boolean isPinned, Long courseId, FeaturedPagingRequest featuredPagingRequest) {
 
         List<Featured> results = jpaQueryFactory
                 .select(featured)
@@ -43,7 +35,7 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
                 .where(featured.isPinned.eq(isPinned))
                 .fetch();
 
-        Pageable pageable = PageRequest.of(featuredPagingParam.getPage(), featuredPagingParam.getSize(), featuredPagingParam.getSort());
+        Pageable pageable = PageRequest.of(featuredPagingRequest.getPage(), featuredPagingRequest.getSize(), featuredPagingRequest.getSort());
 
         Page<Featured> featuredInfo = new PageImpl<>(results, pageable, results.size());
         return FeaturedPage.builder()
@@ -55,13 +47,13 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
     }
 
     @Override
-    public FeaturedPage findFeaturedPageByIsPinned(Boolean isPinned, FeaturedPagingParam featuredPagingParam) {
+    public FeaturedPage findFeaturedPageByIsPinned(Boolean isPinned, FeaturedPagingRequest featuredPagingRequest) {
         List<Featured> results = jpaQueryFactory
                 .selectFrom(featured)
                 .where(featured.isPinned.eq(isPinned))
                 .fetch();
 
-        Pageable pageable = PageRequest.of(featuredPagingParam.getPage(), featuredPagingParam.getSize(), featuredPagingParam.getSort());
+        Pageable pageable = PageRequest.of(featuredPagingRequest.getPage(), featuredPagingRequest.getSize(), featuredPagingRequest.getSort());
 
         Page<Featured> featuredInfo = new PageImpl<>(results, pageable, results.size());
 
