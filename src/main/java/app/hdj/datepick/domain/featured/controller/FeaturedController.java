@@ -18,12 +18,7 @@ public class FeaturedController {
     public FeaturedPage getFeaturedMetaList(@RequestParam(value = "is_pinned", defaultValue = "true") Boolean isPinned,
                                             @RequestParam(value = "course_id", required = false) Long courseId,
                                             FeaturedPageRequest featuredPageRequest) {
-//        @RequestParam(value = "page", defaultValue = "1") int page,
-//        @RequestParam(value = "size", defaultValue = "20") int size,
-//        @RequestParam(value = "sort", required = false) String sort
-
         return featuredService.getFeaturedPage(isPinned, courseId, featuredPageRequest);
-
     }
 
     @GetMapping("/{featuredId}")

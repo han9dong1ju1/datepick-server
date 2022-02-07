@@ -2,20 +2,23 @@ package app.hdj.datepick.domain.featured.dto;
 import lombok.*;
 import org.springframework.data.domain.Sort;
 
+import java.util.Optional;
+
 
 @Getter
+@ToString
 public class FeaturedPageRequest {
-    private int size;
-    private int page;
+    private Integer size;
+    private Integer page;
     private Sort sort;
 
-    public FeaturedPageRequest(int size, int page, String sort) {
+    public FeaturedPageRequest(Integer size, Optional<Integer> page, Optional<String> sort) {
+
         this.size = size;
-        this.page = page;
-        if (sort.toLowerCase() == "asc") {
+        this.page = page.orElse(1);
+        if (sort.orElse("desc").toLowerCase() == "asc") {
             this.sort = Sort.by("created_at").ascending();
-        }
-        else {
+        } else {
             this.sort = Sort.by("created_at").descending();
         }
 
