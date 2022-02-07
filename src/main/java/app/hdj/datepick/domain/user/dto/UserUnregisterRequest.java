@@ -11,9 +11,11 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserUnregisterDto {
+public class UserUnregisterRequest {
 
     @NotNull
     private String reason;
+
+    private String content;
 
 }

@@ -1,6 +1,5 @@
-package app.hdj.datepick.domain.user.dto;
+package app.hdj.datepick.global.common;
 
-import app.hdj.datepick.global.enums.Gender;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
@@ -9,13 +8,7 @@ import lombok.Getter;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 @AllArgsConstructor
-public class UserPublic {
-
-    private Long id;
-
-    private String nickname;
-
-    private Gender gender;
+public class ImageUrl {
 
     private String imageUrl;
 
