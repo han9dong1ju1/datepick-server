@@ -3,24 +3,33 @@ package app.hdj.datepick.domain.user.service;
 import app.hdj.datepick.domain.user.dto.UserModifyRequest;
 import app.hdj.datepick.domain.user.dto.UserPublic;
 import app.hdj.datepick.domain.user.dto.UserRegisterRequest;
-import app.hdj.datepick.domain.user.dto.UserUnregisterDto;
+import app.hdj.datepick.domain.user.dto.UserUnregisterRequest;
 import app.hdj.datepick.domain.user.entity.User;
+import app.hdj.datepick.domain.user.entity.UserUnregisterLog;
 import app.hdj.datepick.domain.user.repository.UserRepository;
-import app.hdj.datepick.global.config.s3.AmazonS3Service;
+import app.hdj.datepick.domain.user.repository.UserUnregisterLogRepository;
+import app.hdj.datepick.global.common.ImageUrl;
+import app.hdj.datepick.global.config.file.FileService;
 import app.hdj.datepick.global.enums.Gender;
 import app.hdj.datepick.global.enums.Provider;
+import app.hdj.datepick.global.error.enums.ErrorCode;
+import app.hdj.datepick.global.error.exception.CustomException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import com.google.firebase.auth.UserRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Slf4j
@@ -30,13 +39,23 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final AmazonS3Service amazonS3Service;
+    private final UserUnregisterLogRepository userUnregisterLogRepository;
+
+    private final FileService fileService;
+
+    private final FirebaseAuth firebaseAuth;
 
     @PersistenceContext
     private final EntityManager em;
 
     public UserPublic getPublicUser(Long id) {
-        User user = userRepository.findUserByIsDeletedFalseAndIsBannedFalseAndId(id).orElseThrow();
+        User user = userRepository.findById(id).orElseThrow();
+
+        // 삭제한 유저일 경우
+        if (user.getIsDeleted()) {
+            throw new CustomException(ErrorCode.USER_UNREGISTERED);
+        }
+
         return new UserPublic(
                 user.getId(),
                 user.getNickname(),
@@ -66,45 +85,72 @@ public class UserService {
     }
 
     @Transactional
+    public ImageUrl addUserImage(Long userId, MultipartFile image) {
+        User user = userRepository.findById(userId).orElseThrow();
+        String imageUrl = user.getImageUrl();
+
+        if (imageUrl != null) {
+            throw new CustomException(ErrorCode.FILE_ALREADY_EXISTS);
+        }
+        imageUrl = fileService.add(image, "profile-image/" + userId);
+        user.setImageUrl(imageUrl);
+        userRepository.save(user);
+
+        return new ImageUrl(imageUrl);
+    }
+
+    @Transactional
+    public void removeUserImage(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        String imageUrl = user.getImageUrl();
+        if (imageUrl == null) {
+            throw new NoSuchElementException();
+        }
+
+        user.setImageUrl(null);
+        userRepository.save(user);
+
+        fileService.remove(imageUrl);
+    }
+
+    @Transactional
     public User registerUser(UserRegisterRequest userRegisterRequest) {
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        Optional<FirebaseToken> firebaseTokenOptional;
+        FirebaseToken firebaseToken = null;
 
         Provider provider = Provider.from(userRegisterRequest.getProvider());
         String token = userRegisterRequest.getToken();
 
-        // Google
         if (provider == Provider.GOOGLE) {
             // token 유효성 검사
             try {
-                firebaseTokenOptional = Optional.of(firebaseAuth.verifyIdToken(token));
+                firebaseToken = firebaseAuth.verifyIdToken(token);
             } catch (FirebaseAuthException e) {
-                log.error("Register 오류: {}",  e.getMessage());
-                throw new RuntimeException(e.getMessage(), e.getCause());   // TODO: user custom exception 만들기
+                throw new CustomException(ErrorCode.TOKEN_INVALID);
             }
         }
-        // Custom Token
-        else {
-            // TODO: Custom 토큰으로 firebase 유저 생성
-            // firebaseAuth.createCustomToken(token);
-            firebaseTokenOptional = Optional.empty();
+        else if (provider == Provider.KAKAO) {
+            // 보류
+            throw new CustomException(ErrorCode.NOT_IMPLEMENTED);
+        }
+        
+        // FirebaseToken이 null일 경우
+        if (firebaseToken == null) {
+            throw new CustomException(ErrorCode.TOKEN_INVALID);
         }
 
         // Firebase Token 정보
-        FirebaseToken firebaseToken = firebaseTokenOptional.orElseThrow();      // TODO: user custom exception 만들기
         String uid = firebaseToken.getUid();
         String name = firebaseToken.getName();
-        String picture = firebaseToken.getPicture();
+        String firebaseImageUrl = firebaseToken.getPicture();
 
         // 이미 생성된 계정이 있는지 중복 확인
         if (userRepository.existsByUid(uid)) {
-            throw new RuntimeException("이미 생성된 계정 있음");     // TODO: user custom exception 만들기
+            throw new CustomException(ErrorCode.USER_ALREADY_EXISTS);
         }
 
-        // TODO: Nickname 없을 시 자동 생성
+        // name 없을 시 자동 생성
         if (name == null) {
-            // 자동 생성 로직
-            name = "자동생성된 이름";
+            name = "user_" + RandomStringUtils.randomNumeric(11);
         }
         // Nickname 길이 제한 수정
         else if (name.length() > 16) {
@@ -116,9 +162,9 @@ public class UserService {
                 .uid(uid)
                 .provider(provider)
                 .nickname(name)
-                .imageUrl(picture)
                 .build();
         user = userRepository.save(user);
+        // 로컬 캐시 갱신
         em.refresh(user);
 
         // Custom Claim에 id 및 권한 추가
@@ -129,36 +175,41 @@ public class UserService {
             firebaseAuth.setCustomUserClaims(uid, customClaims);
         } catch (FirebaseAuthException e) {
             log.error("Register Custom Claim 오류: {}", e.getMessage());
-            throw new RuntimeException(e.getMessage());
+            throw new CustomException(ErrorCode.USER_REGISTER_FAILED);
         }
 
         return user;
     }
 
     @Transactional
-    public void unregisterUser(Long userId, UserUnregisterDto userUnregisterRequestDto) {
+    public void unregisterUser(Long userId, UserUnregisterRequest userUnregisterRequest) {
         User user = userRepository.findById(userId).orElseThrow();
 
-        // TODO: 삭제 사유 DB에 저장
-        log.debug("User Delete 삭제 사유: {}", userUnregisterRequestDto.getReason());
+        // 삭제 사유 DB에 저장
+        UserUnregisterLog userUnregisterLog = UserUnregisterLog.builder()
+                .user(user)
+                .reason(userUnregisterRequest.getReason())
+                .content(userUnregisterRequest.getContent())
+                .expireAt(LocalDateTime.now().plusYears(1))
+                .build();
+        userUnregisterLogRepository.save(userUnregisterLog);
 
-        // User 삭제
-        userRepository.deleteById(user.getId());
+        // User 삭제 된 것으로 처리
+        user.setIsDeleted(true);
+        userRepository.save(user);
 
-        // Firebase User 삭제
+        // Firebase User 정지 (완전 삭제 처리는 수동 or batch 후처리)
         try {
-            FirebaseAuth.getInstance().deleteUser(user.getUid());
-            log.debug("Firebase User 삭제 완료");
+            firebaseAuth.updateUser(
+                    new UserRecord.UpdateRequest(user.getUid())
+                            .setDisabled(true)
+            );
+            log.debug("Firebase User 정지 처리 완료");
         } catch (FirebaseAuthException e) {
-            log.error("User Unregister 오류: {}", e.getMessage());
-            throw new RuntimeException(e.getMessage());     // TODO: user custom exception 만들기
+            log.debug(e.getMessage());
+            throw new CustomException(ErrorCode.USER_UNREGISTER_FAILED);
         }
 
-        // S3 프로필 사진 삭제
-        String profileUrl = user.getImageUrl();
-        if (profileUrl != null) {
-            amazonS3Service.remove(profileUrl);
-        }
     }
 
 }
