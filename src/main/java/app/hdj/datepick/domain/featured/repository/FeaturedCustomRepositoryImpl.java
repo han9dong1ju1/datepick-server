@@ -1,7 +1,7 @@
 package app.hdj.datepick.domain.featured.repository;
 
 import app.hdj.datepick.domain.featured.dto.FeaturedPage;
-import app.hdj.datepick.domain.featured.dto.FeaturedPagingRequest;
+import app.hdj.datepick.domain.featured.dto.FeaturedPageRequest;
 import app.hdj.datepick.domain.featured.entity.Featured;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public FeaturedPage findFeaturedPageByIsPinnedAndCourseId(Boolean isPinned, Long courseId, FeaturedPagingRequest featuredPagingRequest) {
+    public FeaturedPage findFeaturedPageByIsPinnedAndCourseId(Boolean isPinned, Long courseId, FeaturedPageRequest featuredPageRequest) {
 
         List<Featured> results = jpaQueryFactory
                 .select(featured)
@@ -35,7 +35,7 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
                 .where(featured.isPinned.eq(isPinned))
                 .fetch();
 
-        Pageable pageable = PageRequest.of(featuredPagingRequest.getPage(), featuredPagingRequest.getSize(), featuredPagingRequest.getSort());
+        Pageable pageable = PageRequest.of(featuredPageRequest.getPage(), featuredPageRequest.getSize(), featuredPageRequest.getSort());
 
         Page<Featured> featuredInfo = new PageImpl<>(results, pageable, results.size());
         return FeaturedPage.builder()
@@ -47,13 +47,13 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
     }
 
     @Override
-    public FeaturedPage findFeaturedPageByIsPinned(Boolean isPinned, FeaturedPagingRequest featuredPagingRequest) {
+    public FeaturedPage findFeaturedPageByIsPinned(Boolean isPinned, FeaturedPageRequest featuredPageRequest) {
         List<Featured> results = jpaQueryFactory
                 .selectFrom(featured)
                 .where(featured.isPinned.eq(isPinned))
                 .fetch();
 
-        Pageable pageable = PageRequest.of(featuredPagingRequest.getPage(), featuredPagingRequest.getSize(), featuredPagingRequest.getSort());
+        Pageable pageable = PageRequest.of(featuredPageRequest.getPage(), featuredPageRequest.getSize(), featuredPageRequest.getSort());
 
         Page<Featured> featuredInfo = new PageImpl<>(results, pageable, results.size());
 
