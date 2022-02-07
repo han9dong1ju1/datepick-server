@@ -1,7 +1,7 @@
 package app.hdj.datepick.domain.featured.service;
 
 import app.hdj.datepick.domain.featured.dto.FeaturedPage;
-import app.hdj.datepick.domain.featured.dto.FeaturedPagingRequest;
+import app.hdj.datepick.domain.featured.dto.FeaturedPageRequest;
 import app.hdj.datepick.domain.featured.entity.Featured;
 import app.hdj.datepick.domain.featured.repository.FeaturedRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +15,11 @@ public class FeaturedService {
 
     private final FeaturedRepository featuredRepository;
 
-    public FeaturedPage getFeaturedPage(Boolean isPinned, Long courseId, FeaturedPagingRequest featuredPagingRequest) {
+    public FeaturedPage getFeaturedPage(Boolean isPinned, Long courseId, FeaturedPageRequest featuredPageRequest) {
         if (courseId == null){
-            return featuredRepository.findFeaturedPageByIsPinned(isPinned, featuredPagingRequest);
+            return featuredRepository.findFeaturedPageByIsPinned(isPinned, featuredPageRequest);
         }
-        return featuredRepository.findFeaturedPageByIsPinnedAndCourseId(isPinned, courseId, featuredPagingRequest);
+        return featuredRepository.findFeaturedPageByIsPinnedAndCourseId(isPinned, courseId, featuredPageRequest);
     }
 
     public Featured getFeatured(Long featuredId) {

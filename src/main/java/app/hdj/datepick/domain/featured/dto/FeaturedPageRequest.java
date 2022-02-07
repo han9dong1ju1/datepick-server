@@ -4,12 +4,12 @@ import org.springframework.data.domain.Sort;
 
 
 @Getter
-public class FeaturedPagingRequest {
+public class FeaturedPageRequest {
     private int size;
     private int page;
     private Sort sort;
 
-    public FeaturedPagingRequest(int size, int page, String sort) {
+    public FeaturedPageRequest(int size, int page, String sort) {
         this.size = size;
         this.page = page;
         if (sort.toLowerCase() == "asc") {
