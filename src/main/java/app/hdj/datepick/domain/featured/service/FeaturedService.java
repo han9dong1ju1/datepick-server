@@ -4,6 +4,8 @@ import app.hdj.datepick.domain.featured.dto.FeaturedPage;
 import app.hdj.datepick.domain.featured.dto.FeaturedPageRequest;
 import app.hdj.datepick.domain.featured.entity.Featured;
 import app.hdj.datepick.domain.featured.repository.FeaturedRepository;
+import app.hdj.datepick.global.error.enums.ErrorCode;
+import app.hdj.datepick.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,25 +25,6 @@ public class FeaturedService {
     }
 
     public Featured getFeatured(Long featuredId) {
-        return featuredRepository.findFeaturedById(featuredId);
+        return featuredRepository.findById(featuredId).orElseThrow();
     }
-//    public List<FeaturedMetaDto> getFeaturedList() {
-//        return featuredRepository.findAllBy(FeaturedMetaDto.class);
-//    }
-//
-//    public List<FeaturedMetaDto> getPinnedFeaturedList() {
-//        return featuredRepository.findAllByIsPinnedTrue(FeaturedMetaDto.class);
-//    }
-//
-//    // TODO: 파라미터 선정 및 구현
-//    public void getFeaturedPage() {}
-//
-//    public FeaturedDetailResponseDto getFeatured(Long featuredId) {
-//        FeaturedDetailDto featuredDetailDto
-//                = featuredRepository.findById(featuredId, FeaturedDetailDto.class).orElseThrow(RuntimeException::new);
-//        List<FeaturedCourseDto> featuredCourseMetaDtos
-//                = featuredRepository.findCourseInFeaturedById(featuredId);
-//        return new FeaturedDetailResponseDto(featuredDetailDto, featuredCourseMetaDtos);
-//    }
-
 }

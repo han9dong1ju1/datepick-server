@@ -7,6 +7,8 @@ import app.hdj.datepick.domain.featured.service.FeaturedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("v1/featured")
@@ -17,7 +19,7 @@ public class FeaturedController {
     @GetMapping("")
     public FeaturedPage getFeaturedMetaList(@RequestParam(value = "is_pinned", defaultValue = "true") Boolean isPinned,
                                             @RequestParam(value = "course_id", required = false) Long courseId,
-                                            FeaturedPageRequest featuredPageRequest) {
+                                            @Valid FeaturedPageRequest featuredPageRequest) {
         return featuredService.getFeaturedPage(isPinned, courseId, featuredPageRequest);
     }
 
@@ -25,15 +27,5 @@ public class FeaturedController {
     public Featured getFeaturedMetaList(@PathVariable Long featuredId) {
         return featuredService.getFeatured(featuredId);
     }
-//
-//    @GetMapping("/pinned")
-//    public List<FeaturedMetaDto> getPinnedFeaturedMetaList() {
-//        return featuredService.getPinnedFeaturedList();
-//    }
-//
-//    @GetMapping("/{featuredId}")
-//    public FeaturedDetailResponseDto getFeatured(@PathVariable Long featuredId) {
-//        return featuredService.getFeatured(featuredId);
-//    }
 
 }
