@@ -3,7 +3,7 @@ package app.hdj.datepick.global.enums;
 import lombok.Getter;
 
 @Getter
-public enum Sort {
+public enum CustomSort {
     LATEST,
     PICK,
     POPULAR,
@@ -13,12 +13,13 @@ public enum Sort {
     DISTANCE_DESC,
     ;
 
-    public static Sort from(String value) {
-        for (Sort sort : values()) {
-            if (sort.name().equalsIgnoreCase(value)) {
-                return sort;
+    public static CustomSort from(String value) {
+        for (CustomSort customSort : values()) {
+            if (customSort.name().equalsIgnoreCase(value)) {
+                return customSort;
             }
         }
         return null;
     }
+
 }
