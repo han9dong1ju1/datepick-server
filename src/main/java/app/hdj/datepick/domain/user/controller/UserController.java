@@ -6,16 +6,20 @@ import app.hdj.datepick.domain.user.dto.UserRegisterRequest;
 import app.hdj.datepick.domain.user.dto.UserUnregisterRequest;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.service.UserService;
-import app.hdj.datepick.global.common.ImageUploadRequest;
+import app.hdj.datepick.global.annotation.ImageFile;
 import app.hdj.datepick.global.common.ImageUrl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Slf4j
+@Validated
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("v1/users")
@@ -42,8 +46,8 @@ public class UserController {
     @PostMapping("me/image")
     ImageUrl addUserMeImage(
             @AuthenticationPrincipal Long userId,
-            @Valid @ModelAttribute ImageUploadRequest image) {
-        return userService.addUserImage(userId, image.getImage());
+            @NotNull @ImageFile @ModelAttribute MultipartFile image) {
+        return userService.addUserImage(userId, image);
     }
 
     @DeleteMapping("me/image")
