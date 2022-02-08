@@ -1,7 +1,5 @@
 package app.hdj.datepick.global.common;
 
-import app.hdj.datepick.global.annotation.ValueOfEnum;
-import app.hdj.datepick.global.enums.Sort;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -20,8 +18,5 @@ public class PagingParam {
     @NotNull
     @Positive
     private Integer size;
-
-    @ValueOfEnum(enumClass = Sort.class, acceptedValues = {"latest"})
-    private String sort;
 
 }
