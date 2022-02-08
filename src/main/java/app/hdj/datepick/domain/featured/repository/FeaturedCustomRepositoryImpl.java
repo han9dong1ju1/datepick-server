@@ -1,23 +1,18 @@
 package app.hdj.datepick.domain.featured.repository;
 
-import app.hdj.datepick.domain.featured.dto.FeaturedPage;
-import app.hdj.datepick.domain.featured.dto.FeaturedPageRequest;
 import app.hdj.datepick.domain.featured.entity.Featured;
+import app.hdj.datepick.global.util.PagingUtil;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 import static app.hdj.datepick.domain.featured.entity.QFeatured.featured;
 import static app.hdj.datepick.domain.relation.entity.QCourseFeaturedRelation.courseFeaturedRelation;
-
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -26,45 +21,30 @@ import static app.hdj.datepick.domain.relation.entity.QCourseFeaturedRelation.co
 public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
+    private final PagingUtil pagingUtil;
 
     @Override
-    public FeaturedPage findFeaturedPageByIsPinnedAndCourseId(Boolean isPinned, Long courseId, FeaturedPageRequest featuredPageRequest) {
+    public Page<Featured> findFeaturedPage(Boolean isPinned, Long courseId, Pageable pageable) {
+        JPAQuery<Featured> query = jpaQueryFactory
+                .select(featured);
 
-        List<Featured> results = jpaQueryFactory
-                .select(featured)
-                .from(courseFeaturedRelation)
-                .innerJoin(courseFeaturedRelation.featured, featured)
-                .where(courseFeaturedRelation.course.id.eq(courseId))
-                .where(featured.isPinned.eq(isPinned))
-                .fetch();
+        // from
+        if (courseId != null) {
+            query.from(courseFeaturedRelation)
+                    .innerJoin(courseFeaturedRelation.featured, featured)
+                    .where(courseFeaturedRelation.course.id.eq(courseId));
+        } else {
+            query.from(featured);
+        }
 
-        Pageable pageable = PageRequest.of(featuredPageRequest.getPage(), featuredPageRequest.getSize(), featuredPageRequest.getSort());
+        // where
+        if (isPinned != null && isPinned) {
+            query.where(featured.isPinned.eq(true));
+        } else if (isPinned != null) {
+            query.where(featured.isPinned.eq(false));
+        }
 
-        Page<Featured> featuredInfo = new PageImpl<>(results, pageable, results.size());
-        return FeaturedPage.builder()
-                .totalCount(featuredInfo.getTotalElements())
-                .currentPage(featuredInfo.getNumber())
-                .last(featuredInfo.isLast())
-                .content(featuredInfo.getContent())
-                .build();
+        return pagingUtil.getPageImpl(pageable, query, Featured.class);
     }
 
-    @Override
-    public FeaturedPage findFeaturedPageByIsPinned(Boolean isPinned, FeaturedPageRequest featuredPageRequest) {
-        List<Featured> results = jpaQueryFactory
-                .selectFrom(featured)
-                .where(featured.isPinned.eq(isPinned))
-                .fetch();
-
-        Pageable pageable = PageRequest.of(featuredPageRequest.getPage(), featuredPageRequest.getSize(), featuredPageRequest.getSort());
-
-        Page<Featured> featuredInfo = new PageImpl<>(results, pageable, results.size());
-
-        return FeaturedPage.builder()
-                .totalCount(featuredInfo.getTotalElements())
-                .currentPage(featuredInfo.getNumber())
-                .last(featuredInfo.isLast())
-                .content(featuredInfo.getContent())
-                .build();
-    }
 }

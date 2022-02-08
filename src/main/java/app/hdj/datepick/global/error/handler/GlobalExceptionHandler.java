@@ -74,6 +74,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public BaseResponse<Object> handleException(Exception e) {
+        log.error("Message: {}\nCause: {}\nStackTrace: {}", e.getMessage(), e.getCause(), e.getStackTrace());
         return new BaseResponse<>(e.getMessage(), e.getClass());
     }
 
