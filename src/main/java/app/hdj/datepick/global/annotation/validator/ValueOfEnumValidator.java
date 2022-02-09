@@ -5,18 +5,30 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, CharSequence> {
     private List<String> acceptedValues;
 
     @Override
     public void initialize(ValueOfEnum annotation) {
-        acceptedValues = Stream.of(annotation.enumClass().getEnumConstants())
+        List<String> acceptedStrings = Arrays.asList(annotation.acceptedValues());
+        List<String> enumValues = Stream.of(annotation.enumClass().getEnumConstants())
                 .map(Enum::name)
+                .map(String::toUpperCase)
                 .collect(Collectors.toList());
+        if (acceptedStrings.isEmpty()) {
+            this.acceptedValues = enumValues;
+        }
+        else {
+            this.acceptedValues = acceptedStrings.stream()
+                    .filter(value -> enumValues.contains(value.toUpperCase()))
+                    .collect(Collectors.toList());
+        }
     }
 
     @Override
@@ -29,6 +41,7 @@ public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, Ch
                 "[" + String.join(", ", acceptedValues) + "] 중 하나의 값이어야 합니다")
                 .addConstraintViolation();
 
-        return acceptedValues.contains(value.toString());
+        return acceptedValues.contains(value.toString()) ||
+                acceptedValues.contains(value.toString().toUpperCase());
     }
 }
