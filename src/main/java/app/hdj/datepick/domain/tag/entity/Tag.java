@@ -15,7 +15,7 @@ import javax.persistence.Entity;
 @Entity
 public class Tag extends BaseEntity<Byte> {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column
