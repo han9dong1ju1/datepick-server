@@ -47,7 +47,7 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application-name: datepick-eb-application
+          application_name: datepick-eb-application
           environment_name: datepick-eb-application-env
           version_label: Github Action-${{steps.current-time.outputs.formattedTime}}
           region: ${{ secrets.AWS_REGION }}
