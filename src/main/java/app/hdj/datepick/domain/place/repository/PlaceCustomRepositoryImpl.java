@@ -1,6 +1,7 @@
 package app.hdj.datepick.domain.place.repository;
 
 import app.hdj.datepick.domain.place.dto.PlacePage;
+import app.hdj.datepick.domain.place.dto.QCategoryPage;
 import app.hdj.datepick.domain.place.dto.QPlacePage;
 import app.hdj.datepick.domain.place.param.PlaceFilterParam;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -38,7 +39,10 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
                     groupBy(placeCategoryRelation.place.id).list(
                             new QPlacePage(
                                     placeCategoryRelation.place,
-                                    set(placeCategoryRelation.category)
+                                    set(new QCategoryPage(
+                                            placeCategoryRelation.category.id,
+                                            placeCategoryRelation.category.name
+                                    ))
                             )
                     )
                 );
