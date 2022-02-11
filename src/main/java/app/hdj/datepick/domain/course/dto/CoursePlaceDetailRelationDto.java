@@ -7,6 +7,7 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.sql.Time;
 import java.time.LocalDateTime;
 
 @ToString
@@ -15,12 +16,12 @@ import java.time.LocalDateTime;
 public class CoursePlaceDetailRelationDto {
 
     private Byte placeOrder;
-    private LocalDateTime visitTime;
+    private Time visitTime;
     private String memo;
     private PlaceMetaDto placeMeta;
 
     @QueryProjection
-    public CoursePlaceDetailRelationDto(Byte placeOrder, LocalDateTime visitTime, String memo, PlaceMetaDto placeMeta) {
+    public CoursePlaceDetailRelationDto(Byte placeOrder, Time visitTime, String memo, PlaceMetaDto placeMeta) {
         this.placeOrder = placeOrder;
         this.visitTime = visitTime;
         this.memo = memo;

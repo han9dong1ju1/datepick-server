@@ -1,5 +1,4 @@
---- # prod 환경
-
+# prod 환경
 spring:
   datasource:
     url: jdbc:mariadb://datepickdb.cbwheay2prg8.ap-northeast-2.rds.amazonaws.com:3306/datepickdb_prod
@@ -10,8 +9,11 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: false
+  redis:
+    host: datepick-redis-001.cz4fdc.0001.apn2.cache.amazonaws.com
+    port: 6379
 
 # Firebase
 firebase:
   account:
-    key-path: firebase-config.json
+    key-path: firebase-config-prod.json

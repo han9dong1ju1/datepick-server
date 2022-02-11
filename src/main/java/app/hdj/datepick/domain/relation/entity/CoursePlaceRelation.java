@@ -1,21 +1,18 @@
 package app.hdj.datepick.domain.relation.entity;
 
-
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.place.entity.Place;
-import app.hdj.datepick.global.common.entity.BaseEntity;
+import app.hdj.datepick.global.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity(name = "course_place_relation")
+@Entity
 public class CoursePlaceRelation extends BaseEntity<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,13 +23,10 @@ public class CoursePlaceRelation extends BaseEntity<Long> {
     @JoinColumn(name = "place_id", nullable = false)
     private Place place;
 
-    @Column(name = "place_order", nullable = false)
+    @Column(nullable = false)
     private Byte placeOrder;
 
-    @Column(name = "visit_time", nullable = false)
-    private LocalDateTime visitTime;
-
-    @Column(name = "memo", columnDefinition = "varchar(100)", nullable = false)
+    @Column
     private String memo;
 
 }

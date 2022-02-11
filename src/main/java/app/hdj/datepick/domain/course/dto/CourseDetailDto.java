@@ -17,8 +17,7 @@ public class CourseDetailDto {
     private String title;
     private String region;
     private LocalDateTime expectedAt;
-    private Integer pickCount;
-    private Integer importCount;
+    private Long pickCount;
     private Long userId;
     private String thumbNailUrl;
 
@@ -27,13 +26,12 @@ public class CourseDetailDto {
     private List<CoursePlaceDetailRelationDto> placeRelations;
 
     @QueryProjection
-    public CourseDetailDto(Long id, String title, String region, LocalDateTime expectedAt, Integer pickCount, Integer importCount, Long userId, String thumbNailUrl, Boolean isPicked, List<CoursePlaceDetailRelationDto> placeRelations) {
+    public CourseDetailDto(Long id, String title, String region, LocalDateTime expectedAt, Long pickCount, Long userId, String thumbNailUrl, Boolean isPicked, List<CoursePlaceDetailRelationDto> placeRelations) {
         this.id = id;
         this.title = title;
         this.region = region;
         this.expectedAt = expectedAt;
         this.pickCount = pickCount;
-        this.importCount = importCount;
         this.userId = userId;
         this.thumbNailUrl = thumbNailUrl;
         this.isPicked = isPicked;

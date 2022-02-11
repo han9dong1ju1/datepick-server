@@ -6,53 +6,61 @@
 
     <!-- 변수 -->
     <property name="LOG_DIR" value="log"/>
-    <property name="LOG_PREFIX" value="datepick"/>
+    <property name="LOG_PATH_NAME" value="${LOG_DIR}/data/"/>
+    <property name="ERROR_LOG_PATH_NAME" value="${LOG_DIR}/error/"/>
     <property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){blue} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
-    <property name="CONSOLE_LOG_CHARSET" value="${CONSOLE_LOG_CHARSET:-default}"/>
-    <property name="FILE_LOG_PATTERN" value="%-5level%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] - %logger{0}:%line : %msg%n"/> <!-- TODO -->
+    <property name="FILE_LOG_PATTERN" value="%-5level [%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread] - %logger{0}:%line : %msg%n"/> <!-- TODO -->
 
-    <!-- 콘솔 로그 설정 -->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <!-- 로그 형식 -->
+    <!-- 콘솔 로그 Appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender" >
         <encoder>
-            <pattern>${CONSOLE_LOG_PATTERN}</pattern>   <!-- 기본 패턴 -->
-            <charset>${CONSOLE_LOG_CHARSET}</charset>   <!-- 기본 문자셋 -->
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>   <!-- 기본 형식 -->
+        </encoder>
+    </appender>
+
+    <!-- 일반 파일 로그 Appender -->
+    <appender name="DATA" class="ch.qos.logback.core.rolling.RollingFileAppender">
+<!--        <file>${LOG_PATH_NAME}data.log</file>-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH_NAME}data_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>      <!-- 각 파일 최대 크기 -->
+            <totalSizeCap>500MB</totalSizeCap>   <!-- 총 보관 최대 크기 -->
+            <maxHistory>90</maxHistory>         <!-- 최대 보관 일 수 -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>  <!-- 로그 형식 -->
+        </encoder>
+    </appender>
+
+    <!-- 에러 파일 로그 Appender -->
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+<!--        <file>${ERROR_LOG_PATH_NAME}error.log</file>-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ERROR_LOG_PATH_NAME}error_%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>  <!-- 로그 형식 -->
         </encoder>
     </appender>
 
 
     <!-- 스프링 프로필 로깅 레벨 설정 -->
     <springProfile name="dev">
-        <logger name="app.hdj.datepick" level="TRACE"/>
+        <logger name="app.hdj.datepick" level="DEBUG"/>
         <root level="INFO">
             <appender-ref ref="STDOUT"/>
         </root>
     </springProfile>
     <springProfile name="prod">
-        <!-- 파일 로그 설정 -->
-        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <!-- 파일 이름 -->
-            <file>${LOG_DIR}/${LOG_PREFIX}.log</file>
-
-            <!-- 로그 형식 -->
-            <encoder>
-                <pattern>${FILE_LOG_PATTERN}</pattern>
-            </encoder>
-
-            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${LOG_DIR}/archived/${LOG_PREFIX}_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
-                <!-- 각 파일 최대 크기 -->
-                <maxFileSize>1MB</maxFileSize>
-                <!-- 총 보관 최대 크기 -->
-                <totalSizeCap>30MB</totalSizeCap>
-                <!-- 최대 보관 일 수 -->
-                <maxHistory>90</maxHistory>
-            </rollingPolicy>
-        </appender>
         <logger name="app.hdj.datepick" level="INFO"/>
         <root level="INFO">
-            <appender-ref ref="FILE"/>
-            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="DATA"/>
+            <appender-ref ref="ERROR"/>
         </root>
     </springProfile>
 </configuration>

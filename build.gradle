@@ -12,6 +12,11 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+
+    // 보안 업데이트 충돌 해결
+    all {
+        exclude group: 'org.slf4j', module: 'slf4j-simple'
+    }
 }
 
 repositories {
@@ -30,6 +35,7 @@ bootJar {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -40,6 +46,9 @@ dependencies {
     // MariaDB
     implementation 'org.mariadb.jdbc:mariadb-java-client'
 
+    // Embedded Redis
+    implementation 'it.ozimov:embedded-redis:0.7.3'
+
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -47,8 +56,8 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok'
 
     // Logback (보안 업데이트)
-    implementation 'ch.qos.logback:logback-classic:1.2.9'
-    implementation 'ch.qos.logback:logback-core:1.2.9'
+    implementation 'ch.qos.logback:logback-classic:1.2.10'
+    implementation 'ch.qos.logback:logback-core:1.2.10'
 
     // QueryDSL
     implementation 'com.querydsl:querydsl-core'
@@ -57,10 +66,12 @@ dependencies {
     annotationProcessor 'javax.persistence:javax.persistence-api'
     annotationProcessor 'javax.annotation:javax.annotation-api'
 
+    // OpenAPI
     implementation 'org.springdoc:springdoc-openapi-ui:1.5.12'
 
     // AWS
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

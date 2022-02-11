@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.sql.Time;
 
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -14,11 +14,11 @@ public class CoursePlaceRelationDto {
     private Long courseId;
     private Long placeId;
     private Byte placeOrder;
-    private LocalDateTime visitTime;
+    private Time visitTime;
     private String memo;
 
     @QueryProjection
-    public CoursePlaceRelationDto(Long courseId, Long placeId, Byte placeOrder, LocalDateTime visitTime, String memo) {
+    public CoursePlaceRelationDto(Long courseId, Long placeId, Byte placeOrder, Time visitTime, String memo) {
         this.courseId = courseId;
         this.placeId = placeId;
         this.placeOrder = placeOrder;
