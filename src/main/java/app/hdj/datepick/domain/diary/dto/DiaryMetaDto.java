@@ -14,11 +14,11 @@ public class DiaryMetaDto {
     private Long courseId;
     private Long userId;
     private String title;
-    private Integer likeCount;
+    private Long likeCount;
     private String style;
 
     @QueryProjection
-    public DiaryMetaDto(Long id, Long courseId, Long userId, String title, Integer likeCount, String style) {
+    public DiaryMetaDto(Long id, Long courseId, Long userId, String title, Long likeCount, String style) {
         this.id = id;
         this.courseId = courseId;
         this.userId = userId;

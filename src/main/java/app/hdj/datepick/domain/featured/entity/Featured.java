@@ -1,41 +1,38 @@
 package app.hdj.datepick.domain.featured.entity;
 
-
-import app.hdj.datepick.global.common.entity.BaseTimeEntity;
-import app.hdj.datepick.domain.relation.entity.CourseFeaturedRelation;
+import app.hdj.datepick.global.entity.BaseTimeEntity;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
-
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity(name = "featured")
+@Entity
 public class Featured extends BaseTimeEntity<Long> {
 
-    @Column(name = "title", nullable = false)
+    @Column(nullable = false)
     private String title;
 
-    @Column(name = "description", nullable = false)
-    private String description;
+    @Column(nullable = false)
+    private String subtitle;
 
-    @Column(name = "content", columnDefinition = "text", nullable = false)
+    @Column(columnDefinition = "text", nullable = false)
     private String content;
 
-    @Column(name = "photo_url", nullable = false)
-    private String photoUrl;
+    @Column(nullable = false)
+    private String imageUrl;
 
-    @Column(name = "is_pinned", nullable = false)
+    @Column(nullable = false)
     @ColumnDefault("false")
     private Boolean isPinned;
-
-
-    @OneToMany(mappedBy = "featured", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<CourseFeaturedRelation> courseFeaturedRelations;
 
 }
