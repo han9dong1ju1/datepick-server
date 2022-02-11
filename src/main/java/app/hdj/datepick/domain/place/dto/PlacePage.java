@@ -1,16 +1,23 @@
 package app.hdj.datepick.domain.place.dto;
 
 
+import app.hdj.datepick.domain.place.entity.Category;
 import app.hdj.datepick.domain.place.entity.Place;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Getter
+@Setter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PlacePage {
 
@@ -22,7 +29,7 @@ public class PlacePage {
     private Double latitude;
     private Double longitude;
 
-    private Category categories;
+    private Set<Category> categories;
 
     private Boolean isPicked;
     private Long viewCount;
@@ -31,16 +38,9 @@ public class PlacePage {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @Getter
-    @AllArgsConstructor
-    class Category{
-        private String type;
-        private String subtype;
-        private String category;
-    }
 
     @QueryProjection
-    public PlacePage(Place place, String type, String subtype, String category) {
+    public PlacePage(Place place, Set<Category> categories) {
         this.id = place.getId();
         this.kakaoId = place.getKakaoId();
         this.name = place.getName();
@@ -49,9 +49,8 @@ public class PlacePage {
         this.latitude = place.getLatitude();
         this.longitude = place.getLongitude();
 
-        //TODO
-        this.categories = new PlacePage.Category(type, subtype, category);
-        
+        this.categories = categories;
+
         this.viewCount = place.getViewCount();
         this.reviewCount = place.getReviewCount();
         this.pickCount = place.getPickCount();

@@ -1,14 +1,23 @@
 package app.hdj.datepick.domain.place.repository;
 
-import app.hdj.datepick.domain.place.dto.QPlaceDetailDto;
-import app.hdj.datepick.domain.place.dto.QPlaceMetaDto;
-import app.hdj.datepick.domain.place.dto.request.QPlaceWithOrderDto;
+import app.hdj.datepick.domain.place.dto.PlacePage;
+import app.hdj.datepick.domain.place.dto.QPlacePage;
+import app.hdj.datepick.domain.place.param.PlaceFilterParam;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+import static app.hdj.datepick.domain.place.entity.QCategory.category;
 import static app.hdj.datepick.domain.place.entity.QPlace.place;
-import static app.hdj.datepick.domain.relation.entity.QCoursePlaceRelation.coursePlaceRelation;
+import static app.hdj.datepick.domain.relation.entity.QPlaceCategoryRelation.placeCategoryRelation;
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.set;
 
 
 @Slf4j
@@ -16,8 +25,28 @@ import static app.hdj.datepick.domain.relation.entity.QCoursePlaceRelation.cours
 @Repository
 public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
 
-//    private final JPAQueryFactory jpaQueryFactory;
-//
+    private final JPAQueryFactory jpaQueryFactory;
+
+    @Override
+    public Page<PlacePage> findPlacePage(Long courseId, PlaceFilterParam placeFilterParam, Pageable pageable) {
+
+        List<PlacePage> results = jpaQueryFactory.from(placeCategoryRelation)
+                .innerJoin(placeCategoryRelation.place, place)
+                .innerJoin(placeCategoryRelation.category, category)
+                .where(placeCategoryRelation.place.id.eq(1L))
+                .transform(
+                    groupBy(placeCategoryRelation.place.id).list(
+                            new QPlacePage(
+                                    placeCategoryRelation.place,
+                                    set(placeCategoryRelation.category)
+                            )
+                    )
+                );
+
+        return new PageImpl<>(results, pageable, results.size());
+    }
+
+    //
 //    /**
 //     *
 //     * @param placeId 찾을 place id
