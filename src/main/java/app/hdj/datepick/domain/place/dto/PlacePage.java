@@ -29,7 +29,7 @@ public class PlacePage {
     private Double latitude;
     private Double longitude;
 
-    private Set<Category> categories;
+    private Set<CategoryPage> categories;
 
     private Boolean isPicked;
     private Long viewCount;
@@ -40,7 +40,7 @@ public class PlacePage {
 
 
     @QueryProjection
-    public PlacePage(Place place, Set<Category> categories) {
+    public PlacePage(Place place, Set<CategoryPage> categories) {
         this.id = place.getId();
         this.kakaoId = place.getKakaoId();
         this.name = place.getName();
