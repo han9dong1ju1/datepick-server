@@ -1,5 +1,8 @@
 package app.hdj.datepick.domain.place.service;
 
+import app.hdj.datepick.domain.place.dto.PlacePage;
+import app.hdj.datepick.domain.place.entity.Place;
+import app.hdj.datepick.global.common.CustomPage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,17 +17,10 @@ public class PlaceService {
 //    private final PlaceReviewRepository placeReviewRepository;
 //    private final PlaceReviewPhotoRepository placeReviewPhotoRepository;
 //
-//    public Page<PlaceMetaDto> getPickedPlacePage(Pageable pageable) {
-//
-//        //TODO Pick 한 User Id 가져오기
-//        Long userId = 10L;
-//
-//        //Place Pick Relation 에서 User Id 로 Place 찾기
-//        List<Long> placeIds = placePickRepository.findPickedPlaceIds(userId);
-//
-//        //Place id list로 Place meta 정보 가져오기
-//        return placeRepository.findPlaceMetaPageById(placeIds, pageable);
-//    }
+
+    public CustomPage<PlacePage> getPlacePage() {
+        return null;
+    }
 //
 //    public Page<PlaceMetaDto> getRecommendedPlaceList(Pageable pageable) {
 //
