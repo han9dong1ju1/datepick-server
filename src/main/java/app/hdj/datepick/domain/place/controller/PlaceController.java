@@ -23,10 +23,10 @@ public class PlaceController {
 
     @GetMapping("")
     public CustomPage<PlacePage> getPlacePage(@RequestParam(value = "course_id", required = false) Long courseId,
-                                              @Valid PlaceFilterParam placeFilterParam,
+                                              //PlaceFilterParam placeFilterParam,
                                               @Valid PagingParam pagingParam
                                         ){
-        return placeService.getPlacePage();
-    }
 
+        return placeService.getPlacePage(courseId, null, pagingParam);
+    }
 }
