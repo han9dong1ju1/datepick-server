@@ -1,24 +1,23 @@
 package app.hdj.datepick.domain.place.repository;
 
-import app.hdj.datepick.domain.place.dto.PlacePage;
+import app.hdj.datepick.domain.place.dto.PlaceDto;
 import app.hdj.datepick.domain.place.dto.QCategoryPage;
-import app.hdj.datepick.domain.place.dto.QPlacePage;
+import app.hdj.datepick.domain.place.dto.QPlaceWithCategory;
 import app.hdj.datepick.domain.place.param.PlaceFilterParam;
+import app.hdj.datepick.global.util.PagingUtil;
+import com.querydsl.core.ResultTransformer;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 import static app.hdj.datepick.domain.place.entity.QCategory.category;
 import static app.hdj.datepick.domain.place.entity.QPlace.place;
 import static app.hdj.datepick.domain.relation.entity.QPlaceCategoryRelation.placeCategoryRelation;
-import static com.querydsl.core.group.GroupBy.groupBy;
-import static com.querydsl.core.group.GroupBy.set;
+import static com.querydsl.core.group.GroupBy.*;
 
 
 @Slf4j
@@ -27,30 +26,30 @@ import static com.querydsl.core.group.GroupBy.set;
 public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
+    private final PagingUtil pagingUtil;
 
     @Override
-    public Page<PlacePage> findPlacePage(Long courseId, PlaceFilterParam placeFilterParam, Pageable pageable) {
+    public Page<PlaceDto> findPlacePage(Long courseId, PlaceFilterParam placeFilterParam, Pageable pageable) {
 
-        List<PlacePage> results = jpaQueryFactory.from(placeCategoryRelation)
+        JPAQuery query = jpaQueryFactory
+                .from(placeCategoryRelation)
                 .innerJoin(placeCategoryRelation.place, place)
                 .innerJoin(placeCategoryRelation.category, category)
-                .where(placeCategoryRelation.place.id.eq(1L))
-                .transform(
-                    groupBy(placeCategoryRelation.place.id).list(
-                            new QPlacePage(
-                                    placeCategoryRelation.place,
-                                    set(new QCategoryPage(
-                                            placeCategoryRelation.category.id,
-                                            placeCategoryRelation.category.name
-                                    ))
-                            )
-                    )
-                );
+                .where(placeCategoryRelation.place.id.eq(1L));
 
-        return new PageImpl<>(results, pageable, results.size());
+        ResultTransformer resultTransformer = groupBy(
+                placeCategoryRelation.place.id
+        ).list(new QPlaceWithCategory(
+                placeCategoryRelation.place,
+                list(new QCategoryPage(
+                        placeCategoryRelation.category.id,
+                        placeCategoryRelation.category.name
+                ))
+        ));
+
+        return pagingUtil.getPageImpl(pageable, query, PlaceDto.class, resultTransformer);
     }
 
-    //
 //    /**
 //     *
 //     * @param placeId 찾을 place id

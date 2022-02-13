@@ -1,7 +1,6 @@
 package app.hdj.datepick.domain.place.service;
 
-import app.hdj.datepick.domain.place.dto.PlacePage;
-import app.hdj.datepick.domain.place.entity.Place;
+import app.hdj.datepick.domain.place.dto.PlaceDto;
 import app.hdj.datepick.domain.place.param.PlaceFilterParam;
 import app.hdj.datepick.domain.place.repository.PlaceRepository;
 import app.hdj.datepick.global.common.CustomPage;
@@ -10,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -19,16 +17,12 @@ import org.springframework.stereotype.Service;
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
-//    private final PlacePickRepository placePickRepository;
-//    private final PlaceReviewRepository placeReviewRepository;
-//    private final PlaceReviewPhotoRepository placeReviewPhotoRepository;
-//
 
-    public CustomPage<PlacePage> getPlacePage(Long courseId,
-                                              PlaceFilterParam placeFilterParam,
-                                              PagingParam pagingParam) {
+    public CustomPage<PlaceDto> getPlacePage(Long courseId,
+                                             PlaceFilterParam placeFilterParam,
+                                             PagingParam pagingParam) {
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize());
-        Page<PlacePage> placePage = placeRepository.findPlacePage(courseId, placeFilterParam, pageRequest);
+        Page<PlaceDto> placePage = placeRepository.findPlacePage(courseId, placeFilterParam, pageRequest);
 
         return new CustomPage<>(
                 placePage.getTotalElements(),
@@ -37,6 +31,7 @@ public class PlaceService {
                 placePage.getContent()
         );
     }
+
 //
 //    public Page<PlaceMetaDto> getRecommendedPlaceList(Pageable pageable) {
 //

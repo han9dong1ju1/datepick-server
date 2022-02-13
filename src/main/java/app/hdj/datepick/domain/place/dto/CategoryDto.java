@@ -10,13 +10,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class CategoryPage {
+public class CategoryDto {
 
     private Long id;
     private String name;
 
     @QueryProjection
-    public CategoryPage(Long id, String name) {
+    public CategoryDto(Long id, String name) {
         this.id = id;
         this.name = name;
     }

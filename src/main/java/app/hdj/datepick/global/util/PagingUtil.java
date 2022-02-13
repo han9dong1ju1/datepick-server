@@ -1,5 +1,7 @@
 package app.hdj.datepick.global.util;
 
+import com.querydsl.core.ResultTransformer;
+import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.types.dsl.PathBuilderFactory;
 import com.querydsl.jpa.JPQLQuery;
@@ -29,4 +31,11 @@ public class PagingUtil {
         return new PageImpl<>(results, pageable, totalCount);
     }
 
+    public <T> PageImpl<T> getPageImpl(Pageable pageable, JPQLQuery<T> query, Class classType, ResultTransformer<List> resultTransformer) {
+        long totalCount = query.fetchCount();
+        List<T> results = getQuerydsl(classType).applyPagination(pageable, query).transform(
+                resultTransformer
+        );
+        return new PageImpl<>(results, pageable, totalCount);
+    }
 }
