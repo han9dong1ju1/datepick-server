@@ -1,25 +1,20 @@
 package app.hdj.datepick.domain.place.dto;
 
 
-import app.hdj.datepick.domain.place.entity.Category;
 import app.hdj.datepick.domain.place.entity.Place;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class PlacePage {
+public class PlaceDto {
 
     private Long id;
     private String kakaoId;
@@ -29,7 +24,7 @@ public class PlacePage {
     private Double latitude;
     private Double longitude;
 
-    private Set<CategoryPage> categories;
+    private List<CategoryDto> categories;
 
     private Boolean isPicked;
     private Long viewCount;
@@ -40,7 +35,7 @@ public class PlacePage {
 
 
     @QueryProjection
-    public PlacePage(Place place, Set<CategoryPage> categories) {
+    public PlaceDto(Place place, List<CategoryDto> categories) {
         this.id = place.getId();
         this.kakaoId = place.getKakaoId();
         this.name = place.getName();
