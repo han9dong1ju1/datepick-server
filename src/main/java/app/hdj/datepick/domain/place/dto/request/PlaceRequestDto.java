@@ -1,8 +1,6 @@
 package app.hdj.datepick.domain.place.dto.request;
 
 import app.hdj.datepick.domain.place.entity.Place;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Component;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Component
 public class PlaceRequestDto {//Post, Patch 에 사용
 
@@ -33,7 +30,7 @@ public class PlaceRequestDto {//Post, Patch 에 사용
     private String subtype;
     private String category;
 
-    public Place toPlace(){
+    public Place toPlace() {
         return Place.builder()
                 .kakaoId(this.kakaoId)
                 .name(this.name)

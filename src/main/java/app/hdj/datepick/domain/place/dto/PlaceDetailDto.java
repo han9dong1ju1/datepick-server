@@ -1,15 +1,13 @@
 package app.hdj.datepick.domain.place.dto;
 
 import app.hdj.datepick.domain.diary.dto.PlaceReviewDto;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
 import java.util.List;
 
 @Getter
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PlaceDetailDto {
 
     //TODO region 추가
@@ -26,9 +24,10 @@ public class PlaceDetailDto {
     private Boolean isPicked;
 
     private List<PlaceReviewDto> reviews;
+
     @Getter
     @AllArgsConstructor
-    class Category{
+    class Category {
         private String type;
         private String subtype;
         private String category;
