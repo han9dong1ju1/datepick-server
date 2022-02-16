@@ -1,14 +1,11 @@
 package app.hdj.datepick.domain.place.dto;
 
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PlaceMetaDto {
     //TODO region 추가
     private Long id;
@@ -23,7 +20,7 @@ public class PlaceMetaDto {
 
     @Getter
     @AllArgsConstructor
-    class Category{
+    class Category {
         private String type;
         private String subtype;
         private String category;

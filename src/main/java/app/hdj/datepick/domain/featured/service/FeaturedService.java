@@ -1,6 +1,7 @@
 package app.hdj.datepick.domain.featured.service;
 
 import app.hdj.datepick.domain.featured.entity.Featured;
+import app.hdj.datepick.domain.featured.param.FeaturedRequestParam;
 import app.hdj.datepick.domain.featured.repository.FeaturedRepository;
 import app.hdj.datepick.global.common.CustomPage;
 import app.hdj.datepick.global.common.PagingParam;
@@ -18,10 +19,10 @@ public class FeaturedService {
 
     private final FeaturedRepository featuredRepository;
 
-    public CustomPage<Featured> getFeaturedPage(Boolean isPinned, Long courseId, PagingParam pagingParam) {
+    public CustomPage<Featured> getFeaturedPage(FeaturedRequestParam featuredRequestParam, PagingParam pagingParam) {
         // 페이징된 데이터 가져옴
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), Sort.by("createdAt").descending());
-        Page<Featured> featuredPage = featuredRepository.findFeaturedPage(isPinned, courseId, pageRequest);
+        Page<Featured> featuredPage = featuredRepository.findFeaturedPage(featuredRequestParam.getIsPinned(), featuredRequestParam.getCourseId(), pageRequest);
 
         // CustomPage로 말아서 반환
         return new CustomPage<>(
