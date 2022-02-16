@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.featured.params;
+package app.hdj.datepick.domain.featured.param;
 
 
 import lombok.AllArgsConstructor;
