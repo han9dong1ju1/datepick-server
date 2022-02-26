@@ -5,6 +5,7 @@ import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.types.dsl.PathBuilderFactory;
 import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,11 +32,9 @@ public class PagingUtil {
         return new PageImpl<>(results, pageable, totalCount);
     }
 
-    public <T> PageImpl<T> getPageImpl(Pageable pageable, JPQLQuery<T> query, Class classType, ResultTransformer<List> resultTransformer) {
-        long totalCount = query.fetchCount();
-        List<T> results = getQuerydsl(classType).applyPagination(pageable, query).transform(
-                resultTransformer
-        );
-        return new PageImpl<>(results, pageable, totalCount);
+    public <T> JPQLQuery<T> applySort(Pageable pageable, JPAQuery<T> query, Class classType){
+        return getQuerydsl(classType).applySorting(pageable.getSort(), query);
     }
+
+
 }
