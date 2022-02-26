@@ -8,5 +8,5 @@ import org.springframework.data.domain.Pageable;
 public interface PlaceCustomRepository {
 
     Page<PlaceDto> findPlacePage(Long courseId, PlaceFilterParam placeFilterParam, Pageable pageable);
-
+    PlaceDto findPlace(Long placeId);
 }
