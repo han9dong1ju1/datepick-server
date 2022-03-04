@@ -8,8 +8,6 @@ import app.hdj.datepick.domain.place.param.PlaceFilterParam;
 import app.hdj.datepick.global.error.enums.ErrorCode;
 import app.hdj.datepick.global.error.exception.CustomException;
 import app.hdj.datepick.global.util.PagingUtil;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -21,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashSet;
 import java.util.List;
 
 import static app.hdj.datepick.domain.place.entity.QCategory.category;
@@ -44,21 +41,22 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
     @Override
     public Page<PlaceDto> findPlacePage(Long courseId, PlaceFilterParam placeFilterParam, Pageable pageable) {
 
+        Page<Long> filteredIds = filteringPlaces(courseId, placeFilterParam, pageable);
 
-        Page<Long> placeIdPage = filteringPlaces(courseId, placeFilterParam, pageable);
-
-        return fetchPlaces(placeIdPage, pageable);
+        return fetchPlaces(filteredIds, pageable);
     }
+
+
 
     private Page<PlaceDto> fetchPlaces(Page<Long> placeIdPage, Pageable pageable) {
 
         JPAQuery<?> query = jpaQueryFactory
                 .from(placeCategoryRelation)
-                .innerJoin(placeCategoryRelation.place, place)
-                .innerJoin(placeCategoryRelation.category, category)
+                .join(place).on(place.id.eq(placeCategoryRelation.place.id))
+                .join(category).on(category.id.eq(placeCategoryRelation.category.id))
                 .where(placeCategoryRelation.place.id.in(placeIdPage.getContent()));
 
-        JPQLQuery<?> sortedQuery = pagingUtil.applySort(pageable, query, Place.class);
+        JPQLQuery<?> sortedQuery = pagingUtil.applySorting(pageable.getSort(), query, Place.class);
 
         List<PlaceDto> results = sortedQuery.transform(
                 groupBy(
@@ -73,79 +71,61 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
         );
 
         return new PageImpl<PlaceDto>(results, pageable, placeIdPage.getTotalElements());
-
     }
 
     private Page<Long> filteringPlaces(Long courseId, PlaceFilterParam placeFilterParam, Pageable pageable) {
 
-        //course 필터링
-        HashSet<Long> resultIdSet = coursefiltering(courseId, new HashSet<>());
+        JPQLQuery<Long> query = jpaQueryFactory
+                .select(place.id)
+                .distinct()
+                .from(place);
 
-        //keyword, distance 필터링
-        resultIdSet = keywordAndDistanceFiltering(placeFilterParam.getKeyword(), placeFilterParam.getDistance(), placeFilterParam.getLatitude(), placeFilterParam.getLongitude(), resultIdSet);
+        //course 필터링
+        query = coursefiltering(courseId, query);
+
+        //keyword 필터링
+        query = keywordFiltering(placeFilterParam.getKeyword(), query);
+
+        //distance 필터링
+        query = distanceFiltering(placeFilterParam.getDistance(), placeFilterParam.getLatitude(), placeFilterParam.getLongitude(), query);
 
         //category 필터링
-        resultIdSet = categoryFiltering(placeFilterParam.getCategory(), resultIdSet);
+        query = categoryFiltering(placeFilterParam.getCategory(), query);
 
-        //paging 처리
-        JPAQuery<Long> placeQuery = jpaQueryFactory.select(place.id).from(place).where(place.id.in(resultIdSet));
-
-        return pagingUtil.getPageImpl(pageable, placeQuery, Place.class);
+        return pagingUtil.getPageImpl(pageable, query, Place.class);
     }
 
-    private HashSet<Long> coursefiltering(Long courseId, HashSet<Long> prevSet){
-        if (courseId != null) {
-            HashSet<Long> resultSet =  new HashSet<>(jpaQueryFactory
-                    .select(coursePlaceRelation.place.id)
-                    .from(coursePlaceRelation)
-                    .where(coursePlaceRelation.course.id.eq(courseId))
-                    .fetch()
-            );
-            if (prevSet.size() > 0){
-                resultSet.retainAll(prevSet);
-            }
-            return resultSet;
+    private <T> JPQLQuery<T> coursefiltering(Long courseId, JPQLQuery<T> query){
+        if (courseId != null){
+            query.join(coursePlaceRelation).on(coursePlaceRelation.place.id.eq(place.id))
+                    .where(coursePlaceRelation.course.id.eq(courseId));
         }
-        return prevSet;
-
+        return query;
     }
 
-    private HashSet<Long> keywordAndDistanceFiltering(String keyword, Double distance, Double latitude, Double longitude, HashSet<Long> prevSet) {
-        if (keyword == null && distance == null) {
-            return prevSet;
+    private <T> JPQLQuery<T> keywordFiltering(String keyword, JPQLQuery<T> query) {
+        if (keyword != null){
+            //NumberTemplate<Integer> booleanTemplate = Expressions.numberTemplate(Integer.class, "function('match', {0}, {1})", place.name, "+떡볶이*");
+            //query.where(booleanTemplate.gt(0));
+            query.where(place.name.contains(keyword));
         }
-        else {
-            JPAQuery<Long> query = jpaQueryFactory.select(place.id).from(place);
-            if (keyword != null) {
-                NumberTemplate<Double> booleanTemplate = Expressions.numberTemplate(Double.class, "function('match', {0}, {1})", place.name, "+" + keyword + "*");
-                query.where(booleanTemplate.gt(0));
-            }
-            if (distance != null) {
-                //TODO : distance filtering
-
-            }
-
-            HashSet<Long> resultSet = new HashSet<Long>(query.fetch());
-            if (prevSet.size() > 0){
-                resultSet.retainAll(prevSet);
-            }
-            return resultSet;
-        }
+        return query;
     }
 
-    private HashSet<Long> categoryFiltering(String categoryName, HashSet<Long> prevSet) {
+    private <T> JPQLQuery<T> distanceFiltering(Double distance, Double latitude, Double longitude, JPQLQuery<T> query) {
+        if (distance != null){
+            //TODO : distance filtering
+        }
+        return query;
+    }
+
+    private <T> JPQLQuery<T> categoryFiltering(String categoryName, JPQLQuery<T> query) {
         if (categoryName != null){
-            HashSet<Long> resultSet = new HashSet<Long>(jpaQueryFactory.select(placeCategoryRelation.place.id)
-                    .from(placeCategoryRelation)
-                    .innerJoin(placeCategoryRelation.category, category)
-                    .where(placeCategoryRelation.category.name.eq(categoryName))
-                    .fetch());
-            if (prevSet.size() > 0) {
-                resultSet.retainAll(prevSet);
-            }
-            return resultSet;
+            query.join(placeCategoryRelation).on(placeCategoryRelation.place.id.eq(place.id))
+                    .join(category).on(category.id.eq(placeCategoryRelation.category.id))
+                    .where(category.name.eq(categoryName));
         }
-        return prevSet;
+        return query;
     }
 
     @Override
