@@ -48,6 +48,7 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
 
 
 
+
     private Page<PlaceDto> fetchPlaces(Page<Long> placeIdPage, Pageable pageable) {
 
         JPAQuery<?> query = jpaQueryFactory
@@ -87,7 +88,11 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
         query = keywordFiltering(placeFilterParam.getKeyword(), query);
 
         //distance 필터링
-        query = distanceFiltering(placeFilterParam.getDistance(), placeFilterParam.getLatitude(), placeFilterParam.getLongitude(), query);
+        query = distanceFiltering(
+                placeFilterParam.getDistance(),
+                placeFilterParam.getLatitude(),
+                placeFilterParam.getLongitude(),
+                query);
 
         //category 필터링
         query = categoryFiltering(placeFilterParam.getCategory(), query);
