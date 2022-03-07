@@ -20,7 +20,6 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
-    database-platform: app.hdj.datepick.global.config.CustomDialect
   redis:
     host: localhost
     port: 6379
