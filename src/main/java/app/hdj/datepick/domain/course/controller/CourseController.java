@@ -1,14 +1,9 @@
 package app.hdj.datepick.domain.course.controller;
 
-import app.hdj.datepick.domain.course.dto.CourseDetailDto;
-import app.hdj.datepick.domain.course.dto.CourseMetaDto;
-import app.hdj.datepick.domain.course.dto.CourseModifyRequsetDto;
-import app.hdj.datepick.domain.course.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor
