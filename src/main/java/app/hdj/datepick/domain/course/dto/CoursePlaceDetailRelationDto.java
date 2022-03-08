@@ -1,8 +1,6 @@
 package app.hdj.datepick.domain.course.dto;
 
-import app.hdj.datepick.domain.place.dto.PlaceDto;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import app.hdj.datepick.domain.place.dto.PlaceMetaDto;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.ToString;
@@ -11,7 +9,6 @@ import java.sql.Time;
 
 @ToString
 @Getter
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CoursePlaceDetailRelationDto {
 
     private Byte placeOrder;
