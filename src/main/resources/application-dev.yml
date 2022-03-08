@@ -1,12 +1,4 @@
 # dev 환경
-server:
-  error:
-    include-exception: true
-    include-binding-errors: always
-    include-message: always
-    whitelabel:
-      enabled: false
-  port: 8080
 spring:
   datasource:
     url: jdbc:mariadb://datepickdb.cbwheay2prg8.ap-northeast-2.rds.amazonaws.com:3306/datepickdb_dev

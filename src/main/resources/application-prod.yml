@@ -1,12 +1,4 @@
 # prod 환경
-server:
-  error:
-    include-exception: false
-    include-binding-errors: never
-    include-message: never
-    whitelabel:
-      enabled: false
-  port: 8888
 spring:
   datasource:
     url: jdbc:mariadb://datepickdb.cbwheay2prg8.ap-northeast-2.rds.amazonaws.com:3306/datepickdb_prod
@@ -16,6 +8,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+    show-sql: false
   redis:
     host: datepick-redis-001.cz4fdc.0001.apn2.cache.amazonaws.com
     port: 6379
