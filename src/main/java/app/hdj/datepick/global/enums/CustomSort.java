@@ -11,7 +11,6 @@ public enum CustomSort {
     RATING_DESC,
     RATING_ASC,
     DISTANCE_ASC,
-    DISTANCE_DESC,
     ;
 
     public static CustomSort from(String value) {
@@ -22,25 +21,23 @@ public enum CustomSort {
         }
         return null;
     }
-    public static Sort toSort(CustomSort customSort){
-        if (customSort == CustomSort.PICK) {
-            return Sort.by("pickCount").descending();
-        }
-        else if (customSort == CustomSort.DISTANCE_ASC) {
-            return Sort.by("distance").ascending();
-        }
-        else if (customSort == CustomSort.POPULAR) {
-            return Sort.by("popularity").descending();
-        }
-        else if (customSort == CustomSort.RATING_ASC) {
-            return Sort.by("rating").ascending();
-        }
-        else if (customSort == CustomSort.RATING_DESC) {
-            return Sort.by("rating").descending();
-        } else {
-            return Sort.by("createdAt").descending();
-        }
 
+    public static Sort toSort(CustomSort customSort) {
+        switch (customSort) {
+            case PICK:
+                return Sort.by("pickCount").descending();
+            case DISTANCE_ASC:
+                return Sort.by("distance").ascending();
+            case POPULAR:
+                return Sort.by("popularity").descending();
+            case RATING_ASC:
+                return Sort.by("rating").ascending();
+            case RATING_DESC:
+                return Sort.by("rating").descending();
+            case LATEST:
+                return Sort.by("createdAt").descending();
+        }
+        return null;
     }
 
 }
