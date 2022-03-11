@@ -13,7 +13,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PlaceDto {
 
     private Long id;

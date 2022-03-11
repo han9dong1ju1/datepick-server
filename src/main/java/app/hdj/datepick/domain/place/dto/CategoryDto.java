@@ -9,7 +9,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CategoryDto {
 
     private Long id;
