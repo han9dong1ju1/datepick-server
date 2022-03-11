@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.place.service;
 
-import app.hdj.datepick.domain.place.dto.PlaceDto;
+import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.place.param.PlaceFilterParam;
 import app.hdj.datepick.domain.place.repository.PlaceRepository;
 import app.hdj.datepick.global.common.CustomPage;
@@ -20,15 +20,12 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
 
-    public CustomPage<PlaceDto> getPlacePage(Long courseId,
+    public CustomPage<Place> getPlacePage(PagingParam pagingParam,
                                              CustomSort customSort,
-                                             PlaceFilterParam placeFilterParam,
-                                             PagingParam pagingParam) {
-
+                                             PlaceFilterParam placeFilterParam) {
         Sort sort = CustomSort.toSort(customSort);
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), sort);
-        Page<PlaceDto> placePage = placeRepository.findPlacePage(courseId, placeFilterParam, pageRequest);
-
+        Page<Place> placePage = placeRepository.findPlacePage(placeFilterParam, pageRequest);
 
         return new CustomPage<>(
                 placePage.getTotalElements(),
@@ -38,7 +35,8 @@ public class PlaceService {
         );
     }
 
-    public PlaceDto getPlace(Long placeId){
-        return placeRepository.findPlace(placeId);
+    public Place getPlace(Long placeId) {
+        return placeRepository.findById(placeId).orElseThrow();
     }
+
 }
