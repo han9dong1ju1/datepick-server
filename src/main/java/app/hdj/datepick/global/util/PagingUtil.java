@@ -24,14 +24,10 @@ public class PagingUtil {
         return new Querydsl(em, builder);
     }
 
-    public <T> PageImpl<T> getPageImpl(Pageable pageable, JPQLQuery<T> query, Class classType) {
+    public <T> PageImpl<T> getPageImpl(Pageable pageable, JPQLQuery<T> query) {
         long totalCount = query.fetchCount();
-        List<T> results = getQuerydsl(classType).applyPagination(pageable, query).fetch();
+        List<T> results = getQuerydsl(query.getType()).applyPagination(pageable, query).fetch();
         return new PageImpl<>(results, pageable, totalCount);
-    }
-
-    public  <T> JPQLQuery<T> applySorting(Sort sort, JPQLQuery<T> query, Class classType){
-        return getQuerydsl(classType).applySorting(sort, query);
     }
 
 }
