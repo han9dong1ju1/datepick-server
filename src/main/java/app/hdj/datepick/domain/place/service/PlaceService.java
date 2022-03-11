@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -23,8 +25,8 @@ public class PlaceService {
     public CustomPage<Place> getPlacePage(PagingParam pagingParam,
                                              CustomSort customSort,
                                              PlaceFilterParam placeFilterParam) {
-        Sort sort = CustomSort.toSort(customSort);
-        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), sort);
+        Sort sort = CustomSort.toSort(customSort == null ? CustomSort.LATEST : customSort);
+        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), Objects.requireNonNull(sort));
         Page<Place> placePage = placeRepository.findPlacePage(placeFilterParam, pageRequest);
 
         return new CustomPage<>(
