@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.place.param;
+package app.hdj.datepick.domain.place.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

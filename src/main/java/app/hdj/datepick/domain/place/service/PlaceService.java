@@ -1,7 +1,7 @@
 package app.hdj.datepick.domain.place.service;
 
 import app.hdj.datepick.domain.place.entity.Place;
-import app.hdj.datepick.domain.place.param.PlaceFilterParam;
+import app.hdj.datepick.domain.place.dto.PlaceFilterParam;
 import app.hdj.datepick.domain.place.repository.PlaceRepository;
 import app.hdj.datepick.global.common.CustomPage;
 import app.hdj.datepick.global.common.PagingParam;
