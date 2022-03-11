@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.place.dto.request;
+package app.hdj.datepick.domain.place.dto;
 
 import app.hdj.datepick.domain.place.entity.Place;
 import lombok.*;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class PlaceRequestDto {//Post, Patch 에 사용
+public class PlaceRequest {//Post, Patch 에 사용
 
     private String kakaoId;
     private String name;
