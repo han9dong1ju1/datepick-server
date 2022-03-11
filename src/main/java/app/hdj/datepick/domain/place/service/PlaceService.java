@@ -1,7 +1,7 @@
 package app.hdj.datepick.domain.place.service;
 
-import app.hdj.datepick.domain.place.dto.PlaceDto;
-import app.hdj.datepick.domain.place.param.PlaceFilterParam;
+import app.hdj.datepick.domain.place.entity.Place;
+import app.hdj.datepick.domain.place.dto.PlaceFilterParam;
 import app.hdj.datepick.domain.place.repository.PlaceRepository;
 import app.hdj.datepick.global.common.CustomPage;
 import app.hdj.datepick.global.common.PagingParam;
@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -20,25 +22,18 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
 
-    public CustomPage<PlaceDto> getPlacePage(Long courseId,
+    public CustomPage<Place> getPlacePage(PagingParam pagingParam,
                                              CustomSort customSort,
-                                             PlaceFilterParam placeFilterParam,
-                                             PagingParam pagingParam) {
+                                             PlaceFilterParam placeFilterParam) {
+        Sort sort = CustomSort.toSort(customSort == null ? CustomSort.LATEST : customSort);
+        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), Objects.requireNonNull(sort));
+        Page<Place> placePage = placeRepository.findPlacePage(placeFilterParam, pageRequest);
 
-        Sort sort = CustomSort.toSort(customSort);
-        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), sort);
-        Page<PlaceDto> placePage = placeRepository.findPlacePage(courseId, placeFilterParam, pageRequest);
-
-
-        return new CustomPage<>(
-                placePage.getTotalElements(),
-                placePage.getTotalPages(),
-                placePage.getNumber(),
-                placePage.getContent()
-        );
+        return CustomPage.from(placePage);
     }
 
-    public PlaceDto getPlace(Long placeId){
-        return placeRepository.findPlace(placeId);
+    public Place getPlace(Long placeId) {
+        return placeRepository.findById(placeId).orElseThrow();
     }
+
 }
