@@ -29,12 +29,7 @@ public class PlaceService {
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), Objects.requireNonNull(sort));
         Page<Place> placePage = placeRepository.findPlacePage(placeFilterParam, pageRequest);
 
-        return new CustomPage<>(
-                placePage.getTotalElements(),
-                placePage.getTotalPages(),
-                placePage.getNumber(),
-                placePage.getContent()
-        );
+        return CustomPage.from(placePage);
     }
 
     public Place getPlace(Long placeId) {

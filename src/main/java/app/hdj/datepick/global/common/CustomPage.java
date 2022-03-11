@@ -1,6 +1,7 @@
 package app.hdj.datepick.global.common;
 
 import lombok.Getter;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -20,4 +21,14 @@ public class CustomPage<T> {
         this.last = totalPageCount == (currentPage + 1);
         this.content = content;
     }
+
+    public static <T> CustomPage<T> from(Page<T> page) {
+        return new CustomPage<>(
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.getNumber(),
+                page.getContent()
+        );
+    }
+
 }
