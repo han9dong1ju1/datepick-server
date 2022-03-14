@@ -1,13 +1,12 @@
 package app.hdj.datepick.domain.relation.entity;
 
-import app.hdj.datepick.domain.place.entity.Category;
+import app.hdj.datepick.domain.category.entity.Category;
 import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.global.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
