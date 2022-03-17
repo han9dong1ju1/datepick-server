@@ -1,5 +1,6 @@
-package app.hdj.datepick.domain.course.entity;
+package app.hdj.datepick.domain.comment.entity;
 
+import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.entity.BaseTimeEntity;
 import lombok.*;

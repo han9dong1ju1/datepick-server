@@ -37,7 +37,14 @@ public enum CustomSort {
             case LATEST:
                 return Sort.by("createdAt").descending();
         }
-        return null;
+        return Sort.unsorted();
+    }
+
+    public static Sort toSort(CustomSort customSort, CustomSort defaultSort) {
+        if (customSort == null) {
+            customSort = defaultSort;
+        }
+        return toSort(customSort);
     }
 
 }

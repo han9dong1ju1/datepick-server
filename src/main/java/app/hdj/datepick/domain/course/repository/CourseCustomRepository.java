@@ -1,62 +1,14 @@
 package app.hdj.datepick.domain.course.repository;
 
-import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
+import app.hdj.datepick.domain.course.dto.CourseFilterParam;
+import app.hdj.datepick.domain.course.entity.Course;
+import app.hdj.datepick.global.common.PagingParam;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
-import java.util.List;
+public interface CourseCustomRepository {
 
-public interface CourseCustomRepository{
-
-//    /**
-//     *
-//     * @param courseId
-//     * @return
-//     */
-//    List<Long> findPlaceIdListInCourse(Long courseId);
-//
-//
-//    /**
-//     *
-//     * @param courseIds
-//     * @param pageable
-//     * @return
-//     */
-//    Page<CourseMetaDto> findCourseMetaPageById(List<Long> courseIds, Pageable pageable);
-//
-//    /**
-//     *
-//     * @param courseIds
-//     * @return
-//     */
-//    List<CourseMetaDto> findCourseMetaListById(List<Long> courseIds);
-//
-//    /**
-//     *
-//     * @param courseId
-//     * @param placeIds
-//     * @return
-//     */
-//    List<CoursePlaceDetailRelationDto> findPlaceRelationDtoInCourse(Long courseId, List<Long> placeIds);
-//
-//    /**
-//     *
-//     * @param courseId
-//     * @param isPicked
-//     * @param placeRelations
-//     * @return
-//     */
-//    CourseDetailDto findCourseDetail(Long courseId, Boolean isPicked, List<CoursePlaceDetailRelationDto> placeRelations);
-//
-//
-//    List<CoursePlaceRelation> findPlaceRelationByCourseId(Long courseId);
-//    List<CoursePlaceRelationDto> findPlaceRelationDtoByCourseId(Long courseId);
-//
-//    void updatePlaceRelations(Long courseId, ModifyCoursePlaceRelationDto placeRelation);
-//
-//    void insertPlaceRelations(Long courseId, ModifyCoursePlaceRelationDto placeRelation);
-//
-//    Long deletePlaceRelations(Long courseId, List<Long> newPlaceIds);
-//
-//    void createCoursePlaceRelation(Long courseId, List<ModifyCoursePlaceRelationDto> placeRelations);
+    Page<Course> findPublicCoursePage(CourseFilterParam courseFilterParam, PagingParam pagingParam, Sort sort);
+    Page<Course> findCoursePage(CourseFilterParam courseFilterParam, PagingParam pagingParam, Sort sort);
+    Page<Course> findPickedCoursePage(CourseFilterParam courseFilterParam, PagingParam pagingParam, Sort sort, Long userId);
 }

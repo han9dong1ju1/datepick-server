@@ -25,7 +25,7 @@ public class PlaceService {
     public CustomPage<Place> getPlacePage(PagingParam pagingParam,
                                              CustomSort customSort,
                                              PlaceFilterParam placeFilterParam) {
-        Sort sort = CustomSort.toSort(customSort == null ? CustomSort.LATEST : customSort);
+        Sort sort = CustomSort.toSort(customSort == null ? CustomSort.LATEST : customSort, CustomSort.LATEST);
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), Objects.requireNonNull(sort));
         Page<Place> placePage = placeRepository.findPlacePage(placeFilterParam, pageRequest);
 
