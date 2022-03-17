@@ -3,6 +3,7 @@ package app.hdj.datepick.domain.relation.entity;
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.tag.entity.Tag;
 import app.hdj.datepick.global.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,12 +16,13 @@ import javax.persistence.*;
 @Entity
 public class CourseTagRelation extends BaseEntity<Long> {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id",nullable = false)
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tag_id",nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "tag_id", nullable = false)
     private Tag tag;
 
 }

@@ -1,14 +1,110 @@
 package app.hdj.datepick.domain.course.service;
 
+import app.hdj.datepick.domain.course.dto.CourseFilterParam;
+import app.hdj.datepick.domain.course.dto.CoursePublic;
+import app.hdj.datepick.domain.course.dto.CourseRequest;
+import app.hdj.datepick.domain.course.entity.Course;
+import app.hdj.datepick.domain.course.repository.CourseRepository;
+import app.hdj.datepick.domain.user.entity.User;
+import app.hdj.datepick.domain.user.repository.UserRepository;
+import app.hdj.datepick.global.common.CustomPage;
+import app.hdj.datepick.global.common.PagingParam;
+import app.hdj.datepick.global.enums.CustomSort;
+import app.hdj.datepick.global.error.enums.ErrorCode;
+import app.hdj.datepick.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import java.util.stream.Collectors;
 
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class CourseService {
+
+    private final EntityManager em;
+    private final CourseRepository courseRepository;
+    private final UserRepository userRepository;
+
+    public CustomPage<CoursePublic> getPublicCoursePage(PagingParam pagingParam,
+                                                        CustomSort customSort,
+                                                        CourseFilterParam courseFilterParam,
+                                                        Long userId) {
+        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
+        Page<Course> coursePage = courseRepository.findPublicCoursePage(courseFilterParam, pagingParam, sort);
+
+        return new CustomPage<>(
+                coursePage.getTotalElements(),
+                coursePage.getTotalPages(),
+                coursePage.getNumber(),
+                coursePage.getContent().stream()
+                        .map(course -> CoursePublic.from(course, userId))
+                        .collect(Collectors.toList())
+        );
+    }
+
+    public CustomPage<CoursePublic> getCoursePage(PagingParam pagingParam,
+                                            CustomSort customSort,
+                                            CourseFilterParam courseFilterParam,
+                                            Long userId) {
+        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
+        Page<Course> coursePage = courseRepository.findCoursePage(courseFilterParam, pagingParam, sort);
+
+        return new CustomPage<>(
+                coursePage.getTotalElements(),
+                coursePage.getTotalPages(),
+                coursePage.getNumber(),
+                coursePage.getContent().stream()
+                        .map(course -> CoursePublic.from(course, userId))
+                        .collect(Collectors.toList())
+        );
+    }
+
+    public CustomPage<CoursePublic> getPickedCoursePage(PagingParam pagingParam, CustomSort customSort, CourseFilterParam courseFilterParam, Long userId) {
+        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
+        Page<Course> coursePage = courseRepository.findPickedCoursePage(courseFilterParam, pagingParam, sort, userId);
+
+        return new CustomPage<>(
+                coursePage.getTotalElements(),
+                coursePage.getTotalPages(),
+                coursePage.getNumber(),
+                coursePage.getContent().stream()
+                        .map(course -> CoursePublic.from(course, userId))
+                        .collect(Collectors.toList())
+        );
+    }
+
+    @Transactional
+    public CoursePublic addCourse(Long userId, CourseRequest courseRequest) {
+        User user = userRepository.findById(userId).orElseThrow();
+
+        Course course = Course.builder()
+                .user(user)
+                .title(courseRequest.getTitle())
+                .meetAt(courseRequest.getMeetAt())
+                .isPrivate(courseRequest.getIsPrivate())
+                .build();
+        course = courseRepository.save(course);
+        em.refresh(course);
+
+        return CoursePublic.from(course, userId);
+    }
+
+    public CoursePublic getCourse(Long courseId, Long userId) {
+        Course course = courseRepository.findById(courseId).orElseThrow();
+
+        if (!course.getUser().getId().equals(userId) && course.getIsPrivate()) {
+            throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
+
+        return CoursePublic.from(course, userId);
+    }
 
 //    private final CourseRepository courseRepository;
 //    private final CoursePickRepository coursePickRepository;
