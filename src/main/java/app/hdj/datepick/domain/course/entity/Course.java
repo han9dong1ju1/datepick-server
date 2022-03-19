@@ -1,9 +1,9 @@
 package app.hdj.datepick.domain.course.entity;
 
 import app.hdj.datepick.domain.relation.entity.CourseFeaturedRelation;
+import app.hdj.datepick.domain.relation.entity.CoursePick;
 import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import app.hdj.datepick.domain.relation.entity.CourseTagRelation;
-import app.hdj.datepick.domain.tag.entity.Tag;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.entity.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -47,23 +47,23 @@ public class Course extends BaseTimeEntity<Long> {
     @ColumnDefault("0")
     private Long pickCount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     User user;
 
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<CourseTagRelation> courseTags;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<CourseFeaturedRelation> courseFeatureds;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<CoursePlaceRelation> coursePlaces;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<CoursePick> coursePicks;
 
 }
