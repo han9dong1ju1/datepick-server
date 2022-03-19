@@ -89,11 +89,11 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     }
 
     private JPQLQuery<Course> filterFeatured(Long featuredId, JPQLQuery<Course> query) {
-        QCourseFeaturedRelation courseFeatureds = new QCourseFeaturedRelation("courseFeatureds");
+        QCourseFeaturedRelation courseFeatured = new QCourseFeaturedRelation("courseFeatured");
         return query
-                .leftJoin(course.courseFeatureds, courseFeatureds)
-                .where(courseFeatureds.featured.id.eq(featuredId))
-                .orderBy(courseFeatureds.courseOrder.asc());
+                .leftJoin(course.courseFeatureds, courseFeatured)
+                .where(courseFeatured.featured.id.eq(featuredId))
+                .orderBy(courseFeatured.courseOrder.asc());
     }
 
     private JPQLQuery<Course> filterPlace(Long placeId, JPQLQuery<Course> query) {

@@ -8,10 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Getter
 @AllArgsConstructor
@@ -31,6 +30,7 @@ public class CoursePublic {
     private List<TagPublic> tags;
 
     public static CoursePublic from(Course course, Long userId) {
+        final Comparator<CourseTagRelation> comp = Comparator.comparingInt(ctr -> ctr.getTag().getId());
         return new CoursePublic(
                 course.getId(),
                 course.getTitle(),
@@ -42,9 +42,10 @@ public class CoursePublic {
                 course.getViewCount(),
                 course.getPickCount(),
                 userId != null && course.getCoursePicks().stream()
-                        .anyMatch(coursePick -> Objects.equals(coursePick.getUser().getId(), userId)),
+                        .anyMatch(coursePick -> coursePick.getUser().getId().equals(userId)),
                 UserPublic.from(course.getUser()),
                 course.getCourseTags().stream()
+                        .sorted(comp)
                         .map(courseTagRelation -> TagPublic.from(courseTagRelation.getTag()))
                         .collect(Collectors.toList())
         );
