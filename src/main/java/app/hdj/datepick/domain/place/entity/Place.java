@@ -9,10 +9,7 @@ import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
@@ -53,11 +50,13 @@ public class Place extends BaseTimeEntity<Long> {
     @ColumnDefault("0")
     private Long pickCount;
 
-    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    @Transient
+    private Boolean isPicked;
+
+    @OneToMany(mappedBy = "place", fetch = FetchType.EAGER)
     private List<PlaceCategoryRelation> placeCategories;
 
     @JsonIgnore
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
     private List<CoursePlaceRelation> placeCourses;
-
 }

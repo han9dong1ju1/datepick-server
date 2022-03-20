@@ -1,5 +1,6 @@
 package app.hdj.datepick.domain.place.controller;
 
+import app.hdj.datepick.domain.place.dto.PlaceResponse;
 import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.place.dto.PlaceFilterParam;
 import app.hdj.datepick.domain.place.service.PlaceService;
@@ -27,9 +28,9 @@ public class PlaceController {
     private final PlaceService placeService;
 
     @GetMapping("")
-    public CustomPage<Place> getPlacePage(@Valid PagingParam pagingParam,
-                                          @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular", "rating_desc", "rating_asc", "distance_asc"}) String sort,
-                                          @Valid PlaceFilterParam placeFilterParam) {
+    public CustomPage<PlaceResponse> getPlacePage(@Valid PagingParam pagingParam,
+                                                  @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular", "rating_desc", "rating_asc", "distance_asc"}) String sort,
+                                                  @Valid PlaceFilterParam placeFilterParam) {
         return placeService.getPlacePage(pagingParam, CustomSort.from(sort), placeFilterParam);
     }
 

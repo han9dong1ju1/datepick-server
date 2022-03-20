@@ -1,7 +1,9 @@
 package app.hdj.datepick.global.enums;
 
+import com.querydsl.core.types.OrderSpecifier;
 import lombok.Getter;
-import org.springframework.data.domain.Sort;
+
+import static app.hdj.datepick.domain.place.entity.QPlace.place;
 
 @Getter
 public enum CustomSort {
@@ -22,20 +24,21 @@ public enum CustomSort {
         return null;
     }
 
-    public static Sort toSort(CustomSort customSort) {
+    public static OrderSpecifier toPlaceSort(CustomSort customSort) {
+
         switch (customSort) {
             case PICK:
-                return Sort.by("pickCount").descending();
+                return place.pickCount.desc();
             case DISTANCE_ASC:
-                return Sort.by("distance").ascending();
+                return null;
             case POPULAR:
-                return Sort.by("popularity").descending();
+                return null;
             case RATING_ASC:
-                return Sort.by("rating").ascending();
+                return place.rating.asc();
             case RATING_DESC:
-                return Sort.by("rating").descending();
+                return place.rating.desc();
             case LATEST:
-                return Sort.by("createdAt").descending();
+                return place.createdAt.desc();
         }
         return null;
     }
