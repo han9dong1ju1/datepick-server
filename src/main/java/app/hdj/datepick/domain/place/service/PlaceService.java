@@ -22,10 +22,11 @@ public class PlaceService {
 
     public CustomPage<PlaceResponse> getPlacePage(PagingParam pagingParam,
                                                   CustomSort customSort,
-                                                  PlaceFilterParam placeFilterParam) {
+                                                  PlaceFilterParam placeFilterParam,
+                                                  Boolean onlyPicked) {
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize());
 
-        Page<PlaceResponse> placePage = placeRepository.findPlacePage(placeFilterParam, pageRequest, customSort);
+        Page<PlaceResponse> placePage = placeRepository.findPlacePage(placeFilterParam, pageRequest, customSort, onlyPicked);
         return CustomPage.from(placePage);
     }
 

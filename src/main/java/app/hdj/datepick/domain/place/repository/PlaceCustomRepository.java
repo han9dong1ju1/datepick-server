@@ -7,5 +7,5 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface PlaceCustomRepository {
-    Page<PlaceResponse> findPlacePage(PlaceFilterParam placeFilterParam, Pageable pageable, CustomSort customSort);
+    Page<PlaceResponse> findPlacePage(PlaceFilterParam placeFilterParam, Pageable pageable, CustomSort customSort, Boolean onlyPicked);
 }

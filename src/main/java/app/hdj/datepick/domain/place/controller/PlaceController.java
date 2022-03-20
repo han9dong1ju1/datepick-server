@@ -31,12 +31,20 @@ public class PlaceController {
     public CustomPage<PlaceResponse> getPlacePage(@Valid PagingParam pagingParam,
                                                   @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular", "rating_desc", "rating_asc", "distance_asc"}) String sort,
                                                   @Valid PlaceFilterParam placeFilterParam) {
-        return placeService.getPlacePage(pagingParam, CustomSort.from(sort), placeFilterParam);
+        return placeService.getPlacePage(pagingParam, CustomSort.from(sort), placeFilterParam, false);
     }
 
     @GetMapping("/{placeId}")
     public Place getPlace(@PathVariable Long placeId) {
         return placeService.getPlace(placeId);
+    }
+
+    @GetMapping("/picked")
+    public CustomPage<PlaceResponse> getPlacePicked(@Valid PagingParam pagingParam,
+                                                    @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular", "rating_desc", "rating_asc", "distance_asc"}) String sort,
+                                                    @Valid PlaceFilterParam placeFilterParam
+                                                    ) {
+        return placeService.getPlacePage(pagingParam, CustomSort.from(sort), placeFilterParam, true);
     }
 
 }
