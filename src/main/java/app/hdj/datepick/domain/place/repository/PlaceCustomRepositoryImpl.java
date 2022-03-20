@@ -36,22 +36,25 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
     private final GeoQueryUtil geoQueryUtil;
 
     @Override
-    public Page<PlaceResponse> findPlacePage(PlaceFilterParam placeFilterParam, Pageable pageable, CustomSort customSort) {
+    public Page<PlaceResponse> findPlacePage(PlaceFilterParam placeFilterParam, Pageable pageable, CustomSort customSort, Boolean onlyPicked) {
 
         Long userId = 222L;
 
-        JPQLQuery<Tuple> query = applySort(filterPlaces(userId, placeFilterParam), customSort);
+        JPQLQuery<Tuple> query = applySort(filterPlaces(userId, placeFilterParam, onlyPicked), customSort);
         Page<Tuple> tuplePage = pagingUtil.getPageImpl(pageable, query);
-
         return mapToPlaceResponse(tuplePage);
     }
 
-    private JPQLQuery<Tuple> filterPlaces(Long userId, PlaceFilterParam placeFilterParam) {
+    private JPQLQuery<Tuple> filterPlaces(Long userId, PlaceFilterParam placeFilterParam, Boolean onlyPicked) {
         JPQLQuery<Tuple> query = jpaQueryFactory
-                .select(place, Expressions.anyOf(placePick.user.id.eq(userId)))
-                .from(place)
-                .leftJoin(placePick).on(place.id.eq(placePick.place.id))
-                .groupBy(place.id);
+                    .select(place, Expressions.anyOf(placePick.user.id.eq(userId)))
+                    .from(place)
+                    .leftJoin(placePick).on(place.id.eq(placePick.place.id))
+                    .groupBy(place.id);
+        System.out.println(onlyPicked);
+        if (onlyPicked) {
+            query.where(Expressions.anyOf(placePick.user.id.eq(userId)));
+        }
 
         if (placeFilterParam.getKeyword() != null) {
             query = filterKeyword(placeFilterParam.getKeyword(), query);
