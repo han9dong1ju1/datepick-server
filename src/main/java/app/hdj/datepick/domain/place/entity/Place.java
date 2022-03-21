@@ -3,13 +3,14 @@ package app.hdj.datepick.domain.place.entity;
 import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import app.hdj.datepick.domain.relation.entity.PlaceCategoryRelation;
 import app.hdj.datepick.global.entity.BaseTimeEntity;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 @Getter
@@ -26,7 +27,8 @@ public class Place extends BaseTimeEntity<Long> {
     @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
+    @ColumnDefault("0")
     private Float rating;
 
     @Column(nullable = false)
