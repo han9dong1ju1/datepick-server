@@ -2,6 +2,7 @@ package app.hdj.datepick.domain.place.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.data.domain.Sort;
 
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -23,5 +24,12 @@ public class PlaceFilterParam {
 
     @Positive
     private Long courseId;
+
+    public Sort getSort(Sort sort) {
+        if (distance != null) {
+            return Sort.unsorted();
+        }
+        return sort;
+    }
 
 }

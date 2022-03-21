@@ -1,9 +1,11 @@
 package app.hdj.datepick.domain.place.service;
 
 import app.hdj.datepick.domain.place.dto.PlaceFilterParam;
+import app.hdj.datepick.domain.place.dto.PlaceRequest;
 import app.hdj.datepick.domain.place.dto.PlaceResponse;
 import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.place.repository.PlaceRepository;
+import app.hdj.datepick.domain.relation.entity.PlaceCategoryRelation;
 import app.hdj.datepick.global.common.CustomPage;
 import app.hdj.datepick.global.common.PagingParam;
 import app.hdj.datepick.global.enums.CustomSort;
@@ -11,7 +13,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,15 +31,23 @@ public class PlaceService {
     public CustomPage<PlaceResponse> getPlacePage(PagingParam pagingParam,
                                                   CustomSort customSort,
                                                   PlaceFilterParam placeFilterParam,
-                                                  Boolean onlyPicked) {
-        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize());
+                                                  Long userId) {
+        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
+        Page<Place> placePage = placeRepository.findPlacePage(placeFilterParam, pagingParam, sort);
 
-        Page<PlaceResponse> placePage = placeRepository.findPlacePage(placeFilterParam, pageRequest, customSort, onlyPicked);
-        return CustomPage.from(placePage);
+        return new CustomPage<>(
+                placePage.getTotalElements(),
+                placePage.getTotalPages(),
+                placePage.getNumber(),
+                placePage.getContent().stream().map(
+                        place -> PlaceResponse.from(place, userId)
+                ).collect(Collectors.toList())
+        );
     }
 
-    public Place getPlace(Long placeId) {
-        return placeRepository.findById(placeId).orElseThrow();
+    public PlaceResponse getPlace(Long placeId, Long userId) {
+        Place place =  placeRepository.findById(placeId).orElseThrow();
+        return PlaceResponse.from(place, userId);
     }
 
 }

@@ -50,13 +50,17 @@ public class Place extends BaseTimeEntity<Long> {
     @ColumnDefault("0")
     private Long pickCount;
 
-    @Transient
-    private Boolean isPicked;
 
-    @OneToMany(mappedBy = "place", fetch = FetchType.EAGER)
-    private List<PlaceCategoryRelation> placeCategories;
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    private List<PlaceCategoryRelation> categoryRelations;
 
     @JsonIgnore
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
-    private List<CoursePlaceRelation> placeCourses;
+    private List<CoursePlaceRelation> coursePlaceRelations;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    private List<PlacePick> picks;
+
+
 }
