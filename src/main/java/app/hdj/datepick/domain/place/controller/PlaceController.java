@@ -1,9 +1,7 @@
 package app.hdj.datepick.domain.place.controller;
 
-import app.hdj.datepick.domain.place.dto.PlaceRequest;
-import app.hdj.datepick.domain.place.dto.PlaceResponse;
-import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.place.dto.PlaceFilterParam;
+import app.hdj.datepick.domain.place.dto.PlaceResponse;
 import app.hdj.datepick.domain.place.service.PlaceService;
 import app.hdj.datepick.global.annotation.ValueOfEnum;
 import app.hdj.datepick.global.common.CustomPage;
@@ -13,7 +11,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -27,11 +28,11 @@ public class PlaceController {
     private final PlaceService placeService;
 
     @GetMapping("")
-    public CustomPage<PlaceResponse> getPlacePage(@AuthenticationPrincipal Long userId,
+    public CustomPage<PlaceResponse> getPlacePage(//@AuthenticationPrincipal Long userId,
                                                   @Valid PagingParam pagingParam,
                                                   @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular", "rating_desc", "rating_asc", "distance_asc"}) String sort,
                                                   @Valid PlaceFilterParam placeFilterParam) {
-
+        Long userId = 10L;
         return placeService.getPlacePage(pagingParam, CustomSort.from(sort), placeFilterParam, userId);
     }
 
@@ -42,12 +43,13 @@ public class PlaceController {
     }
 
     @GetMapping("/picked")
-    public CustomPage<PlaceResponse> getPlacePicked(@AuthenticationPrincipal Long userId,
+    public CustomPage<PlaceResponse> getPlacePicked(//@AuthenticationPrincipal Long userId,
                                                     @Valid PagingParam pagingParam,
                                                     @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular", "rating_desc", "rating_asc", "distance_asc"}) String sort,
                                                     @Valid PlaceFilterParam placeFilterParam
                                                     ) {
-        return placeService.getPlacePage(pagingParam, CustomSort.from(sort), placeFilterParam, userId);
+        Long userId = 10L;
+        return placeService.getPickedPlacePage(pagingParam, CustomSort.from(sort), placeFilterParam, userId);
     }
 
 }

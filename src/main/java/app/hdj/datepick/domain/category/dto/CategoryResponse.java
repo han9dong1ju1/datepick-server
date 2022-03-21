@@ -3,7 +3,6 @@ package app.hdj.datepick.domain.category.dto;
 import app.hdj.datepick.domain.category.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
