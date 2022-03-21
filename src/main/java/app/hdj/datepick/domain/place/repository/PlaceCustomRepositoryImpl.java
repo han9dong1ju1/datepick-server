@@ -1,31 +1,23 @@
 package app.hdj.datepick.domain.place.repository;
 
 import app.hdj.datepick.domain.place.dto.PlaceFilterParam;
-import app.hdj.datepick.domain.place.dto.PlaceResponse;
 import app.hdj.datepick.domain.place.entity.Place;
-import app.hdj.datepick.domain.relation.entity.PlaceCategoryRelation;
 import app.hdj.datepick.global.common.PagingParam;
-import app.hdj.datepick.global.enums.CustomSort;
 import app.hdj.datepick.global.util.GeoQueryUtil;
 import app.hdj.datepick.global.util.PagingUtil;
-import com.querydsl.core.Tuple;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static app.hdj.datepick.domain.place.entity.QPlace.place;
-import static app.hdj.datepick.domain.place.entity.QPlacePick.placePick;
-import static app.hdj.datepick.domain.relation.entity.QPlaceCategoryRelation.placeCategoryRelation;
 
 
 @Slf4j
@@ -42,6 +34,17 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
 
         JPQLQuery<Place> query = jpaQueryFactory
                 .selectFrom(place);
+        query = filterPlaces(query, placeFilterParam);
+        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), placeFilterParam.getSort(sort));
+        return pagingUtil.getPageImpl(pageRequest, query);
+    }
+
+
+    @Override
+    public Page<Place> findPickedPlacePage(PlaceFilterParam placeFilterParam, PagingParam pagingParam, Sort sort, Long userId) {
+        JPQLQuery<Place> query = jpaQueryFactory
+                .selectFrom(place)
+                .where(place.picks.any().user.id.eq(userId));
         query = filterPlaces(query, placeFilterParam);
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), placeFilterParam.getSort(sort));
         return pagingUtil.getPageImpl(pageRequest, query);
@@ -85,7 +88,7 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
 
     private <T> JPQLQuery<T> filterDistance(Double distance, Double latitude, Double longitude, JPQLQuery<T> query) {
 
-        NumberExpression<Double> distanceExpression = geoQueryUtil.getDistanceExpression(latitude, longitude);
+        NumberExpression<Double> distanceExpression = geoQueryUtil.getDistanceExpression(latitude, longitude, place.latitude, place.longitude);
         return query.where(distanceExpression.loe(distance)).orderBy(distanceExpression.asc());
     }
 

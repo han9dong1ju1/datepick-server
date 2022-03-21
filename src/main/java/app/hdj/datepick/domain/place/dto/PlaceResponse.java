@@ -2,6 +2,7 @@ package app.hdj.datepick.domain.place.dto;
 
 
 import app.hdj.datepick.domain.category.dto.CategoryResponse;
+import app.hdj.datepick.domain.category.entity.Category;
 import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.relation.entity.PlaceCategoryRelation;
 import com.querydsl.core.Tuple;
@@ -57,4 +58,27 @@ public class PlaceResponse {
                         categoryRelation -> CategoryResponse.from(categoryRelation.getCategory())
                 ).collect(Collectors.toList())).build();
     }
+
+    public static PlaceResponse fromOnlyPicked(Place place, Long userId){
+
+        return PlaceResponse.builder()
+                .id(place.getId())
+                .kakaoId(place.getKakaoId())
+                .name(place.getName())
+                .rating(place.getRating())
+                .address(place.getAddress())
+                .latitude(place.getLatitude())
+                .longitude(place.getLongitude())
+                .viewCount(place.getViewCount())
+                .reviewCount(place.getReviewCount())
+                .pickCount(place.getPickCount())
+                .createdAt(place.getCreatedAt())
+                .updatedAt(place.getUpdatedAt())
+                .isPicked(true)
+                .categories(place.getCategoryRelations().stream().map(
+                        categoryRelation -> CategoryResponse.from(categoryRelation.getCategory())
+                        ).collect(Collectors.toList()))
+                .build();
+    }
+
 }
