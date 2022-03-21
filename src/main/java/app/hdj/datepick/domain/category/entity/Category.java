@@ -15,7 +15,7 @@ import javax.persistence.Entity;
 @Entity
 public class Category extends BaseEntity<Long> {
 
-    @Column
+    @Column(unique = true)
     private String name;
 
     @Column
