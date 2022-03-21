@@ -6,6 +6,7 @@ import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.domain.relation.entity.PlaceCategoryRelation;
 import com.querydsl.core.Tuple;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,8 @@ import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PlaceResponse {
 
     private Long id;
@@ -35,25 +38,23 @@ public class PlaceResponse {
     private LocalDateTime updatedAt;
 
 
-    public PlaceResponse(Place place){
-        this.id = place.getId();
-        this.kakaoId = place.getKakaoId();
-        this.name = place.getName();
-        this.rating = place.getRating();
-        this.address = place.getAddress();
-        this.latitude = place.getLatitude();
-        this.longitude = place.getLongitude();
-
-        this.isPicked = place.getIsPicked();
-        this.viewCount = place.getViewCount();
-        this.reviewCount = place.getReviewCount();
-        this.pickCount = place.getPickCount();
-        this.createdAt = place.getCreatedAt();
-        this.updatedAt = place.getUpdatedAt();
-
-        this.categories = place.getPlaceCategories().stream().map(placeCategoryRelation -> {
-            return new CategoryResponse(placeCategoryRelation.getCategory());
-        }).collect(Collectors.toList());
-
+    public static PlaceResponse from(Place place, Long userId){
+        return PlaceResponse.builder()
+                .id(place.getId())
+                .kakaoId(place.getKakaoId())
+                .name(place.getName())
+                .rating(place.getRating())
+                .address(place.getAddress())
+                .latitude(place.getLatitude())
+                .longitude(place.getLongitude())
+                .viewCount(place.getViewCount())
+                .reviewCount(place.getReviewCount())
+                .pickCount(place.getPickCount())
+                .createdAt(place.getCreatedAt())
+                .updatedAt(place.getUpdatedAt())
+                .isPicked(userId != null && place.getPicks().stream().anyMatch(placePick -> placePick.getUser().getId().equals(userId)))
+                .categories(place.getCategoryRelations().stream().map(
+                        categoryRelation -> CategoryResponse.from(categoryRelation.getCategory())
+                ).collect(Collectors.toList())).build();
     }
 }

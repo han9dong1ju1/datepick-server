@@ -24,7 +24,7 @@ public class PlaceCategoryRelation extends BaseEntity<Long> {
     @JoinColumn(name = "place_id", nullable = false)
     private Place place;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 }
