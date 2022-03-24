@@ -1,47 +1,41 @@
 package app.hdj.datepick.domain.place.dto;
 
 import app.hdj.datepick.domain.place.entity.Place;
+import com.google.common.collect.Sets;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
-@ToString
+
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class PlaceRequest {//Post, Patch 에 사용
+public class PlaceRequest {
 
+    @NotNull
     private String kakaoId;
+    @NotNull
     private String name;
-    private Float rating;
+    @NotNull
+    private String categories;
+    @NotNull
     private String address;
-    private String contact;
+
+    @NotNull
     private Double latitude;
+    @NotNull
     private Double longitude;
 
-    //500 발생 가능성 validation 적용
-    //private Region region;
-    private String region;
-
-    private String type;
-    private String subtype;
-    private String category;
-
-    public Place toPlace() {
-        return Place.builder()
-                .kakaoId(this.kakaoId)
-                .name(this.name)
-                .address(this.address)
-                .latitude(this.latitude)
-                .longitude(this.longitude)
-                .rating(this.rating)
-                //String -> Region Enum , Exception
-                .reviewCount(0L)
-                .pickCount(0L)
-                .build();
+    public static Set<String> parseCategories(String categories) {
+        return Sets.newHashSet(categories.trim().split(">"));
     }
 
 }
