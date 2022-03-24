@@ -37,7 +37,7 @@ public class PlaceService {
 
     @PersistenceContext
     private EntityManager em;
-
+    
     public CustomPage<PlaceResponse> getPlacePage(PagingParam pagingParam,
                                                   CustomSort customSort,
                                                   PlaceFilterParam placeFilterParam,

@@ -38,15 +38,12 @@ import java.util.Set;
 public class UserService {
 
     private final UserRepository userRepository;
-
     private final UserUnregisterLogRepository userUnregisterLogRepository;
-
     private final FileService fileService;
-
     private final FirebaseAuth firebaseAuth;
 
     @PersistenceContext
-    private final EntityManager em;
+    private EntityManager em;
 
     public UserPublic getPublicUser(Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -88,13 +85,12 @@ public class UserService {
     public ImageUrl addUserImage(Long userId, MultipartFile image) {
         User user = userRepository.findById(userId).orElseThrow();
         String imageUrl = user.getImageUrl();
-
         if (imageUrl != null) {
             throw new CustomException(ErrorCode.FILE_ALREADY_EXISTS);
         }
+
         imageUrl = fileService.add(image, "profile-image/" + userId);
         user.setImageUrl(imageUrl);
-        userRepository.save(user);
 
         return new ImageUrl(imageUrl);
     }
@@ -108,7 +104,6 @@ public class UserService {
         }
 
         user.setImageUrl(null);
-        userRepository.save(user);
 
         fileService.remove(imageUrl);
     }
