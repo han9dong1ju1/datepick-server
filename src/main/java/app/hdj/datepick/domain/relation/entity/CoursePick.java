@@ -1,8 +1,8 @@
 package app.hdj.datepick.domain.relation.entity;
 
 import app.hdj.datepick.domain.course.entity.Course;
-import app.hdj.datepick.domain.tag.entity.Tag;
-import app.hdj.datepick.global.entity.BaseEntity;
+import app.hdj.datepick.domain.user.entity.User;
+import app.hdj.datepick.global.entity.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -14,15 +14,15 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class CourseTagRelation extends BaseEntity<Long> {
+public class CoursePick extends BaseTimeEntity<Long> {
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
-
-    @ManyToOne
-    @JoinColumn(name = "tag_id", nullable = false)
-    private Tag tag;
 
 }

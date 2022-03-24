@@ -66,8 +66,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     // 커스텀 예외 처리
     @ExceptionHandler(CustomException.class)
-    public BaseResponse<Object> handleCustomException(CustomException e) {
-        return new BaseResponse<>(e.getMessage(), e.getCode());
+    public ResponseEntity<Object> handleCustomException(CustomException e) {
+        BaseResponse<Object> response = new BaseResponse<>(e.getMessage(), e.getCode());
+        return new ResponseEntity<>(response, e.getHttpStatus());
     }
 
     // 그 외 모든 예외 처리
