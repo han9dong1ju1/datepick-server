@@ -57,8 +57,7 @@ public class Course extends BaseTimeEntity<Long> {
     @JsonIgnore
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<CourseFeaturedRelation> courseFeatureds;
-
-    @JsonIgnore
+    
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<CoursePlaceRelation> coursePlaces;
 

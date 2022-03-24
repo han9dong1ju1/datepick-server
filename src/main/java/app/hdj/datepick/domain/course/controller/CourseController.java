@@ -6,6 +6,7 @@ import app.hdj.datepick.domain.course.dto.CourseRequest;
 import app.hdj.datepick.domain.course.service.CoursePickService;
 import app.hdj.datepick.domain.course.service.CoursePlaceService;
 import app.hdj.datepick.domain.course.service.CourseService;
+import app.hdj.datepick.domain.relation.dto.CoursePlacePublic;
 import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import app.hdj.datepick.global.annotation.ImageFile;
 import app.hdj.datepick.global.annotation.ValueOfEnum;
@@ -86,26 +87,31 @@ public class CourseController {
         courseService.removeCourse(courseId, userId);
     }
 
+    @GetMapping("/{courseId}/places")
+    List<CoursePlacePublic> getCoursePlaces(@PathVariable Long courseId) {
+        return coursePlaceService.getCoursePlaces(courseId);
+    }
+
     @PostMapping("/{courseId}/places")
-    List<CoursePlaceRelation> addCoursePlaces(@AuthenticationPrincipal Long userId,
+    List<CoursePlacePublic> addCoursePlaces(@AuthenticationPrincipal Long userId,
                                               @PathVariable Long courseId,
                                               @Valid @RequestBody List<@Positive Long> placeIds) {
-        return null;
+        return coursePlaceService.addCoursePlaces(userId, courseId, placeIds);
     }
 
     @PatchMapping("/{courseId}/places")
-    List<Long> modifyCoursePlaces(@AuthenticationPrincipal Long userId,
+    List<CoursePlacePublic> modifyCoursePlaces(@AuthenticationPrincipal Long userId,
                                   @PathVariable Long courseId,
-                                  @Valid @RequestBody List<@Positive Long> placeIds) {
-        return placeIds;
+                                  @Valid @RequestBody List<@Positive Long> coursePlaceIds) {
+        return coursePlaceService.modifyCoursePlacesOrder(userId, courseId, coursePlaceIds);
     }
 
 
     @DeleteMapping("/{courseId}/places")
-    List<Long> deleteCoursePlaces(@AuthenticationPrincipal Long userId,
+    List<CoursePlacePublic> removeCoursePlaces(@AuthenticationPrincipal Long userId,
                                   @PathVariable Long courseId,
-                                  @Valid @RequestBody List<@Positive Long> placeIds) {
-        return placeIds;
+                                  @Valid @RequestBody List<@Positive Long> coursePlaceIds) {
+        return coursePlaceService.removeCoursePlaces(userId, courseId, coursePlaceIds);
     }
 
     @PostMapping("/{courseId}/image")
@@ -130,7 +136,7 @@ public class CourseController {
 
     @DeleteMapping("/{courseId}/pick")
     void removeCoursePick(@AuthenticationPrincipal Long userId,
-                       @PathVariable Long courseId) {
+                          @PathVariable Long courseId) {
         coursePickService.removeCoursePick(courseId, userId);
     }
 }

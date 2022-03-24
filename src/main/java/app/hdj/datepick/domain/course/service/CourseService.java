@@ -193,6 +193,10 @@ public class CourseService {
         }
 
         String imageUrl = course.getImageUrl();
+        if (imageUrl == null) {
+            throw new CustomException(ErrorCode.FILE_NOT_EXISTS);
+        }
+
         course.setImageUrl(null);
         fileService.remove(imageUrl);
     }
