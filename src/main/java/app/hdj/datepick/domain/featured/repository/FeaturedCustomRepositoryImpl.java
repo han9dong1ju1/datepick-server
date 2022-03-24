@@ -44,7 +44,7 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
             query.where(featured.isPinned.eq(false));
         }
 
-        return pagingUtil.getPageImpl(pageable, query, Featured.class);
+        return pagingUtil.getPageImpl(pageable, query);
     }
 
 }

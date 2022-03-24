@@ -1,11 +1,19 @@
 package app.hdj.datepick.domain.place.entity;
 
+import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
+import app.hdj.datepick.domain.relation.entity.PlaceCategoryRelation;
 import app.hdj.datepick.global.entity.BaseTimeEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,7 +29,8 @@ public class Place extends BaseTimeEntity<Long> {
     @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
+    @ColumnDefault("0")
     private Float rating;
 
     @Column(nullable = false)
@@ -44,5 +53,18 @@ public class Place extends BaseTimeEntity<Long> {
     @Column(nullable = false)
     @ColumnDefault("0")
     private Long pickCount;
+
+
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    private List<PlaceCategoryRelation> categoryRelations;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    private List<CoursePlaceRelation> coursePlaceRelations;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    private List<PlacePick> picks;
+
 
 }
