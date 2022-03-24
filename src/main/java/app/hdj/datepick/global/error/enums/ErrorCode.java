@@ -25,6 +25,10 @@ public enum ErrorCode {
     USER_REGISTER_FAILED(500, "유저 가입에 실패했습니다."),
     USER_UNREGISTER_FAILED(500, "유저 탈퇴에 실패했습니다."),
     USER_UNREGISTERED(404, "탈퇴한 유저입니다."),
+
+    // Pick
+    PICK_ALREADY_EXISTS(409, "이미 픽했습니다."),
+    PICK_NOT_EXISTS(409, "아직 픽하지 않았습니다.")
     ;
 
     private final int status;
