@@ -1,74 +1,124 @@
 package app.hdj.datepick.domain.place.service;
 
+import app.hdj.datepick.domain.category.entity.Category;
+import app.hdj.datepick.domain.category.repository.CategoryRepository;
+import app.hdj.datepick.domain.place.dto.PlaceFilterParam;
+import app.hdj.datepick.domain.place.dto.PlaceRequest;
+import app.hdj.datepick.domain.place.dto.PlaceResponse;
+import app.hdj.datepick.domain.place.entity.Place;
+import app.hdj.datepick.domain.place.repository.PlaceRepository;
+import app.hdj.datepick.domain.relation.entity.PlaceCategoryRelation;
+import app.hdj.datepick.domain.relation.repository.PlaceCategoryRelationRepository;
+import app.hdj.datepick.global.common.CustomPage;
+import app.hdj.datepick.global.common.PagingParam;
+import app.hdj.datepick.global.enums.CustomSort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class PlaceService {
 
-//    private final PlaceRepository placeRepository;
-//    private final PlacePickRepository placePickRepository;
-//    private final PlaceReviewRepository placeReviewRepository;
-//    private final PlaceReviewPhotoRepository placeReviewPhotoRepository;
-//
-//    public Page<PlaceMetaDto> getPickedPlacePage(Pageable pageable) {
-//
-//        //TODO Pick 한 User Id 가져오기
-//        Long userId = 10L;
-//
-//        //Place Pick Relation 에서 User Id 로 Place 찾기
-//        List<Long> placeIds = placePickRepository.findPickedPlaceIds(userId);
-//
-//        //Place id list로 Place meta 정보 가져오기
-//        return placeRepository.findPlaceMetaPageById(placeIds, pageable);
-//    }
-//
-//    public Page<PlaceMetaDto> getRecommendedPlaceList(Pageable pageable) {
-//
-//        //TODO Recommend Place 기준만들어서 place id list 찾기
-//        List<Long> placeIds = new ArrayList<>();
-//        placeIds.add(10L);placeIds.add(11L);placeIds.add(12L);placeIds.add(14L);
-//        //Place id List로 Place meta 정보 가져오기
-//        return placeRepository.findPlaceMetaPageById(placeIds, pageable);
-//    }
-//
-//    public PlaceDetailDto getPlace(Long placeId) {
-//
-//        //TODO User 기준 Picked Place인지 여부판단위해, User Id 가져오기
-//        Long userId = 10L;
-//
-//        //User가 Place를 픽했는지 여부 T/F
-//        Boolean isPicked = placePickRepository.isUserPickedPlace(placeId, userId);
-//
-//        //Place의 Review 특정개수 가져오기
-//        List<PlaceReviewDto> placeReviews = placeReviewRepository.findConstReviewsWithPlaceId(placeId);
-//
-//        //Place meta, isPicked, reviews를 조립
-//       return placeRepository.findPlaceDetail(placeId, isPicked, placeReviews);
-//    }
-//
-//    public Place addPlace(PlaceRequestDto placeRequestDto) {
-//
-//        //PlaceRequestDto -> Place mapping
-//        Place place = placeRequestDto.toPlace();
-//
-//        //Place 새로 생성
-//        return placeRepository.save(place);
-//    }
-//
-//
-//    public Page<String> getPlaceImagePage(Long placeId, Pageable pageable) {
-//
-//        //Place에 작성된 Review의 Image List를 가져온다.
-//        return placeReviewPhotoRepository.getPlaceReviewPhotoPage(placeId, pageable);
-//    }
-//
-//    public Page<PlaceMetaDto> geoSearchPlace(GeoPointDto geopointDto, Pageable pageable) {
-//        Double distanceLimit = 0.1;  // 검색 반경 제한 (KM)
-//        return placeRepository.findPlaceMetaPageByGeoPoint(geopointDto, pageable);
-//    }
+    private final PlaceRepository placeRepository;
+    private final CategoryRepository categoryRepository;
+    private final PlaceCategoryRelationRepository placeCategoryRelationRepository;
+
+    @PersistenceContext
+    private EntityManager em;
+    
+    public CustomPage<PlaceResponse> getPlacePage(PagingParam pagingParam,
+                                                  CustomSort customSort,
+                                                  PlaceFilterParam placeFilterParam,
+                                                  Long userId) {
+        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
+        Page<Place> placePage = placeRepository.findPlacePage(placeFilterParam, pagingParam, sort);
+
+        return new CustomPage<>(
+                placePage.getTotalElements(),
+                placePage.getTotalPages(),
+                placePage.getNumber(),
+                placePage.getContent().stream().map(
+                        place -> PlaceResponse.from(place, userId)
+                ).collect(Collectors.toList())
+        );
+    }
+
+    public CustomPage<PlaceResponse> getPickedPlacePage(PagingParam pagingParam,
+                                                        CustomSort customSort,
+                                                        PlaceFilterParam placeFilterParam,
+                                                        Long userId) {
+        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
+        Page<Place> pickedPlacePage = placeRepository.findPickedPlacePage(placeFilterParam, pagingParam, sort, userId);
+        return new CustomPage<>(
+                pickedPlacePage.getTotalElements(),
+                pickedPlacePage.getTotalPages(),
+                pickedPlacePage.getNumber(),
+                pickedPlacePage.getContent().stream().map(
+                        place -> PlaceResponse.fromOnlyPicked(place, userId)
+                ).collect(Collectors.toList())
+        );
+    }
+
+    public PlaceResponse getPlace(Long placeId, Long userId) {
+        Place place =  placeRepository.findById(placeId).orElseThrow();
+        return PlaceResponse.from(place, userId);
+    }
+
+    @Transactional
+    public PlaceResponse addPlace(PlaceRequest placeRequest, Long userId) {
+
+
+        //Place
+        Place place = Place.builder()
+                .kakaoId(placeRequest.getKakaoId())
+                .name(placeRequest.getName())
+                .address(placeRequest.getAddress())
+                .latitude(placeRequest.getLatitude())
+                .longitude(placeRequest.getLongitude())
+                .pickCount(0L)
+                .reviewCount(0L)
+                .viewCount(0L)
+                .rating(0F)
+                .build();
+
+        place = placeRepository.save(place);
+
+        //Category
+        List<String> categoryNameList = Arrays.asList(placeRequest.getCategories().replaceAll(" ", "").split(">"));
+        List<Category> categoryList = categoryRepository.findCategoryByNameIn(categoryNameList);
+        List<String> existCategoryNameList = categoryList.stream().map(Category::getName).collect(Collectors.toList());
+
+        for (String name: categoryNameList) {
+            if (!existCategoryNameList.contains(name)) {
+                categoryList.add(Category.builder().name(name).placeCount(0L).build());
+            }
+        }
+
+        categoryList = categoryRepository.saveAll(categoryList);
+
+        //Relation
+        List<PlaceCategoryRelation> placeCategoryRelations = new ArrayList<>();
+        for (Category category : categoryList) {
+            placeCategoryRelations.add(PlaceCategoryRelation.builder().place(place).category(category).build());
+        }
+
+        placeCategoryRelationRepository.saveAll(placeCategoryRelations);
+
+        em.refresh(place);
+
+        return PlaceResponse.from(place, userId);
+    }
 
 }

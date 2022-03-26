@@ -4,7 +4,6 @@ import app.hdj.datepick.global.entity.BaseTimeEntity;
 import app.hdj.datepick.global.enums.Gender;
 import app.hdj.datepick.global.enums.Provider;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -15,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @DynamicInsert
 @DynamicUpdate
 @Getter

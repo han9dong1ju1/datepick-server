@@ -1,8 +1,9 @@
 package app.hdj.datepick.domain.relation.entity;
 
-import app.hdj.datepick.domain.place.entity.Category;
+import app.hdj.datepick.domain.category.entity.Category;
 import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.global.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -18,11 +19,12 @@ import javax.persistence.ManyToOne;
 @Entity
 public class PlaceCategoryRelation extends BaseEntity<Long> {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "place_id", nullable = false)
     private Place place;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 }
