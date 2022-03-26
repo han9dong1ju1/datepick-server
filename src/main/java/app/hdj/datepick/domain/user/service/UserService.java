@@ -20,7 +20,6 @@ import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.auth.UserRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -122,12 +121,11 @@ public class UserService {
             } catch (FirebaseAuthException e) {
                 throw new CustomException(ErrorCode.TOKEN_INVALID);
             }
-        }
-        else if (provider == Provider.KAKAO) {
+        } else if (provider == Provider.KAKAO) {
             // 보류
             throw new CustomException(ErrorCode.NOT_IMPLEMENTED);
         }
-        
+
         // FirebaseToken이 null일 경우
         if (firebaseToken == null) {
             throw new CustomException(ErrorCode.TOKEN_INVALID);
@@ -145,7 +143,7 @@ public class UserService {
 
         // name 없을 시 자동 생성
         if (name == null) {
-            name = "user_" + RandomStringUtils.randomNumeric(11);
+            name = "user_" + (int) (Math.random() * Math.pow(10, 11));
         }
         // Nickname 길이 제한 수정
         else if (name.length() > 16) {

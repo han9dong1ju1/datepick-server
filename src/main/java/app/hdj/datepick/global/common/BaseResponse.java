@@ -2,7 +2,6 @@ package app.hdj.datepick.global.common;
 
 import app.hdj.datepick.global.error.enums.ErrorCode;
 import lombok.Getter;
-import org.springframework.validation.BindException;
 
 @Getter
 public class BaseResponse<T> {
