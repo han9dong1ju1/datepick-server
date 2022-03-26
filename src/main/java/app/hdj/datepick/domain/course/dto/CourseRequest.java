@@ -8,11 +8,8 @@ import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@ToString
 @Getter
-@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class CourseRequest {
 
     @NotEmpty
