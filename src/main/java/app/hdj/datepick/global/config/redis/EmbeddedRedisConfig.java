@@ -21,7 +21,7 @@ public class EmbeddedRedisConfig {
     @PostConstruct
     public void redisServer() {
         redisServer = new RedisServer(redisProperties.getPort());
-//        redisServer.start();
+        redisServer.start();
     }
 
     @PreDestroy
