@@ -66,9 +66,9 @@ public class CourseService {
     }
 
     public CustomPage<CoursePublic> getCoursePage(PagingParam pagingParam,
-                                            CustomSort customSort,
-                                            CourseFilterParam courseFilterParam,
-                                            Long userId) {
+                                                  CustomSort customSort,
+                                                  CourseFilterParam courseFilterParam,
+                                                  Long userId) {
         Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
         Page<Course> coursePage = courseRepository.findCoursePage(courseFilterParam, pagingParam, sort);
 

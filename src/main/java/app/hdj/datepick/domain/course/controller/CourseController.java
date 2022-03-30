@@ -7,7 +7,6 @@ import app.hdj.datepick.domain.course.service.CoursePickService;
 import app.hdj.datepick.domain.course.service.CoursePlaceService;
 import app.hdj.datepick.domain.course.service.CourseService;
 import app.hdj.datepick.domain.relation.dto.CoursePlacePublic;
-import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import app.hdj.datepick.global.annotation.ImageFile;
 import app.hdj.datepick.global.annotation.ValueOfEnum;
 import app.hdj.datepick.global.common.CustomPage;
