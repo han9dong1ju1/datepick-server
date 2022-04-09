@@ -2,8 +2,6 @@ package app.hdj.datepick.domain.user.controller;
 
 import app.hdj.datepick.domain.user.dto.UserModifyRequest;
 import app.hdj.datepick.domain.user.dto.UserPublic;
-import app.hdj.datepick.domain.user.dto.UserRegisterRequest;
-import app.hdj.datepick.domain.user.dto.UserUnregisterRequest;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.service.UserService;
 import app.hdj.datepick.global.annotation.ImageFile;
@@ -53,17 +51,6 @@ public class UserController {
     @DeleteMapping("me/image")
     void removeUserMeImage(@AuthenticationPrincipal Long userId) {
         userService.removeUserImage(userId);
-    }
-
-    @PostMapping("register")
-    User registerUser(@Valid @RequestBody UserRegisterRequest userRegisterRequest) {
-        return userService.registerUser(userRegisterRequest);
-    }
-
-    @PostMapping("unregister")
-    void unregisterUser(@AuthenticationPrincipal Long userId,
-                        @Valid @RequestBody UserUnregisterRequest userUnregisterRequest) {
-        userService.unregisterUser(userId, userUnregisterRequest);
     }
 
 }

@@ -1,6 +1,6 @@
 package app.hdj.datepick.global.config.security.filter;
 
-import app.hdj.datepick.global.config.security.util.TokenUtil;
+import app.hdj.datepick.global.config.security.util.JwtUtil;
 import app.hdj.datepick.global.error.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -17,9 +17,9 @@ import java.io.IOException;
 @Slf4j
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private final TokenUtil tokenUtil;
+    private final JwtUtil tokenUtil;
 
-    public TokenAuthenticationFilter(TokenUtil tokenUtil) {
+    public TokenAuthenticationFilter(JwtUtil tokenUtil) {
         this.tokenUtil = tokenUtil;
     }
 

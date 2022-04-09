@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.user.dto;
+package app.hdj.datepick.domain.auth.dto;
 
 import app.hdj.datepick.global.annotation.ValueOfEnum;
 import app.hdj.datepick.global.enums.Provider;
@@ -13,9 +13,8 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRegisterRequest {
+public class AuthLoginRequest {
 
-    @NotNull
     @ValueOfEnum(enumClass = Provider.class)
     private String provider;
 

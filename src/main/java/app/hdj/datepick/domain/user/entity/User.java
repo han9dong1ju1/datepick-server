@@ -34,6 +34,9 @@ public class User extends BaseTimeEntity<Long> {
     @Column(columnDefinition = "varchar(16)", nullable = false)
     private String nickname;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
     @Column(columnDefinition = "char")
     @Enumerated(EnumType.STRING)
     private Gender gender;

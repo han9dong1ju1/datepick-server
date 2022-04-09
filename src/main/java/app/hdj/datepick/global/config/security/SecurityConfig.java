@@ -4,6 +4,7 @@ import app.hdj.datepick.global.config.security.filter.TokenAuthenticationFilter;
 import app.hdj.datepick.global.config.security.handler.AuthenticationExceptionHandler;
 import app.hdj.datepick.global.config.security.handler.AuthorizationExceptionHandler;
 import app.hdj.datepick.global.config.security.util.FirebaseTokenUtil;
+import app.hdj.datepick.global.config.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,6 +20,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final JwtUtil jwtUtil;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -59,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // JWT 토큰 인증 필터 추가
                 .and()
-                .addFilterBefore(new TokenAuthenticationFilter(new FirebaseTokenUtil()), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new TokenAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
     }
 
 }
