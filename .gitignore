@@ -44,3 +44,7 @@ out/
 
 ### Generated ###
 /src/main/generated/
+
+### Secure Files ###
+src/main/resources/*.yml
+src/main/resources/*.json
