@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class DiaryFilterParam {
     private Long userId;
+    private Long courseId;
 }

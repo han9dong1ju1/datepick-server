@@ -1,12 +1,10 @@
 package app.hdj.datepick.domain.diary.controller;
 
 
-import app.hdj.datepick.domain.course.dto.CourseRequest;
 import app.hdj.datepick.domain.diary.dto.DiaryFilterParam;
 import app.hdj.datepick.domain.diary.dto.DiaryRequest;
 import app.hdj.datepick.domain.diary.dto.DiaryResponse;
 import app.hdj.datepick.domain.diary.service.DiaryService;
-import app.hdj.datepick.domain.place.dto.PlaceResponse;
 import app.hdj.datepick.global.annotation.ImageFile;
 import app.hdj.datepick.global.annotation.ValueOfEnum;
 import app.hdj.datepick.global.common.CustomPage;
