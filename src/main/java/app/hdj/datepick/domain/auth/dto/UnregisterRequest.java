@@ -1,7 +1,5 @@
 package app.hdj.datepick.domain.auth.dto;
 
-import app.hdj.datepick.global.annotation.ValueOfEnum;
-import app.hdj.datepick.global.enums.Provider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,12 +11,11 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthLoginRequest {
-
-    @ValueOfEnum(enumClass = Provider.class)
-    private String provider;
+public class UnregisterRequest {
 
     @NotNull
-    private String token;
+    private String reason;
+
+    private String content;
 
 }

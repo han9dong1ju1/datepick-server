@@ -24,7 +24,7 @@ import javax.persistence.Enumerated;
 @Entity
 public class User extends BaseTimeEntity<Long> {
 
-    @Column(columnDefinition = "varchar(128)", nullable = false, unique = true)
+    @Column(columnDefinition = "varchar(128)", nullable = false)
     private String uid;
 
     @Column(nullable = false)

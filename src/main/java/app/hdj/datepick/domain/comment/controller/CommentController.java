@@ -8,7 +8,7 @@ import app.hdj.datepick.global.common.CustomPage;
 import app.hdj.datepick.global.common.PagingParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,27 +30,27 @@ public class CommentController {
     }
 
     @GetMapping("me")
-    CustomPage<CommentPublic> getMyCommentPage(@AuthenticationPrincipal Long userId,
+    CustomPage<CommentPublic> getMyCommentPage(@AuthPrincipal Long userId,
                                                @Valid PagingParam pagingParam) {
         return commentService.getMyCommentPage(pagingParam, userId);
     }
 
     @PostMapping("")
-    CommentPublic addComment(@AuthenticationPrincipal Long userId,
+    CommentPublic addComment(@AuthPrincipal Long userId,
                              @Valid CommentFilterParam commentFilterParam,
                              @Valid @RequestBody CommentRequest commentRequest) {
         return commentService.addComment(commentFilterParam, commentRequest, userId);
     }
 
     @PatchMapping("{commentId}")
-    CommentPublic modifyComment(@AuthenticationPrincipal Long userId,
+    CommentPublic modifyComment(@AuthPrincipal Long userId,
                                 @PathVariable Long commentId,
                                 @Valid @RequestBody CommentRequest commentRequest) {
         return commentService.modifyComment(commentId, commentRequest, userId);
     }
 
     @DeleteMapping("{commentId}")
-    void removeComment(@AuthenticationPrincipal Long userId,
+    void removeComment(@AuthPrincipal Long userId,
                        @PathVariable Long commentId) {
         commentService.removeComment(commentId, userId);
     }

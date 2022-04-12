@@ -1,7 +1,7 @@
 package app.hdj.datepick.domain.auth.controller;
 
-import app.hdj.datepick.domain.auth.dto.AuthLoginRequest;
-import app.hdj.datepick.domain.auth.dto.AuthTokenResponse;
+import app.hdj.datepick.domain.auth.dto.LoginRequest;
+import app.hdj.datepick.domain.auth.dto.AllTokenResponse;
 import app.hdj.datepick.domain.auth.service.AuthService;
 import app.hdj.datepick.global.enums.Provider;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +23,9 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("login")
-    AuthTokenResponse login(@Valid @RequestBody final AuthLoginRequest authLoginRequest) {
-        return authService.login(Provider.from(authLoginRequest.getProvider()), authLoginRequest.getToken());
+    @PostMapping("signin")
+    AllTokenResponse signIn(@Valid @RequestBody final LoginRequest authLoginRequest) {
+        return null;
     }
 
 //    @PostMapping("unregister")

@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.auth.service;
+package app.hdj.datepick.domain.auth.infrastructure.oauth;
 
 import app.hdj.datepick.domain.auth.dto.OAuthUserInfo;
 import app.hdj.datepick.global.enums.Provider;

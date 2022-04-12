@@ -15,7 +15,7 @@ import app.hdj.datepick.global.common.PagingParam;
 import app.hdj.datepick.global.enums.CustomSort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +37,7 @@ public class CourseController {
     private final CoursePickService coursePickService;
 
     @GetMapping("")
-    CustomPage<CoursePublic> getCoursePage(@AuthenticationPrincipal Long userId,
+    CustomPage<CoursePublic> getCoursePage(@AuthPrincipal Long userId,
                                            @Valid PagingParam pagingParam,
                                            @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular"}) String sort,
                                            @Valid CourseFilterParam courseFilterParam) {
@@ -45,7 +45,7 @@ public class CourseController {
     }
 
     @GetMapping("me")
-    CustomPage<CoursePublic> getMyCoursePage(@AuthenticationPrincipal Long userId,
+    CustomPage<CoursePublic> getMyCoursePage(@AuthPrincipal Long userId,
                                              @Valid PagingParam pagingParam,
                                              @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular"}) String sort,
                                              @Valid CourseFilterParam courseFilterParam) {
@@ -54,7 +54,7 @@ public class CourseController {
     }
 
     @GetMapping("picked")
-    CustomPage<CoursePublic> getPickedCoursePage(@AuthenticationPrincipal Long userId,
+    CustomPage<CoursePublic> getPickedCoursePage(@AuthPrincipal Long userId,
                                                  @Valid PagingParam pagingParam,
                                                  @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular"}) String sort,
                                                  @Valid CourseFilterParam courseFilterParam) {
@@ -62,26 +62,26 @@ public class CourseController {
     }
 
     @PostMapping("")
-    CoursePublic addCourse(@AuthenticationPrincipal Long userId,
+    CoursePublic addCourse(@AuthPrincipal Long userId,
                            @Valid @RequestBody CourseRequest courseRequest) {
         return courseService.addCourse(courseRequest, userId);
     }
 
     @GetMapping("/{courseId}")
-    CoursePublic getCourse(@AuthenticationPrincipal Long userId,
+    CoursePublic getCourse(@AuthPrincipal Long userId,
                            @PathVariable Long courseId) {
         return courseService.getCourse(courseId, userId);
     }
 
     @PatchMapping("/{courseId}")
-    CoursePublic modifyCourse(@AuthenticationPrincipal Long userId,
+    CoursePublic modifyCourse(@AuthPrincipal Long userId,
                               @PathVariable Long courseId,
                               @Valid @RequestBody CourseRequest courseRequest) {
         return courseService.modifyCourse(courseId, courseRequest, userId);
     }
 
     @DeleteMapping("/{courseId}")
-    void removeCourse(@AuthenticationPrincipal Long userId,
+    void removeCourse(@AuthPrincipal Long userId,
                       @PathVariable Long courseId) {
         courseService.removeCourse(courseId, userId);
     }
@@ -92,14 +92,14 @@ public class CourseController {
     }
 
     @PostMapping("/{courseId}/places")
-    List<CoursePlacePublic> addCoursePlaces(@AuthenticationPrincipal Long userId,
+    List<CoursePlacePublic> addCoursePlaces(@AuthPrincipal Long userId,
                                               @PathVariable Long courseId,
                                               @Valid @RequestBody List<@Positive Long> placeIds) {
         return coursePlaceService.addCoursePlaces(userId, courseId, placeIds);
     }
 
     @PatchMapping("/{courseId}/places")
-    List<CoursePlacePublic> modifyCoursePlaces(@AuthenticationPrincipal Long userId,
+    List<CoursePlacePublic> modifyCoursePlaces(@AuthPrincipal Long userId,
                                   @PathVariable Long courseId,
                                   @Valid @RequestBody List<@Positive Long> coursePlaceIds) {
         return coursePlaceService.modifyCoursePlacesOrder(userId, courseId, coursePlaceIds);
@@ -107,14 +107,14 @@ public class CourseController {
 
 
     @DeleteMapping("/{courseId}/places")
-    List<CoursePlacePublic> removeCoursePlaces(@AuthenticationPrincipal Long userId,
+    List<CoursePlacePublic> removeCoursePlaces(@AuthPrincipal Long userId,
                                   @PathVariable Long courseId,
                                   @Valid @RequestBody List<@Positive Long> coursePlaceIds) {
         return coursePlaceService.removeCoursePlaces(userId, courseId, coursePlaceIds);
     }
 
     @PostMapping("/{courseId}/image")
-    ImageUrl addCourseImage(@AuthenticationPrincipal Long userId,
+    ImageUrl addCourseImage(@AuthPrincipal Long userId,
                             @PathVariable Long courseId,
                             @NotNull @ImageFile @ModelAttribute MultipartFile image) {
         return courseService.addCourseImage(courseId, image, userId);
@@ -122,19 +122,19 @@ public class CourseController {
 
 
     @DeleteMapping("/{courseId}/image")
-    void removeCourseImage(@AuthenticationPrincipal Long userId,
+    void removeCourseImage(@AuthPrincipal Long userId,
                            @PathVariable Long courseId) {
         courseService.removeCourseImage(userId, courseId);
     }
 
     @PostMapping("/{courseId}/pick")
-    void addCoursePick(@AuthenticationPrincipal Long userId,
+    void addCoursePick(@AuthPrincipal Long userId,
                        @PathVariable Long courseId) {
         coursePickService.addCoursePick(courseId, userId);
     }
 
     @DeleteMapping("/{courseId}/pick")
-    void removeCoursePick(@AuthenticationPrincipal Long userId,
+    void removeCoursePick(@AuthPrincipal Long userId,
                           @PathVariable Long courseId) {
         coursePickService.removeCoursePick(courseId, userId);
     }
