@@ -17,16 +17,16 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @Component
-public class JwtUtils {
+public class JwtUtil {
 
     private final Key key;
     private final JwtParser jwtParser;
     private final Duration accessTokenExpireInterval;
     private final Duration refreshTokenExpireInterval;
 
-    public JwtUtils(@Value("${security.jwt.secret-key}") String secretKey,
-                    @Value("${security.jwt.access-token.expire-interval}") Duration accessTokenExpireInterval,
-                    @Value("${security.jwt.refresh-token.expire-interval}") Duration refreshTokenExpireInterval) {
+    public JwtUtil(@Value("${security.jwt.secret-key}") String secretKey,
+                   @Value("${security.jwt.access-token.expire-interval}") Duration accessTokenExpireInterval,
+                   @Value("${security.jwt.refresh-token.expire-interval}") Duration refreshTokenExpireInterval) {
         this.accessTokenExpireInterval = accessTokenExpireInterval;
         this.refreshTokenExpireInterval = refreshTokenExpireInterval;
 
@@ -39,17 +39,26 @@ public class JwtUtils {
         return Jwts.builder()
                 .setIssuedAt(Timestamp.valueOf(issuedAt))
                 .setExpiration(Timestamp.valueOf(getAccessTokenExpireAt(issuedAt)))
-                .addClaims(Jwts.claims(payload))
+                .addClaims(payload)
                 .signWith(key)
                 .compact();
     }
 
-    public String createRefreshToken(LocalDateTime issuedAt) {
+    public String createRefreshToken(Map<String, Object> payload, LocalDateTime issuedAt) {
         return Jwts.builder()
                 .setIssuedAt(Timestamp.valueOf(issuedAt))
-                .setExpiration(Timestamp.valueOf(issuedAt.plusSeconds(refreshTokenExpireInterval.toSeconds())))
+                .setExpiration(Timestamp.valueOf(getRefreshTokenExpireAt(issuedAt)))
+                .addClaims(payload)
                 .signWith(key)
                 .compact();
+    }
+
+    private LocalDateTime getAccessTokenExpireAt(LocalDateTime issuedAt) {
+        return issuedAt.plusSeconds(accessTokenExpireInterval.toSeconds());
+    }
+
+    public LocalDateTime getRefreshTokenExpireAt(LocalDateTime issuedAt) {
+        return issuedAt.plusSeconds(refreshTokenExpireInterval.toSeconds());
     }
 
     public void validateToken(String token) {
@@ -64,10 +73,6 @@ public class JwtUtils {
 
     public Map<String, Object> getPayload(String token) {
         return jwtParser.parseClaimsJws(token).getBody();
-    }
-
-    public LocalDateTime getAccessTokenExpireAt(LocalDateTime issuedAt) {
-        return issuedAt.plusSeconds(accessTokenExpireInterval.toSeconds());
     }
 
     public long getAccessTokenExpireIntervalInSeconds() {

@@ -22,6 +22,9 @@ public class RefreshToken extends BaseEntity<Long> {
     @Column(nullable = false)
     private Long userId;
 
+    @Column(nullable = false, unique = true)
+    private String uuid;
+
     @Column(nullable = false)
     private LocalDateTime expireAt;
 

@@ -2,7 +2,7 @@ package app.hdj.datepick.domain.auth.service;
 
 import app.hdj.datepick.domain.auth.dto.AllTokenResponse;
 import app.hdj.datepick.domain.auth.dto.OAuthUserInfo;
-import app.hdj.datepick.domain.auth.infrastructure.JwtUtils;
+import app.hdj.datepick.domain.auth.infrastructure.JwtUtil;
 import app.hdj.datepick.domain.auth.infrastructure.oauth.OAuthHandler;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.repository.UserRepository;
@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,13 +26,14 @@ public class AuthService {
     private final UserRepository userRepository;
     private final RefreshTokenService refreshTokenService;
     private final OAuthHandler oAuthHandler;
-    private final JwtUtils jwtUtils;
+    private final JwtUtil jwtUtil;
 
     private static final String USER_ID_CLAIM_KEY = "id";
+    private static final String TOKEN_UUID_CLAIM_KEY = "uuid";
     private static final String USER_AUTHORITIES_CLAIM_KEY = "authorities";
 
     @Transactional
-    public AllTokenResponse signIn(final Provider provider, final String code) {
+    public AllTokenResponse signInByOAuth(final Provider provider, final String code) {
         OAuthUserInfo userInfo = oAuthHandler.getUserInfo(provider, code);
         User user = userRepository.findByProviderAndUid(userInfo.getProvider(), userInfo.getUid())
                 .orElseGet(() -> signUp(userInfo));
@@ -47,11 +49,21 @@ public class AuthService {
 
     private AllTokenResponse createTokens(User user) {
         LocalDateTime now = LocalDateTime.now();
-        Map<String, Object> payload = createPayloadByUser(user);
-        String accessToken = jwtUtils.createAccessToken(payload, now);
-        String refreshToken = jwtUtils.createRefreshToken(now);
-        refreshTokenService.saveToken(refreshToken, user.getId(), jwtUtils.getAccessTokenExpireAt(now));
-        return new AllTokenResponse(accessToken, jwtUtils.getAccessTokenExpireIntervalInSeconds(), refreshToken);
+        String uuid = UUID.randomUUID().toString();
+        String accessToken = jwtUtil.createAccessToken(createAccessTokenPayload(user, uuid), now);
+        String refreshToken = jwtUtil.createRefreshToken(createRefreshTokenPayload(uuid), now);
+        refreshTokenService.saveToken(refreshToken, user, uuid, jwtUtil.getRefreshTokenExpireAt(now));
+        return new AllTokenResponse(accessToken, jwtUtil.getAccessTokenExpireIntervalInSeconds(), refreshToken);
+    }
+
+    private Map<String, Object> createAccessTokenPayload(User user, String uuid) {
+        return Map.of(USER_ID_CLAIM_KEY, user.getId(),
+                USER_AUTHORITIES_CLAIM_KEY, List.of("USER"),
+                TOKEN_UUID_CLAIM_KEY, uuid);
+    }
+
+    private Map<String, Object> createRefreshTokenPayload(String uuid) {
+        return Map.of(TOKEN_UUID_CLAIM_KEY, uuid);
     }
 
     private User signUp(OAuthUserInfo userInfo) {
@@ -78,19 +90,19 @@ public class AuthService {
         return name;
     }
 
-    private Map<String, Object> createPayloadByUser(User user) {
-        return Map.of(USER_ID_CLAIM_KEY, user.getId(), USER_AUTHORITIES_CLAIM_KEY, List.of("USER"));
-    }
-
     @Transactional
-    public void signOut(String token, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        refreshTokenService.deactivateToken(token, userId);
+    public void signOut(Long userId, String uuid) {
+        refreshTokenService.deactivateToken(userId, uuid);
     }
 
     public Long getUserIdFromToken(String token) {
-        Map<String, Object> payload = jwtUtils.getPayload(token);
+        Map<String, Object> payload = jwtUtil.getPayload(token);
         return (Long) payload.get(USER_ID_CLAIM_KEY);
+    }
+
+    public Long getUuidFromToken(String token) {
+        Map<String, Object> payload = jwtUtil.getPayload(token);
+        return (Long) payload.get(TOKEN_UUID_CLAIM_KEY);
     }
 
 }

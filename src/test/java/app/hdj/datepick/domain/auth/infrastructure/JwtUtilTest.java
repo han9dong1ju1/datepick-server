@@ -22,18 +22,18 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowableOfType;
 
-class JwtUtilsTest {
+class JwtUtilTest {
 
     private final String secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256).toString();
     private final Duration accessTokenExpireInterval = Duration.ofHours(1L);
     private final Duration refreshTokenExpireInterval = Duration.ofDays(30L);
 
-    private JwtUtils jwtUtils;
+    private JwtUtil jwtUtil;
     private JwtParser jwtParser;
 
     @BeforeEach()
     void before() {
-        jwtUtils = new JwtUtils(secretKey, accessTokenExpireInterval, refreshTokenExpireInterval);
+        jwtUtil = new JwtUtil(secretKey, accessTokenExpireInterval, refreshTokenExpireInterval);
         jwtParser = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8))).build();
     }
 
@@ -44,7 +44,7 @@ class JwtUtilsTest {
         LocalDateTime now = LocalDateTime.now();
 
         // when
-        String accessToken = jwtUtils.createAccessToken(Map.of(), now);
+        String accessToken = jwtUtil.createAccessToken(Map.of(), now);
 
         // then
         long expireAt = jwtParser.parseClaimsJws(accessToken).getBody().getExpiration().toInstant().getEpochSecond();
@@ -57,10 +57,9 @@ class JwtUtilsTest {
     void createRefreshTokenWithExpiration() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        Map<String, Object> payload = Map.of();
 
         // when
-        String accessToken = jwtUtils.createRefreshToken(now);
+        String accessToken = jwtUtil.createRefreshToken(Map.of(), now);
 
         // then
         long expireAt = jwtParser.parseClaimsJws(accessToken).getBody().getExpiration().toInstant().getEpochSecond();
@@ -78,7 +77,7 @@ class JwtUtilsTest {
         Map<String, Object> payload = Map.of("long", longValue, "list", listValue);
 
         // when
-        String accessToken = jwtUtils.createAccessToken(payload, now);
+        String accessToken = jwtUtil.createAccessToken(payload, now);
 
         // then
         Claims tokenPayload = jwtParser.parseClaimsJws(accessToken).getBody();
@@ -91,11 +90,10 @@ class JwtUtilsTest {
     void getTokenPayload() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        Map<String, Object> payload = Map.of();
-        String accessToken = jwtUtils.createAccessToken(payload, now);
+        String accessToken = jwtUtil.createAccessToken(Map.of(), now);
 
         // when
-        Map<String, Object> tokenPayload = jwtUtils.getPayload(accessToken);
+        Map<String, Object> tokenPayload = jwtUtil.getPayload(accessToken);
 
         // then
         assertThat(tokenPayload).isNotEmpty();
@@ -106,11 +104,10 @@ class JwtUtilsTest {
     void validateValidToken() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        Map<String, Object> payload = Map.of();
-        String accessToken = jwtUtils.createAccessToken(payload, now);
+        String accessToken = jwtUtil.createAccessToken(Map.of(), now);
 
         // when, then
-        assertDoesNotThrow(() -> jwtUtils.validateToken(accessToken));
+        assertDoesNotThrow(() -> jwtUtil.validateToken(accessToken));
     }
 
     @Test
@@ -118,11 +115,10 @@ class JwtUtilsTest {
     void validateExpiredToken() {
         // given
         LocalDateTime now = LocalDateTime.now().minusSeconds(accessTokenExpireInterval.plusSeconds(1L).toSeconds());
-        Map<String, Object> payload = Map.of();
-        String accessToken = jwtUtils.createAccessToken(payload, now);
+        String accessToken = jwtUtil.createAccessToken(Map.of(), now);
 
         // when
-        CustomException throwable = catchThrowableOfType(() -> jwtUtils.validateToken(accessToken), CustomException.class);
+        CustomException throwable = catchThrowableOfType(() -> jwtUtil.validateToken(accessToken), CustomException.class);
 
         // then
         assertThat(throwable.getErrorCode()).isEqualTo(ErrorCode.TOKEN_EXPIRED);
@@ -133,11 +129,10 @@ class JwtUtilsTest {
     void validateInvalidToken() {
         // given
         LocalDateTime now = LocalDateTime.now().minusSeconds(accessTokenExpireInterval.plusSeconds(1L).toSeconds());
-        Map<String, Object> payload = Map.of();
-        String accessToken = jwtUtils.createAccessToken(payload, now) + "Modify Token String Value";
+        String accessToken = jwtUtil.createAccessToken(Map.of(), now) + "Modify Token String Value";
 
         // when
-        CustomException throwable = catchThrowableOfType(() -> jwtUtils.validateToken(accessToken), CustomException.class);
+        CustomException throwable = catchThrowableOfType(() -> jwtUtil.validateToken(accessToken), CustomException.class);
 
         // then
         assertThat(throwable.getErrorCode()).isEqualTo(ErrorCode.TOKEN_INVALID);

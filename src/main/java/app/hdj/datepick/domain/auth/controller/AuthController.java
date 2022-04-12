@@ -1,20 +1,18 @@
 package app.hdj.datepick.domain.auth.controller;
 
-import app.hdj.datepick.domain.auth.dto.LoginRequest;
+import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
+import app.hdj.datepick.domain.auth.annotation.AuthUuid;
 import app.hdj.datepick.domain.auth.dto.AllTokenResponse;
+import app.hdj.datepick.domain.auth.dto.RefreshTokenRequest;
 import app.hdj.datepick.domain.auth.service.AuthService;
+import app.hdj.datepick.global.annotation.ValueOfEnum;
 import app.hdj.datepick.global.enums.Provider;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Slf4j
 @Validated
 @RequiredArgsConstructor
 @RestController
@@ -23,15 +21,20 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("signin")
-    AllTokenResponse signIn(@Valid @RequestBody final LoginRequest authLoginRequest) {
-        return null;
+    @GetMapping("signin/{provider}")
+    AllTokenResponse signInByOAuth(@Valid @PathVariable @ValueOfEnum(enumClass = Provider.class) String provider,
+                                   @RequestParam String code) {
+        return authService.signInByOAuth(Provider.from(provider), code);
     }
 
-//    @PostMapping("unregister")
-//    void unregisterUser(@AuthenticationPrincipal Long userId,
-//                        @Valid @RequestBody AuthUnregisterRequest userUnregisterRequest) {
-//        authService.unregisterUser(userId, userUnregisterRequest);
-//    }
+    @PostMapping("refresh")
+    AllTokenResponse refreshToken(@RequestBody final RefreshTokenRequest refreshTokenRequest) {
+        return authService.refreshToken(refreshTokenRequest.getRefreshToken());
+    }
+
+    @GetMapping("signout")
+    void signOut(@AuthPrincipal Long userId, @AuthUuid String uuid) {
+        authService.signOut(userId, uuid);
+    }
 
 }
