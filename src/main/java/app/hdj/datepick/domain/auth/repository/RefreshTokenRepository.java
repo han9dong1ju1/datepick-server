@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.auth.repository;
 
-import app.hdj.datepick.domain.auth.RefreshToken;
+import app.hdj.datepick.domain.auth.entity.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

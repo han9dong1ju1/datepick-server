@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.auth.service;
 
-import app.hdj.datepick.domain.auth.RefreshToken;
+import app.hdj.datepick.domain.auth.entity.RefreshToken;
 import app.hdj.datepick.domain.auth.repository.RefreshTokenRepository;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.error.enums.ErrorCode;
@@ -30,15 +30,15 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     public Long getUserIdByToken(String token) {
-        RefreshToken refreshToken = refreshTokenRepository.findByTokenAndExpireAtAfter(token, LocalDateTime.now())
-                .orElseThrow(() -> new CustomException(ErrorCode.TOKEN_INVALID));
+        RefreshToken refreshToken = refreshTokenRepository.findByTokenAndExpireAtAfter(HashingUtil.hash(token), LocalDateTime.now())
+                .orElseThrow(() -> new CustomException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
         return refreshToken.getUserId();
     }
 
     @Override
     public void deactivateToken(Long userId, String uuid) {
-        RefreshToken refreshToken = refreshTokenRepository.findByUserIdAndUuid(userId, uuid) // TODO: 토큰 해싱해서 넘기기
-                .orElseThrow(() -> new CustomException(ErrorCode.TOKEN_INVALID));
+        RefreshToken refreshToken = refreshTokenRepository.findByUserIdAndUuid(userId, uuid)
+                .orElseThrow(() -> new CustomException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
         refreshToken.setExpireAt(LocalDateTime.now());
         refreshTokenRepository.save(refreshToken);
     }

@@ -1,4 +1,4 @@
-package app.hdj.datepick.global.enums;
+package app.hdj.datepick.domain.user.enums;
 
 public enum Gender {
     M,

@@ -13,7 +13,8 @@ public class AuthorizationExtractor {
         while (headers.hasMoreElements()) {
             String header = headers.nextElement();
             if (header.toLowerCase().startsWith(ACCESS_TOKEN_TYPE.toLowerCase())) {
-                return header.substring(ACCESS_TOKEN_TYPE.length()).trim();
+                String value = header.substring(ACCESS_TOKEN_TYPE.length()).trim();
+                return value.isBlank() ? null : value;
             }
         }
         return null;

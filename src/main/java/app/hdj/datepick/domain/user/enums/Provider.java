@@ -1,4 +1,4 @@
-package app.hdj.datepick.global.enums;
+package app.hdj.datepick.domain.user.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

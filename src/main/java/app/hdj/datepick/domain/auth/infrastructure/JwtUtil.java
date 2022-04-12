@@ -6,6 +6,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+@Slf4j
 @Component
 public class JwtUtil {
 
@@ -61,18 +63,18 @@ public class JwtUtil {
         return issuedAt.plusSeconds(refreshTokenExpireInterval.toSeconds());
     }
 
-    public void validateToken(String token) {
+    public Map<String, Object> getPayload(String token) {
+        log.debug("'getPayload' invoked");
+        if (token == null) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED);
+        }
         try {
-            jwtParser.parseClaimsJws(token);
+            return jwtParser.parseClaimsJws(token).getBody();
         } catch (ExpiredJwtException e) {
             throw new CustomException(ErrorCode.TOKEN_EXPIRED);
         } catch (Exception e) {
             throw new CustomException(ErrorCode.TOKEN_INVALID);
         }
-    }
-
-    public Map<String, Object> getPayload(String token) {
-        return jwtParser.parseClaimsJws(token).getBody();
     }
 
     public long getAccessTokenExpireIntervalInSeconds() {

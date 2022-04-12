@@ -1,7 +1,7 @@
 package app.hdj.datepick.domain.user.dto;
 
 import app.hdj.datepick.domain.user.entity.User;
-import app.hdj.datepick.global.enums.Gender;
+import app.hdj.datepick.domain.user.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

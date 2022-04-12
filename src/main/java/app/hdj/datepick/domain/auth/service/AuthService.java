@@ -1,12 +1,13 @@
 package app.hdj.datepick.domain.auth.service;
 
 import app.hdj.datepick.domain.auth.dto.AllTokenResponse;
-import app.hdj.datepick.domain.auth.dto.OAuthUserInfo;
+import app.hdj.datepick.domain.auth.infrastructure.oauth.OAuthUserInfo;
 import app.hdj.datepick.domain.auth.infrastructure.JwtUtil;
 import app.hdj.datepick.domain.auth.infrastructure.oauth.OAuthHandler;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.repository.UserRepository;
-import app.hdj.datepick.global.enums.Provider;
+import app.hdj.datepick.domain.user.enums.Provider;
+import app.hdj.datepick.domain.user.enums.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,9 +29,9 @@ public class AuthService {
     private final OAuthHandler oAuthHandler;
     private final JwtUtil jwtUtil;
 
-    private static final String USER_ID_CLAIM_KEY = "id";
-    private static final String TOKEN_UUID_CLAIM_KEY = "uuid";
-    private static final String USER_AUTHORITIES_CLAIM_KEY = "authorities";
+    public static final String USER_ID_CLAIM_KEY = "user_id";
+    public static final String TOKEN_UUID_CLAIM_KEY = "uuid";
+    public static final String USER_AUTHORITIES_CLAIM_KEY = "authorities";
 
     @Transactional
     public AllTokenResponse signInByOAuth(final Provider provider, final String code) {
@@ -58,7 +59,7 @@ public class AuthService {
 
     private Map<String, Object> createAccessTokenPayload(User user, String uuid) {
         return Map.of(USER_ID_CLAIM_KEY, user.getId(),
-                USER_AUTHORITIES_CLAIM_KEY, List.of("USER"),
+                USER_AUTHORITIES_CLAIM_KEY, List.of(Role.USER.toString()),
                 TOKEN_UUID_CLAIM_KEY, uuid);
     }
 
@@ -97,12 +98,12 @@ public class AuthService {
 
     public Long getUserIdFromToken(String token) {
         Map<String, Object> payload = jwtUtil.getPayload(token);
-        return (Long) payload.get(USER_ID_CLAIM_KEY);
+        return Long.valueOf(String.valueOf(payload.get(USER_ID_CLAIM_KEY)));
     }
 
-    public Long getUuidFromToken(String token) {
+    public String getUuidFromToken(String token) {
         Map<String, Object> payload = jwtUtil.getPayload(token);
-        return (Long) payload.get(TOKEN_UUID_CLAIM_KEY);
+        return String.valueOf(payload.get(TOKEN_UUID_CLAIM_KEY));
     }
 
 }

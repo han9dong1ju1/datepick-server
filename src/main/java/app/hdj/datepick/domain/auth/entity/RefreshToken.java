@@ -1,4 +1,4 @@
-package app.hdj.datepick.domain.auth;
+package app.hdj.datepick.domain.auth.entity;
 
 
 import app.hdj.datepick.global.entity.BaseEntity;

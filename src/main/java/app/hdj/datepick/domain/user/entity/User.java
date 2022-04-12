@@ -1,9 +1,8 @@
 package app.hdj.datepick.domain.user.entity;
 
 import app.hdj.datepick.global.entity.BaseTimeEntity;
-import app.hdj.datepick.global.enums.Gender;
-import app.hdj.datepick.global.enums.Provider;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import app.hdj.datepick.domain.user.enums.Gender;
+import app.hdj.datepick.domain.user.enums.Provider;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;

@@ -1,7 +1,6 @@
 package app.hdj.datepick.domain.auth.infrastructure.oauth;
 
-import app.hdj.datepick.domain.auth.dto.OAuthUserInfo;
-import app.hdj.datepick.global.enums.Provider;
+import app.hdj.datepick.domain.user.enums.Provider;
 
 public interface OAuthRequester {
     OAuthUserInfo getUserInfo(String token);

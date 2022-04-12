@@ -107,7 +107,7 @@ class JwtUtilTest {
         String accessToken = jwtUtil.createAccessToken(Map.of(), now);
 
         // when, then
-        assertDoesNotThrow(() -> jwtUtil.validateToken(accessToken));
+        assertDoesNotThrow(() -> jwtUtil.getPayload(accessToken));
     }
 
     @Test
@@ -118,7 +118,7 @@ class JwtUtilTest {
         String accessToken = jwtUtil.createAccessToken(Map.of(), now);
 
         // when
-        CustomException throwable = catchThrowableOfType(() -> jwtUtil.validateToken(accessToken), CustomException.class);
+        CustomException throwable = catchThrowableOfType(() -> jwtUtil.getPayload(accessToken), CustomException.class);
 
         // then
         assertThat(throwable.getErrorCode()).isEqualTo(ErrorCode.TOKEN_EXPIRED);
@@ -132,7 +132,7 @@ class JwtUtilTest {
         String accessToken = jwtUtil.createAccessToken(Map.of(), now) + "Modify Token String Value";
 
         // when
-        CustomException throwable = catchThrowableOfType(() -> jwtUtil.validateToken(accessToken), CustomException.class);
+        CustomException throwable = catchThrowableOfType(() -> jwtUtil.getPayload(accessToken), CustomException.class);
 
         // then
         assertThat(throwable.getErrorCode()).isEqualTo(ErrorCode.TOKEN_INVALID);

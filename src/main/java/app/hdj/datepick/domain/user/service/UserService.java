@@ -6,7 +6,7 @@ import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.repository.UserRepository;
 import app.hdj.datepick.global.common.ImageUrl;
 import app.hdj.datepick.global.config.file.FileService;
-import app.hdj.datepick.global.enums.Gender;
+import app.hdj.datepick.domain.user.enums.Gender;
 import app.hdj.datepick.global.error.enums.ErrorCode;
 import app.hdj.datepick.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
