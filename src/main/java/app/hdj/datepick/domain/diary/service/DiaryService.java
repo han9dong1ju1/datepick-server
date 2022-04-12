@@ -12,6 +12,7 @@ import app.hdj.datepick.domain.relation.repository.CoursePlaceRepository;
 import app.hdj.datepick.global.common.CustomPage;
 import app.hdj.datepick.global.common.ImageUrl;
 import app.hdj.datepick.global.common.PagingParam;
+import app.hdj.datepick.global.config.file.FileService;
 import app.hdj.datepick.global.enums.CustomSort;
 import app.hdj.datepick.global.error.enums.ErrorCode;
 import app.hdj.datepick.global.error.exception.CustomException;
@@ -33,6 +34,7 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final CourseRepository courseRepository;
     private final CoursePlaceRepository coursePlaceRepository;
+    private final FileService fileService;
 
     @PersistenceContext
     private final EntityManager em;
@@ -123,11 +125,22 @@ public class DiaryService {
     }
 
     public ImageUrl addDiaryImage(Long diaryId, MultipartFile image, Long userId) {
-        return null;
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow();
+
+        // 다이어라가 속한 코스가 본인게 아니라면 reject
+        if (!diary.getCoursePlaceRelation().getCourse().getUser().getId().equals(userId)) {
+            throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
+        String imageUrl = fileService.add(image, "diary/" + diaryId);
+        return new ImageUrl(imageUrl);
     }
 
-    public void removeDiaryImage(Long diaryId, ImageUrl imageUrl, Long userId) {
-
+    public void removeDiaryImage(Long diaryId, String imageUrl, Long userId) {
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow();
+        if (!diary.getCoursePlaceRelation().getCourse().getUser().getId().equals(userId)) {
+            throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
+        fileService.remove(imageUrl);
     }
 
 }

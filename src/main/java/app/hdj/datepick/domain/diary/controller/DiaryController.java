@@ -82,7 +82,7 @@ public class DiaryController {
     @DeleteMapping("/{diaryId}/image")
     void removeDiaryImage(@AuthenticationPrincipal Long userId,
                           @PathVariable Long diaryId,
-                          ImageUrl imageUrl) {
+                          @NotNull String imageUrl) {
         diaryService.removeDiaryImage(diaryId, imageUrl, userId);
     }
 }
