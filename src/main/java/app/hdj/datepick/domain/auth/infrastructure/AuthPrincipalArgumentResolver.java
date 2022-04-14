@@ -28,7 +28,7 @@ public class AuthPrincipalArgumentResolver implements HandlerMethodArgumentResol
     public Long resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         String token = AuthorizationExtractor.extract(Objects.requireNonNull(request));
-        return authService.getUserIdFromToken(token);
+        return token == null ? null : authService.getUserIdFromToken(token);
     }
 
 }

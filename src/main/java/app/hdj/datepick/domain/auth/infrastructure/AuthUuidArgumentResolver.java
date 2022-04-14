@@ -28,7 +28,7 @@ public class AuthUuidArgumentResolver implements HandlerMethodArgumentResolver {
     public String resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         String token = AuthorizationExtractor.extract(Objects.requireNonNull(request));
-        return authService.getUuidFromToken(token);
+        return token == null ? null : authService.getUuidFromToken(token);
     }
 
 }

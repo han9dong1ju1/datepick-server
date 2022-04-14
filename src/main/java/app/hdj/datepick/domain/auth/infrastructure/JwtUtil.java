@@ -65,9 +65,6 @@ public class JwtUtil {
 
     public Map<String, Object> getPayload(String token) {
         log.debug("'getPayload' invoked");
-        if (token == null) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED);
-        }
         try {
             return jwtParser.parseClaimsJws(token).getBody();
         } catch (ExpiredJwtException e) {

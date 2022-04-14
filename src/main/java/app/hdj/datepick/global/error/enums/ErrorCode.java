@@ -16,7 +16,7 @@ public enum ErrorCode {
     ACCESS_DENIED(403, "접근 권한이 없습니다."),
     TOKEN_EXPIRED(401, "토큰이 만료되었습니다."),
     TOKEN_INVALID(401, "토큰이 유효하지 않습니다."),
-    TOKEN_MALFORMED(401, "토큰이 잘못 생성되었습니다."),
+    TOKEN_MALFORMED(500, "토큰이 잘못 생성되었습니다."),
     REFRESH_TOKEN_NOT_FOUND(404, "유효한 리프레시 토큰을 찾을 수 없습니다."),
 
     // AWS
