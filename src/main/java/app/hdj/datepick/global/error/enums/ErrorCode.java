@@ -18,6 +18,8 @@ public enum ErrorCode {
     TOKEN_INVALID(401, "토큰이 유효하지 않습니다."),
     TOKEN_MALFORMED(500, "토큰이 잘못 생성되었습니다."),
     REFRESH_TOKEN_NOT_FOUND(404, "유효한 리프레시 토큰을 찾을 수 없습니다."),
+    OAUTH_REQUEST_FAILED(500, "OAuth 제공자에게서 정보를 불러오는데 실패했습니다."),
+    OAUTH_SERVER_ERROR(500, "OAuth 제공자에게 오류가 생겼습니다."),
 
     // AWS
     FILE_NOT_EXISTS(400, "첨부된 파일이 없습니다."),

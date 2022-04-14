@@ -23,7 +23,7 @@ public class OAuthHandler {
         return oAuthRequesters.stream()
                 .filter(requester -> requester.supports(provider))
                 .findFirst()
-                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_IMPLEMENTED));
     }
 
 }

@@ -12,7 +12,7 @@ public enum Provider {
 
     public static Provider from(String value) {
         for (Provider provider : values()) {
-            if (provider.name().equals(value)) {
+            if (provider.name().equalsIgnoreCase(value)) {
                 return provider;
             }
         }

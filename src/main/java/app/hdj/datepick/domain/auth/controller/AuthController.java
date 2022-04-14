@@ -8,12 +8,9 @@ import app.hdj.datepick.domain.auth.dto.RefreshTokenRequest;
 import app.hdj.datepick.domain.auth.service.AuthService;
 import app.hdj.datepick.domain.user.enums.Provider;
 import app.hdj.datepick.domain.user.enums.Role;
-import app.hdj.datepick.global.annotation.ValueOfEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @Validated
 @RequiredArgsConstructor
@@ -24,7 +21,7 @@ public class AuthController {
     private final AuthService authService;
 
     @GetMapping("signin/{provider}")
-    AllTokenResponse signInByOAuth(@Valid @PathVariable @ValueOfEnum(enumClass = Provider.class) String provider,
+    AllTokenResponse signInByOAuth(@PathVariable String provider,
                                    @RequestParam String code) {
         return authService.signInByOAuth(Provider.from(provider), code);
     }
