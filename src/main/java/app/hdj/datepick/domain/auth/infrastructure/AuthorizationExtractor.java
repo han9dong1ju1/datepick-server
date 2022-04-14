@@ -12,7 +12,7 @@ public class AuthorizationExtractor {
         Enumeration<String> headers = request.getHeaders(HEADER_KEY);
         while (headers.hasMoreElements()) {
             String header = headers.nextElement();
-            if (header.toLowerCase().startsWith(ACCESS_TOKEN_TYPE.toLowerCase())) {
+            if (header.toLowerCase().startsWith(ACCESS_TOKEN_TYPE.toLowerCase() + " ")) {
                 String value = header.substring(ACCESS_TOKEN_TYPE.length()).trim();
                 return value.isBlank() ? null : value;
             }
