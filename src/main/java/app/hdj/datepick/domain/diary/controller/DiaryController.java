@@ -35,7 +35,7 @@ public class DiaryController {
                                                   @Valid PagingParam pagingParam,
                                                   @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "rating_asc", "rating_desc"}) String sort,
                                                   @Valid DiaryFilterParam diaryFilterParam) {
-        return diaryService.getDiaryPage(pagingParam, CustomSort.from(sort), diaryFilterParam, userId);
+        return diaryService.getDiaryPage(pagingParam, CustomSort.from(sort), diaryFilterParam);
     }
 
     @GetMapping("/me")
@@ -44,7 +44,7 @@ public class DiaryController {
                                                     @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "rating_asc", "rating_desc"}) String sort,
                                                     @Valid DiaryFilterParam diaryFilterParam) {
         diaryFilterParam.setUserId(userId);
-        return diaryService.getDiaryPage(pagingParam, CustomSort.from(sort), diaryFilterParam, userId);
+        return diaryService.getMyDiaryPage(pagingParam, CustomSort.from(sort), diaryFilterParam);
     }
 
     @PostMapping("")

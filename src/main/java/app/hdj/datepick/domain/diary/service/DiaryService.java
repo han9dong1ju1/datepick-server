@@ -41,10 +41,9 @@ public class DiaryService {
 
     public CustomPage<DiaryResponse> getDiaryPage(PagingParam pagingParam,
                                                   CustomSort customSort,
-                                                  DiaryFilterParam diaryFilterParam,
-                                                  Long userId) {
+                                                  DiaryFilterParam diaryFilterParam) {
         Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
-        Page<Diary> diaryPage =  diaryRepository.findDiaryPage(diaryFilterParam, pagingParam, sort, userId);
+        Page<Diary> diaryPage =  diaryRepository.findDiaryPage(diaryFilterParam, pagingParam, sort);
         return new CustomPage<>(
                 diaryPage.getTotalElements(),
                 diaryPage.getTotalPages(),
@@ -54,6 +53,23 @@ public class DiaryService {
                         .collect(Collectors.toList())
         );
     }
+
+    public CustomPage<DiaryResponse> getMyDiaryPage(PagingParam pagingParam,
+                                                  CustomSort customSort,
+                                                  DiaryFilterParam diaryFilterParam) {
+
+        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
+        Page<Diary> diaryPage =  diaryRepository.findMyDiaryPage(diaryFilterParam, pagingParam, sort);
+        return new CustomPage<>(
+                diaryPage.getTotalElements(),
+                diaryPage.getTotalPages(),
+                diaryPage.getNumber(),
+                diaryPage.getContent().stream()
+                        .map(DiaryResponse::from)
+                        .collect(Collectors.toList())
+        );
+    }
+
 
     @Transactional
     public DiaryResponse addDiary(DiaryRequest diaryRequest,
@@ -114,7 +130,7 @@ public class DiaryService {
 
         return DiaryResponse.from(diary);
     }
-
+    @Transactional
     public void removeDiary(Long diaryId, Long userId) {
         Diary diary = diaryRepository.findById(diaryId).orElseThrow();
         Course course = diary.getCoursePlaceRelation().getCourse();
@@ -124,6 +140,7 @@ public class DiaryService {
         diaryRepository.delete(diary);
     }
 
+    @Transactional
     public ImageUrl addDiaryImage(Long diaryId, MultipartFile image, Long userId) {
         Diary diary = diaryRepository.findById(diaryId).orElseThrow();
 
@@ -135,6 +152,7 @@ public class DiaryService {
         return new ImageUrl(imageUrl);
     }
 
+    @Transactional
     public void removeDiaryImage(Long diaryId, String imageUrl, Long userId) {
         Diary diary = diaryRepository.findById(diaryId).orElseThrow();
         if (!diary.getCoursePlaceRelation().getCourse().getUser().getId().equals(userId)) {
