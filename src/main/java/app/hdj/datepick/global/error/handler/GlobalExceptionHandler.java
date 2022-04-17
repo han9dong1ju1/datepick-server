@@ -31,8 +31,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .collect(Collectors.joining(", "));
 
         BaseResponse<Object> response = new BaseResponse<>(
-                ErrorCode.INVALID_INPUT_VALUE.getMessage() + " " + message,
-                ErrorCode.INVALID_INPUT_VALUE);
+                ErrorCode.INPUT_VALUE_INVALID.getMessage() + " " + message,
+                ErrorCode.INPUT_VALUE_INVALID);
 
         return new ResponseEntity<>(response, status);
     }

@@ -24,15 +24,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.catchThrowableOfType;
 
 class JwtUtilTest {
 
-    private final String secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256).toString();
-    private final Duration accessTokenExpireInterval = Duration.ofHours(1L);
-    private final Duration refreshTokenExpireInterval = Duration.ofDays(30L);
+    private static final String secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256).toString();
+    private static final Duration accessTokenExpireInterval = Duration.ofHours(1L);
+    private static final Duration refreshTokenExpireInterval = Duration.ofDays(30L);
 
     private JwtUtil jwtUtil;
     private JwtParser jwtParser;
 
-    @BeforeEach()
-    void before() {
+    @BeforeEach
+    void setUp() {
         jwtUtil = new JwtUtil(secretKey, accessTokenExpireInterval, refreshTokenExpireInterval);
         jwtParser = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8))).build();
     }
@@ -111,7 +111,7 @@ class JwtUtilTest {
     }
 
     @Test
-    @DisplayName("만료된 Token의 유효성을 검사한다.")
+    @DisplayName("만료된 Token의 유효성을 검사하면 예외를 발생시킨다.")
     void validateExpiredToken() {
         // given
         LocalDateTime now = LocalDateTime.now().minusSeconds(accessTokenExpireInterval.plusSeconds(1L).toSeconds());
@@ -125,7 +125,7 @@ class JwtUtilTest {
     }
 
     @Test
-    @DisplayName("유효하지 않은 Token의 유효성을 검사한다.")
+    @DisplayName("유효하지 않은 Token의 유효성을 검사하면 예외를 발생시킨다..")
     void validateInvalidToken() {
         // given
         LocalDateTime now = LocalDateTime.now().minusSeconds(accessTokenExpireInterval.plusSeconds(1L).toSeconds());

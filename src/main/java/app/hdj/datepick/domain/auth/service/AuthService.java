@@ -1,13 +1,18 @@
 package app.hdj.datepick.domain.auth.service;
 
 import app.hdj.datepick.domain.auth.dto.AllTokenResponse;
+import app.hdj.datepick.domain.auth.entity.RefreshToken;
 import app.hdj.datepick.domain.auth.infrastructure.oauth.OAuthUserInfo;
 import app.hdj.datepick.domain.auth.infrastructure.JwtUtil;
 import app.hdj.datepick.domain.auth.infrastructure.oauth.OAuthHandler;
+import app.hdj.datepick.domain.auth.repository.RefreshTokenRepository;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.repository.UserRepository;
 import app.hdj.datepick.domain.user.enums.Provider;
 import app.hdj.datepick.domain.user.enums.Role;
+import app.hdj.datepick.global.error.enums.ErrorCode;
+import app.hdj.datepick.global.error.exception.CustomException;
+import app.hdj.datepick.global.util.HashingUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +30,7 @@ import java.util.UUID;
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final RefreshTokenService refreshTokenService;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final OAuthHandler oAuthHandler;
     private final JwtUtil jwtUtil;
 
@@ -38,22 +43,42 @@ public class AuthService {
         OAuthUserInfo userInfo = oAuthHandler.getUserInfo(provider, code);
         User user = userRepository.findByProviderAndUid(userInfo.getProvider(), userInfo.getUid())
                 .orElseGet(() -> signUp(userInfo));
-        return createTokens(user);
+        return createNewTokens(user);
     }
 
-    @Transactional
-    public AllTokenResponse refreshToken(String token) {
-        Long userId = refreshTokenService.getUserIdByToken(token);
-        User user = userRepository.findById(userId).orElseThrow();
-        return createTokens(user);
-    }
-
-    private AllTokenResponse createTokens(User user) {
+    private AllTokenResponse createNewTokens(User user) {
         LocalDateTime now = LocalDateTime.now();
         String uuid = UUID.randomUUID().toString();
         String accessToken = jwtUtil.createAccessToken(createAccessTokenPayload(user, uuid), now);
         String refreshToken = jwtUtil.createRefreshToken(createRefreshTokenPayload(uuid), now);
-        refreshTokenService.saveToken(refreshToken, user, uuid, jwtUtil.getRefreshTokenExpireAt(now));
+        RefreshToken token = RefreshToken.builder()
+                .token(HashingUtil.hash(refreshToken))
+                .userId(user.getId())
+                .uuid(uuid)
+                .expireAt(jwtUtil.getRefreshTokenExpireAt(now))
+                .build();
+        refreshTokenRepository.save(token);
+        return new AllTokenResponse(accessToken, jwtUtil.getAccessTokenExpireIntervalInSeconds(), refreshToken);
+    }
+
+    @Transactional
+    public AllTokenResponse refreshToken(String token) {
+        RefreshToken refreshToken = refreshTokenRepository.findByUuidAndExpireAtAfter(getUuidFromToken(token), LocalDateTime.now())
+                .orElseThrow(() -> new CustomException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
+        return updateToken(refreshToken);
+    }
+
+    private AllTokenResponse updateToken(RefreshToken token) {
+        User user = userRepository.findById(token.getUserId()).orElseThrow();
+        LocalDateTime now = LocalDateTime.now();
+        String uuid = UUID.randomUUID().toString();
+        String accessToken = jwtUtil.createAccessToken(createAccessTokenPayload(user, uuid), now);
+        String refreshToken = jwtUtil.createRefreshToken(createRefreshTokenPayload(uuid), now);
+        token.setToken(HashingUtil.hash(refreshToken));
+        token.setUserId(user.getId());
+        token.setUuid(uuid);
+        token.setExpireAt(jwtUtil.getRefreshTokenExpireAt(now));
+        refreshTokenRepository.save(token);
         return new AllTokenResponse(accessToken, jwtUtil.getAccessTokenExpireIntervalInSeconds(), refreshToken);
     }
 
@@ -93,7 +118,13 @@ public class AuthService {
 
     @Transactional
     public void signOut(Long userId, String uuid) {
-        refreshTokenService.deactivateToken(userId, uuid);
+        refreshTokenRepository.findByUuidAndExpireAtAfter(uuid, LocalDateTime.now())
+                .ifPresent(refreshToken -> {
+                    if (!refreshToken.getUserId().equals(userId)) {
+                        throw new CustomException(ErrorCode.TOKEN_MALFORMED);
+                    }
+                    refreshToken.setExpireAt(LocalDateTime.now());
+                });
     }
 
     public Long getUserIdFromToken(String token) {

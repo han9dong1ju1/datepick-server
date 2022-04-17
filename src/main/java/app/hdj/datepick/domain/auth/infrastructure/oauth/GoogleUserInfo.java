@@ -21,7 +21,7 @@ public class GoogleUserInfo implements OAuthUserInfo {
     }
 
     public static GoogleUserInfo from(Map<String, Object> body) {
-        String uid = provider + ":" + body.get("id");
+        String uid = (String) body.get("id");
         String name = ((String) body.get("name")).replaceAll("\\s+", "");
         String email = (String) body.get("email");
         return GoogleUserInfo.builder()

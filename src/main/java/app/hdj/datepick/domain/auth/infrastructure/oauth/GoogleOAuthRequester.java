@@ -64,6 +64,11 @@ public class GoogleOAuthRequester implements OAuthRequester {
                     httpHeaders.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
                 })
                 .retrieve()
+                .onStatus(
+                        status -> !status.is2xxSuccessful(),
+                        response -> {
+                            throw new CustomException(ErrorCode.OAUTH_REQUEST_FAILED);
+                        })
                 .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
                 })
                 .blockOptional()
@@ -85,6 +90,11 @@ public class GoogleOAuthRequester implements OAuthRequester {
                     httpHeaders.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
                 })
                 .retrieve()
+                .onStatus(
+                        status -> !status.is2xxSuccessful(),
+                        response -> {
+                            throw new CustomException(ErrorCode.OAUTH_REQUEST_FAILED);
+                        })
                 .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
                 })
                 .blockOptional()

@@ -1,4 +1,4 @@
-package app.hdj.datepick.global.config;
+package app.hdj.datepick.global.config.db;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;
@@ -9,9 +9,8 @@ import javax.persistence.EntityManager;
 
 @EnableJpaAuditing
 @Configuration
-public class AppConfig {
+public class QueryDslConfig {
 
-    // QueryDSL
     @Bean
     public JPAQueryFactory jpaQueryFactory(EntityManager em) {
         return new JPAQueryFactory(em);

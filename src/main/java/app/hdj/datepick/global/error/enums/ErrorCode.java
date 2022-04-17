@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum ErrorCode {
 
     // Common
-    INVALID_INPUT_VALUE(400, "올바르지 않은 입력입니다."),
+    INPUT_VALUE_INVALID(400, "올바르지 않은 입력입니다."),
     ENTITY_NOT_FOUND(404, "요청한 자원을 찾을 수 없습니다."),
     INTERNAL_SERVER_ERROR(500, "서버에 오류가 생겼습니다."),
     NOT_IMPLEMENTED(501, "아직 구현되지 않은 기능입니다."),

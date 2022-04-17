@@ -1,7 +1,6 @@
 package app.hdj.datepick.domain.auth.entity;
 
-
-import app.hdj.datepick.global.entity.BaseEntity;
+import app.hdj.datepick.global.entity.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class RefreshToken extends BaseEntity<Long> {
+public class RefreshToken extends BaseTimeEntity<Long> {
 
     @Column(nullable = false, unique = true)
     private String token;

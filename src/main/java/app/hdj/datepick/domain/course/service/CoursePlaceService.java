@@ -67,7 +67,7 @@ public class CoursePlaceService {
         for (CoursePlaceRelation coursePlace : coursePlaces) {
             int index = coursePlaceIds.indexOf(coursePlace.getId());
             if (index == -1) {
-                throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
+                throw new CustomException(ErrorCode.INPUT_VALUE_INVALID);
             }
             coursePlace.setPlaceOrder((byte) index);
         }
