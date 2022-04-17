@@ -12,6 +12,7 @@ public class DiaryResponse {
     private Long id;
     private String content;
     private Float rating;
+    private Long courseId;
     private UserPublic user;
 
     public static DiaryResponse from(Diary diary) {
@@ -19,7 +20,9 @@ public class DiaryResponse {
                 diary.getId(),
                 diary.getContent(),
                 diary.getRating(),
+                diary.getCoursePlaceRelation().getCourse().getId(),
                 UserPublic.from(diary.getCoursePlaceRelation().getCourse().getUser())
+
         );
     }
 }
