@@ -1,9 +1,11 @@
 package app.hdj.datepick.domain.place.controller;
 
+import app.hdj.datepick.domain.auth.annotation.Authorize;
 import app.hdj.datepick.domain.place.dto.PlaceFilterParam;
 import app.hdj.datepick.domain.place.dto.PlaceRequest;
 import app.hdj.datepick.domain.place.dto.PlaceResponse;
 import app.hdj.datepick.domain.place.service.PlaceService;
+import app.hdj.datepick.domain.user.enums.Role;
 import app.hdj.datepick.global.annotation.ValueOfEnum;
 import app.hdj.datepick.global.common.CustomPage;
 import app.hdj.datepick.global.common.PagingParam;
@@ -39,6 +41,7 @@ public class PlaceController {
         return placeService.getPlace(placeId, userId);
     }
 
+    @Authorize({Role.USER})
     @GetMapping("/picked")
     public CustomPage<PlaceResponse> getPlacePicked(@AuthPrincipal Long userId,
                                                     @Valid PagingParam pagingParam,
@@ -48,6 +51,7 @@ public class PlaceController {
         return placeService.getPickedPlacePage(pagingParam, CustomSort.from(sort), placeFilterParam, userId);
     }
 
+    @Authorize({Role.USER})
     @PostMapping("")
     public PlaceResponse addPlace(@AuthPrincipal Long userId,
                                               @Valid @RequestBody PlaceRequest placeRequest) {

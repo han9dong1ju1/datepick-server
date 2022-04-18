@@ -1,9 +1,11 @@
 package app.hdj.datepick.domain.comment.controller;
 
+import app.hdj.datepick.domain.auth.annotation.Authorize;
 import app.hdj.datepick.domain.comment.dto.CommentFilterParam;
 import app.hdj.datepick.domain.comment.dto.CommentPublic;
 import app.hdj.datepick.domain.comment.dto.CommentRequest;
 import app.hdj.datepick.domain.comment.service.CommentService;
+import app.hdj.datepick.domain.user.enums.Role;
 import app.hdj.datepick.global.common.CustomPage;
 import app.hdj.datepick.global.common.PagingParam;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +31,14 @@ public class CommentController {
         return commentService.getCommentPage(pagingParam, commentFilterParam);
     }
 
+    @Authorize({Role.USER})
     @GetMapping("me")
     CustomPage<CommentPublic> getMyCommentPage(@AuthPrincipal Long userId,
                                                @Valid PagingParam pagingParam) {
         return commentService.getMyCommentPage(pagingParam, userId);
     }
 
+    @Authorize({Role.USER})
     @PostMapping("")
     CommentPublic addComment(@AuthPrincipal Long userId,
                              @Valid CommentFilterParam commentFilterParam,
@@ -42,6 +46,7 @@ public class CommentController {
         return commentService.addComment(commentFilterParam, commentRequest, userId);
     }
 
+    @Authorize({Role.USER})
     @PatchMapping("{commentId}")
     CommentPublic modifyComment(@AuthPrincipal Long userId,
                                 @PathVariable Long commentId,
@@ -49,6 +54,7 @@ public class CommentController {
         return commentService.modifyComment(commentId, commentRequest, userId);
     }
 
+    @Authorize({Role.USER})
     @DeleteMapping("{commentId}")
     void removeComment(@AuthPrincipal Long userId,
                        @PathVariable Long commentId) {
