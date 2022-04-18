@@ -34,7 +34,7 @@ public class DiaryCustomRepositoryImpl implements DiaryCustomRepository{
                 .where(diary.coursePlaceRelation.course.isPrivate.eq(false));
 
         query = filterDiaries(query, diaryFilterParam);
-        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), diaryFilterParam.getSort(sort));
+        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), sort);
         return pagingUtil.getPageImpl(pageRequest, query);
     }
 
@@ -44,7 +44,7 @@ public class DiaryCustomRepositoryImpl implements DiaryCustomRepository{
                 .selectFrom(diary);
 
         query = filterDiaries(query, diaryFilterParam);
-        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), diaryFilterParam.getSort(sort));
+        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), sort);
         return pagingUtil.getPageImpl(pageRequest, query);
     }
 

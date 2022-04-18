@@ -31,10 +31,9 @@ public class DiaryController {
     private final DiaryService diaryService;
 
     @GetMapping("")
-    CustomPage<DiaryResponse> getDiaryPage(@AuthenticationPrincipal Long userId,
-                                                  @Valid PagingParam pagingParam,
-                                                  @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "rating_asc", "rating_desc"}) String sort,
-                                                  @Valid DiaryFilterParam diaryFilterParam) {
+    CustomPage<DiaryResponse> getDiaryPage(@Valid PagingParam pagingParam,
+                                           @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "rating_asc", "rating_desc"}) String sort,
+                                           @Valid DiaryFilterParam diaryFilterParam) {
         return diaryService.getDiaryPage(pagingParam, CustomSort.from(sort), diaryFilterParam);
     }
 
@@ -49,26 +48,26 @@ public class DiaryController {
 
     @PostMapping("")
     DiaryResponse addDiary(@AuthenticationPrincipal Long userId,
-                                  @Valid @RequestBody DiaryRequest diaryRequest){
+                           @Valid @RequestBody DiaryRequest diaryRequest) {
         return diaryService.addDiary(diaryRequest, userId);
     }
 
     @GetMapping("/{diaryId}")
     DiaryResponse getDiary(@AuthenticationPrincipal Long userId,
-                                  @PathVariable Long diaryId) {
+                           @PathVariable Long diaryId) {
         return diaryService.getDiary(diaryId, userId);
     }
 
     @PatchMapping("/{diaryId}")
     DiaryResponse modifyDiary(@AuthenticationPrincipal Long userId,
-                                     @PathVariable Long diaryId,
-                                     @Valid @RequestBody DiaryRequest diaryRequest) {
+                              @PathVariable Long diaryId,
+                              @Valid @RequestBody DiaryRequest diaryRequest) {
         return diaryService.modifyDiary(diaryId, diaryRequest, userId);
     }
 
     @DeleteMapping("/{diaryId}")
     void removeDiary(@AuthenticationPrincipal Long userId,
-                        @PathVariable Long diaryId) {
+                     @PathVariable Long diaryId) {
         diaryService.removeDiary(diaryId, userId);
     }
 

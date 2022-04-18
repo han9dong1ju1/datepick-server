@@ -23,8 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -36,14 +34,11 @@ public class DiaryService {
     private final CoursePlaceRepository coursePlaceRepository;
     private final FileService fileService;
 
-    @PersistenceContext
-    private final EntityManager em;
-
     public CustomPage<DiaryResponse> getDiaryPage(PagingParam pagingParam,
                                                   CustomSort customSort,
                                                   DiaryFilterParam diaryFilterParam) {
         Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
-        Page<Diary> diaryPage =  diaryRepository.findDiaryPage(diaryFilterParam, pagingParam, sort);
+        Page<Diary> diaryPage = diaryRepository.findDiaryPage(diaryFilterParam, pagingParam, sort);
         return new CustomPage<>(
                 diaryPage.getTotalElements(),
                 diaryPage.getTotalPages(),
@@ -55,11 +50,10 @@ public class DiaryService {
     }
 
     public CustomPage<DiaryResponse> getMyDiaryPage(PagingParam pagingParam,
-                                                  CustomSort customSort,
-                                                  DiaryFilterParam diaryFilterParam) {
-
+                                                    CustomSort customSort,
+                                                    DiaryFilterParam diaryFilterParam) {
         Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
-        Page<Diary> diaryPage =  diaryRepository.findMyDiaryPage(diaryFilterParam, pagingParam, sort);
+        Page<Diary> diaryPage = diaryRepository.findMyDiaryPage(diaryFilterParam, pagingParam, sort);
         return new CustomPage<>(
                 diaryPage.getTotalElements(),
                 diaryPage.getTotalPages(),
@@ -74,13 +68,11 @@ public class DiaryService {
     @Transactional
     public DiaryResponse addDiary(DiaryRequest diaryRequest,
                                   Long userId) {
-
-        Course course = courseRepository.findById(diaryRequest.getCourseId()).orElseThrow();
-
         //course 에 요청한 place 가 존재하지 않으면 reject
-        CoursePlaceRelation coursePlaceRelation =  coursePlaceRepository.findByCourseIdAndPlaceId(diaryRequest.getCourseId(), diaryRequest.getPlaceId()).orElseThrow();
+        CoursePlaceRelation coursePlaceRelation = coursePlaceRepository.findByCourseIdAndPlaceId(diaryRequest.getCourseId(), diaryRequest.getPlaceId()).orElseThrow();
 
         //course 가 본인 course 가 아니면 reject
+        Course course = courseRepository.findById(diaryRequest.getCourseId()).orElseThrow();
         if (!course.getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
         }
@@ -91,10 +83,8 @@ public class DiaryService {
                 .coursePlaceRelation(coursePlaceRelation)
                 .build();
         diary = diaryRepository.save(diary);
-        em.refresh(diary);
 
         return DiaryResponse.from(diary);
-
     }
 
     public DiaryResponse getDiary(Long diaryId, Long userId) {
@@ -111,15 +101,14 @@ public class DiaryService {
     @Transactional
     public DiaryResponse modifyDiary(Long diaryId,
                                      DiaryRequest diaryRequest,
-                                     Long userId ) {
-
-        Course course = courseRepository.findById(diaryRequest.getCourseId()).orElseThrow();
-
+                                     Long userId) {
         //course 에 요청한 place 가 존재하지 않으면 reject
         if (coursePlaceRepository.existsByCourseIdAndPlaceId(diaryRequest.getCourseId(), diaryRequest.getPlaceId())) {
             throw new CustomException(ErrorCode.ENTITY_NOT_FOUND);
         }
+
         //course 가 본인 course 가 아니면 reject
+        Course course = courseRepository.findById(diaryRequest.getCourseId()).orElseThrow();
         if (!course.getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
         }
@@ -130,6 +119,7 @@ public class DiaryService {
 
         return DiaryResponse.from(diary);
     }
+
     @Transactional
     public void removeDiary(Long diaryId, Long userId) {
         Diary diary = diaryRepository.findById(diaryId).orElseThrow();

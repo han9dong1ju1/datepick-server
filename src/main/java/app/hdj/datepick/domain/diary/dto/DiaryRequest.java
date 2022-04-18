@@ -13,12 +13,14 @@ public class DiaryRequest {
 
     @NotNull
     private String content;
+
     @Positive
     private Float rating;
 
     @NotNull
     @Positive
     private Long courseId;
+
     @NotNull
     @Positive
     private Long placeId;
