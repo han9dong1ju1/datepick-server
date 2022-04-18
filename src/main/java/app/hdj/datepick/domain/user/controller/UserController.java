@@ -1,5 +1,6 @@
 package app.hdj.datepick.domain.user.controller;
 
+import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import app.hdj.datepick.domain.auth.annotation.Authorize;
 import app.hdj.datepick.domain.user.dto.UserModifyRequest;
 import app.hdj.datepick.domain.user.dto.UserPublic;
@@ -10,7 +11,6 @@ import app.hdj.datepick.global.annotation.ImageFile;
 import app.hdj.datepick.global.common.ImageUrl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

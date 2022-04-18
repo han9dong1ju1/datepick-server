@@ -2,14 +2,14 @@ package app.hdj.datepick.domain.auth.service;
 
 import app.hdj.datepick.domain.auth.dto.AllTokenResponse;
 import app.hdj.datepick.domain.auth.entity.RefreshToken;
-import app.hdj.datepick.domain.auth.infrastructure.oauth.OAuthUserInfo;
 import app.hdj.datepick.domain.auth.infrastructure.JwtUtil;
 import app.hdj.datepick.domain.auth.infrastructure.oauth.OAuthHandler;
+import app.hdj.datepick.domain.auth.infrastructure.oauth.OAuthUserInfo;
 import app.hdj.datepick.domain.auth.repository.RefreshTokenRepository;
 import app.hdj.datepick.domain.user.entity.User;
-import app.hdj.datepick.domain.user.repository.UserRepository;
 import app.hdj.datepick.domain.user.enums.Provider;
 import app.hdj.datepick.domain.user.enums.Role;
+import app.hdj.datepick.domain.user.repository.UserRepository;
 import app.hdj.datepick.global.error.enums.ErrorCode;
 import app.hdj.datepick.global.error.exception.CustomException;
 import app.hdj.datepick.global.util.HashingUtil;
@@ -29,14 +29,13 @@ import java.util.UUID;
 @Service
 public class AuthService {
 
+    public static final String USER_ID_CLAIM_KEY = "user_id";
+    public static final String TOKEN_UUID_CLAIM_KEY = "uuid";
+    public static final String USER_AUTHORITIES_CLAIM_KEY = "authorities";
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final OAuthHandler oAuthHandler;
     private final JwtUtil jwtUtil;
-
-    public static final String USER_ID_CLAIM_KEY = "user_id";
-    public static final String TOKEN_UUID_CLAIM_KEY = "uuid";
-    public static final String USER_AUTHORITIES_CLAIM_KEY = "authorities";
 
     @Transactional
     public AllTokenResponse signInByOAuth(final Provider provider, final String code) {

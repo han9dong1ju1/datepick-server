@@ -18,9 +18,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowableOfType;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class JwtUtilTest {
 

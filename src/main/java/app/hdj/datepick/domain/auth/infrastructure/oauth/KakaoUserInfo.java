@@ -6,10 +6,10 @@ import lombok.Builder;
 
 public class KakaoUserInfo implements OAuthUserInfo {
 
+    private final static Provider provider = Provider.KAKAO;
     private final String uid;
     private final String name;
     private final String email;
-    private final static Provider provider = Provider.KAKAO;
 
     @Builder
     private KakaoUserInfo(String uid, String name, String email) {

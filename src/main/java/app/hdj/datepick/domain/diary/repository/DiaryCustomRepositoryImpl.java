@@ -1,12 +1,9 @@
 package app.hdj.datepick.domain.diary.repository;
 
-import app.hdj.datepick.domain.course.dto.CourseFilterParam;
-import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.diary.dto.DiaryFilterParam;
 import app.hdj.datepick.domain.diary.entity.Diary;
 import app.hdj.datepick.global.common.PagingParam;
 import app.hdj.datepick.global.util.PagingUtil;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +19,7 @@ import static app.hdj.datepick.domain.diary.entity.QDiary.diary;
 @Slf4j
 @RequiredArgsConstructor
 @Repository
-public class DiaryCustomRepositoryImpl implements DiaryCustomRepository{
+public class DiaryCustomRepositoryImpl implements DiaryCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
     private final PagingUtil pagingUtil;
@@ -74,12 +71,15 @@ public class DiaryCustomRepositoryImpl implements DiaryCustomRepository{
     private JPQLQuery<Diary> filterKeyword(String keyword, JPQLQuery<Diary> query) {
         return query.where(diary.content.contains(keyword));
     }
+
     private JPQLQuery<Diary> filterUser(Long userId, JPQLQuery<Diary> query) {
         return query.where(diary.coursePlaceRelation.course.user.id.eq(userId));
     }
+
     private JPQLQuery<Diary> filterPlace(Long placeId, JPQLQuery<Diary> query) {
         return query.where(diary.coursePlaceRelation.place.id.eq(placeId));
     }
+
     private JPQLQuery<Diary> filterCourse(Long courseId, JPQLQuery<Diary> query) {
         return query.where(diary.coursePlaceRelation.course.id.eq(courseId));
     }

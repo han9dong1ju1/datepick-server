@@ -41,9 +41,9 @@ public class DiaryController {
     @Authorize({Role.USER})
     @GetMapping("/me")
     CustomPage<DiaryResponse> getMyDiaryPage(@AuthPrincipal Long userId,
-                                                    @Valid PagingParam pagingParam,
-                                                    @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "rating_asc", "rating_desc"}) String sort,
-                                                    @Valid DiaryFilterParam diaryFilterParam) {
+                                             @Valid PagingParam pagingParam,
+                                             @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "rating_asc", "rating_desc"}) String sort,
+                                             @Valid DiaryFilterParam diaryFilterParam) {
         diaryFilterParam.setUserId(userId);
         return diaryService.getMyDiaryPage(pagingParam, CustomSort.from(sort), diaryFilterParam);
     }

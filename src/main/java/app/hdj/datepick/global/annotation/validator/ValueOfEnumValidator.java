@@ -23,8 +23,7 @@ public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, Ch
                 .collect(Collectors.toList());
         if (acceptedStrings.isEmpty()) {
             this.acceptedValues = enumValues;
-        }
-        else {
+        } else {
             this.acceptedValues = acceptedStrings.stream()
                     .filter(value -> enumValues.contains(value.toUpperCase()))
                     .collect(Collectors.toList());
@@ -38,7 +37,7 @@ public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, Ch
         }
         context.disableDefaultConstraintViolation();
         context.buildConstraintViolationWithTemplate(
-                "[" + String.join(", ", acceptedValues) + "] 중 하나의 값이어야 합니다")
+                        "[" + String.join(", ", acceptedValues) + "] 중 하나의 값이어야 합니다")
                 .addConstraintViolation();
 
         return acceptedValues.contains(value.toString()) ||

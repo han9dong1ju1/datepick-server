@@ -1,5 +1,6 @@
 package app.hdj.datepick.domain.comment.controller;
 
+import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import app.hdj.datepick.domain.auth.annotation.Authorize;
 import app.hdj.datepick.domain.comment.dto.CommentFilterParam;
 import app.hdj.datepick.domain.comment.dto.CommentPublic;
@@ -10,7 +11,6 @@ import app.hdj.datepick.global.common.CustomPage;
 import app.hdj.datepick.global.common.PagingParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

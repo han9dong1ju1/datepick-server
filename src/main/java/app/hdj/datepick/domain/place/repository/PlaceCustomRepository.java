@@ -8,5 +8,6 @@ import org.springframework.data.domain.Sort;
 
 public interface PlaceCustomRepository {
     Page<Place> findPlacePage(PlaceFilterParam placeFilterParam, PagingParam pagingParam, Sort sort);
+
     Page<Place> findPickedPlacePage(PlaceFilterParam placeFilterParam, PagingParam pagingParam, Sort sort, Long userId);
 }

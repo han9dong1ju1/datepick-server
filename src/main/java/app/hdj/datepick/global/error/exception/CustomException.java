@@ -1,7 +1,6 @@
 package app.hdj.datepick.global.error.exception;
 
 import app.hdj.datepick.global.error.enums.ErrorCode;
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 public class CustomException extends RuntimeException {

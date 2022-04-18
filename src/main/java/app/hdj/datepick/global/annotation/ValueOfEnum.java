@@ -14,8 +14,12 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = ValueOfEnumValidator.class)
 public @interface ValueOfEnum {
     Class<? extends Enum<?>> enumClass();
+
     String[] acceptedValues() default {};
+
     String message() default "{enumClass} 타입이 아닙니다";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

@@ -34,8 +34,7 @@ public enum ErrorCode {
 
     // Pick
     PICK_ALREADY_EXISTS(409, "이미 픽했습니다."),
-    PICK_NOT_EXISTS(409, "아직 픽하지 않았습니다.")
-    ;
+    PICK_NOT_EXISTS(409, "아직 픽하지 않았습니다.");
 
     private final int status;
     private final String message;

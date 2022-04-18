@@ -5,7 +5,10 @@ import app.hdj.datepick.global.error.enums.ErrorCode;
 import app.hdj.datepick.global.error.exception.CustomException;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -16,9 +19,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.catchThrowableOfType;
 
 class GoogleOAuthRequesterTest {
 
-    private static String serverUri;
-    private static MockWebServer mockWebServer;
-
     private static final String GOOGLE_TOKEN_RESPONSE =
             "{\n" +
             "    \"access_token\": \"1/fFAGRNJru1FTz70BzhT3Zg\",\n" +
@@ -27,7 +27,6 @@ class GoogleOAuthRequesterTest {
             "    \"scope\": \"https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid\",\n" +
             "    \"token_type\": \"Bearer\"\n" +
             "}";
-
     private static final String GOOGLE_USER_PROFILE_RESPONSE =
             "{\n" +
             "    \"family_name\": \"Gong\",\n" +
@@ -39,6 +38,8 @@ class GoogleOAuthRequesterTest {
             "    \"id\": \"903471874241403004856\",\n" +
             "    \"verified_email\": true\n" +
             "}";
+    private static String serverUri;
+    private static MockWebServer mockWebServer;
 
     @BeforeAll
     static void setUp() throws IOException {

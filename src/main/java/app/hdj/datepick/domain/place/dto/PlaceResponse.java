@@ -2,10 +2,7 @@ package app.hdj.datepick.domain.place.dto;
 
 
 import app.hdj.datepick.domain.category.dto.CategoryResponse;
-import app.hdj.datepick.domain.category.entity.Category;
 import app.hdj.datepick.domain.place.entity.Place;
-import app.hdj.datepick.domain.relation.entity.PlaceCategoryRelation;
-import com.querydsl.core.Tuple;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,7 +36,7 @@ public class PlaceResponse {
     private LocalDateTime updatedAt;
 
 
-    public static PlaceResponse from(Place place, Long userId){
+    public static PlaceResponse from(Place place, Long userId) {
         return PlaceResponse.builder()
                 .id(place.getId())
                 .kakaoId(place.getKakaoId())
@@ -59,7 +56,7 @@ public class PlaceResponse {
                 ).collect(Collectors.toList())).build();
     }
 
-    public static PlaceResponse fromOnlyPicked(Place place, Long userId){
+    public static PlaceResponse fromOnlyPicked(Place place, Long userId) {
 
         return PlaceResponse.builder()
                 .id(place.getId())
@@ -77,7 +74,7 @@ public class PlaceResponse {
                 .isPicked(true)
                 .categories(place.getCategoryRelations().stream().map(
                         categoryRelation -> CategoryResponse.from(categoryRelation.getCategory())
-                        ).collect(Collectors.toList()))
+                ).collect(Collectors.toList()))
                 .build();
     }
 

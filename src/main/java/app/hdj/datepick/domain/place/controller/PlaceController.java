@@ -1,5 +1,6 @@
 package app.hdj.datepick.domain.place.controller;
 
+import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import app.hdj.datepick.domain.auth.annotation.Authorize;
 import app.hdj.datepick.domain.place.dto.PlaceFilterParam;
 import app.hdj.datepick.domain.place.dto.PlaceRequest;
@@ -12,7 +13,6 @@ import app.hdj.datepick.global.common.PagingParam;
 import app.hdj.datepick.global.enums.CustomSort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,15 +46,14 @@ public class PlaceController {
     public CustomPage<PlaceResponse> getPlacePicked(@AuthPrincipal Long userId,
                                                     @Valid PagingParam pagingParam,
                                                     @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular", "rating_desc", "rating_asc", "distance_asc"}) String sort,
-                                                    @Valid PlaceFilterParam placeFilterParam
-                                                    ) {
+                                                    @Valid PlaceFilterParam placeFilterParam) {
         return placeService.getPickedPlacePage(pagingParam, CustomSort.from(sort), placeFilterParam, userId);
     }
 
     @Authorize({Role.USER})
     @PostMapping("")
     public PlaceResponse addPlace(@AuthPrincipal Long userId,
-                                              @Valid @RequestBody PlaceRequest placeRequest) {
+                                  @Valid @RequestBody PlaceRequest placeRequest) {
         return placeService.addPlace(placeRequest, userId);
     }
 

@@ -9,6 +9,8 @@ import org.springframework.data.domain.Sort;
 public interface CourseCustomRepository {
 
     Page<Course> findPublicCoursePage(CourseFilterParam courseFilterParam, PagingParam pagingParam, Sort sort);
+
     Page<Course> findCoursePage(CourseFilterParam courseFilterParam, PagingParam pagingParam, Sort sort);
+
     Page<Course> findPickedCoursePage(CourseFilterParam courseFilterParam, PagingParam pagingParam, Sort sort, Long userId);
 }

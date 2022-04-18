@@ -7,5 +7,6 @@ import org.springframework.data.domain.Page;
 
 public interface CommentCustomRepository {
     Page<Comment> findCommentPage(PagingParam pagingParam, CommentFilterParam commentFilterParam);
+
     Page<Comment> findMyCommentPage(PagingParam pagingParam, Long userId);
 }

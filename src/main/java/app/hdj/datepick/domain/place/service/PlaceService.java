@@ -37,7 +37,7 @@ public class PlaceService {
 
     @PersistenceContext
     private EntityManager em;
-    
+
     public CustomPage<PlaceResponse> getPlacePage(PagingParam pagingParam,
                                                   CustomSort customSort,
                                                   PlaceFilterParam placeFilterParam,
@@ -72,7 +72,7 @@ public class PlaceService {
     }
 
     public PlaceResponse getPlace(Long placeId, Long userId) {
-        Place place =  placeRepository.findById(placeId).orElseThrow();
+        Place place = placeRepository.findById(placeId).orElseThrow();
         return PlaceResponse.from(place, userId);
     }
 
@@ -100,7 +100,7 @@ public class PlaceService {
         List<Category> categoryList = categoryRepository.findCategoryByNameIn(categoryNameList);
         List<String> existCategoryNameList = categoryList.stream().map(Category::getName).collect(Collectors.toList());
 
-        for (String name: categoryNameList) {
+        for (String name : categoryNameList) {
             if (!existCategoryNameList.contains(name)) {
                 categoryList.add(Category.builder().name(name).placeCount(0L).build());
             }

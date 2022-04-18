@@ -26,38 +26,31 @@ import java.util.List;
 @Entity
 public class Course extends BaseTimeEntity<Long> {
 
-    @Column(nullable = false)
-    private String title;
-
-    @Column
-    private LocalDateTime meetAt;
-
-    @Column
-    private String imageUrl;
-
-    @Column(nullable = false)
-    @ColumnDefault("false")
-    private Boolean isPrivate;
-
-    @Column(nullable = false)
-    @ColumnDefault("0")
-    private Long viewCount;
-
-    @Column(nullable = false)
-    @ColumnDefault("0")
-    private Long pickCount;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     User user;
-
+    @Column(nullable = false)
+    private String title;
+    @Column
+    private LocalDateTime meetAt;
+    @Column
+    private String imageUrl;
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private Boolean isPrivate;
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Long viewCount;
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Long pickCount;
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<CourseTagRelation> courseTags;
 
     @JsonIgnore
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<CourseFeaturedRelation> courseFeatureds;
-    
+
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<CoursePlaceRelation> coursePlaces;
 

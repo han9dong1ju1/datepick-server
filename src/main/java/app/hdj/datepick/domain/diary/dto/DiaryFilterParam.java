@@ -23,5 +23,5 @@ public class DiaryFilterParam {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-    
+
 }

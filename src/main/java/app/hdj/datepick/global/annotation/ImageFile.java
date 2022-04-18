@@ -14,6 +14,8 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = ImageFileValidator.class)
 public @interface ImageFile {
     String message() default "유효하지 않은 이미지 파일 형식입니다";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

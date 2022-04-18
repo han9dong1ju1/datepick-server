@@ -2,16 +2,16 @@ package app.hdj.datepick.domain.auth.infrastructure.oauth;
 
 import app.hdj.datepick.domain.user.enums.Gender;
 import app.hdj.datepick.domain.user.enums.Provider;
-import lombok.*;
+import lombok.Builder;
 
 import java.util.Map;
 
 public class GoogleUserInfo implements OAuthUserInfo {
 
+    private static final Provider provider = Provider.GOOGLE;
     private final String uid;
     private final String name;
     private final String email;
-    private static final Provider provider = Provider.GOOGLE;
 
     @Builder
     private GoogleUserInfo(String uid, String name, String email) {

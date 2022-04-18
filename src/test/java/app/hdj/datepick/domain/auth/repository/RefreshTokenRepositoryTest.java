@@ -1,7 +1,7 @@
 package app.hdj.datepick.domain.auth.repository;
 
-import app.hdj.datepick.domain.auth.entity.RefreshToken;
 import app.hdj.datepick.RepositoryTest;
+import app.hdj.datepick.domain.auth.entity.RefreshToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

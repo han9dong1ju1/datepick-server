@@ -1,4 +1,3 @@
-
 package app.hdj.datepick.domain.featured.repository;
 
 import app.hdj.datepick.domain.featured.entity.Featured;

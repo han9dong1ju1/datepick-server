@@ -7,5 +7,5 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 public interface PlaceRepository extends
         JpaRepository<Place, Long>,
         PlaceCustomRepository,
-        QuerydslPredicateExecutor<Place>{
+        QuerydslPredicateExecutor<Place> {
 }

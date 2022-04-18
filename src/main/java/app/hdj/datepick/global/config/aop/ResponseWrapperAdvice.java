@@ -22,9 +22,8 @@ public class ResponseWrapperAdvice implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         if (body == null) {
             return new BaseResponse<>(null, null, null);
-        }
-        else if (returnType.getParameterType().equals(BaseResponse.class) ||
-                 returnType.getParameterType().equals(ResponseEntity.class)) {
+        } else if (returnType.getParameterType().equals(BaseResponse.class) ||
+                returnType.getParameterType().equals(ResponseEntity.class)) {
             return body;
         }
         return new BaseResponse<>(null, null, body);

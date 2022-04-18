@@ -1,5 +1,6 @@
 package app.hdj.datepick.domain.course.controller;
 
+import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import app.hdj.datepick.domain.auth.annotation.Authorize;
 import app.hdj.datepick.domain.course.dto.CourseFilterParam;
 import app.hdj.datepick.domain.course.dto.CoursePublic;
@@ -17,7 +18,6 @@ import app.hdj.datepick.global.common.PagingParam;
 import app.hdj.datepick.global.enums.CustomSort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -101,24 +101,24 @@ public class CourseController {
     @Authorize({Role.USER})
     @PostMapping("/{courseId}/places")
     List<CoursePlacePublic> addCoursePlaces(@AuthPrincipal Long userId,
-                                              @PathVariable Long courseId,
-                                              @Valid @RequestBody List<@Positive Long> placeIds) {
+                                            @PathVariable Long courseId,
+                                            @Valid @RequestBody List<@Positive Long> placeIds) {
         return coursePlaceService.addCoursePlaces(userId, courseId, placeIds);
     }
 
     @Authorize({Role.USER})
     @PatchMapping("/{courseId}/places")
     List<CoursePlacePublic> modifyCoursePlaces(@AuthPrincipal Long userId,
-                                  @PathVariable Long courseId,
-                                  @Valid @RequestBody List<@Positive Long> coursePlaceIds) {
+                                               @PathVariable Long courseId,
+                                               @Valid @RequestBody List<@Positive Long> coursePlaceIds) {
         return coursePlaceService.modifyCoursePlacesOrder(userId, courseId, coursePlaceIds);
     }
 
     @Authorize({Role.USER})
     @DeleteMapping("/{courseId}/places")
     List<CoursePlacePublic> removeCoursePlaces(@AuthPrincipal Long userId,
-                                  @PathVariable Long courseId,
-                                  @Valid @RequestBody List<@Positive Long> coursePlaceIds) {
+                                               @PathVariable Long courseId,
+                                               @Valid @RequestBody List<@Positive Long> coursePlaceIds) {
         return coursePlaceService.removeCoursePlaces(userId, courseId, coursePlaceIds);
     }
 

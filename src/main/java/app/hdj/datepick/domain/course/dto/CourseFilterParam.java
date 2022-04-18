@@ -1,6 +1,7 @@
 package app.hdj.datepick.domain.course.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.data.domain.Sort;
 
 import javax.validation.constraints.Positive;

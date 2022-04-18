@@ -16,11 +16,11 @@ import javax.persistence.*;
 public class CourseFeaturedRelation extends BaseEntity<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "featured_id",nullable = false)
+    @JoinColumn(name = "featured_id", nullable = false)
     private Featured featured;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id",nullable = false)
+    @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
     @Column(nullable = false)
