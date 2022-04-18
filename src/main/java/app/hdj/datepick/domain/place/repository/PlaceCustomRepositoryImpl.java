@@ -27,11 +27,9 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
     private final PagingUtil pagingUtil;
-    private final GeoQueryUtil geoQueryUtil;
 
     @Override
     public Page<Place> findPlacePage(PlaceFilterParam placeFilterParam, PagingParam pagingParam, Sort sort) {
-
         JPQLQuery<Place> query = jpaQueryFactory
                 .selectFrom(place);
         query = filterPlaces(query, placeFilterParam);
@@ -51,7 +49,6 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
     }
 
     private JPQLQuery<Place> filterPlaces(JPQLQuery<Place> query, PlaceFilterParam placeFilterParam) {
-
         if (placeFilterParam.getKeyword() != null) {
             query = filterKeyword(placeFilterParam.getKeyword(), query);
         }
@@ -87,8 +84,7 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
     }
 
     private <T> JPQLQuery<T> filterDistance(Double distance, Double latitude, Double longitude, JPQLQuery<T> query) {
-
-        NumberExpression<Double> distanceExpression = geoQueryUtil.getDistanceExpression(latitude, longitude, place.latitude, place.longitude);
+        NumberExpression<Double> distanceExpression = GeoQueryUtil.getDistanceExpression(latitude, longitude, place.latitude, place.longitude);
         return query.where(distanceExpression.loe(distance)).orderBy(distanceExpression.asc());
     }
 

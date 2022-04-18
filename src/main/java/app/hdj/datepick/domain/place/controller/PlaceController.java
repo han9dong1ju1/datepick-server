@@ -10,7 +10,7 @@ import app.hdj.datepick.global.common.PagingParam;
 import app.hdj.datepick.global.enums.CustomSort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +26,7 @@ public class PlaceController {
     private final PlaceService placeService;
 
     @GetMapping("")
-    public CustomPage<PlaceResponse> getPlacePage(@AuthenticationPrincipal Long userId,
+    public CustomPage<PlaceResponse> getPlacePage(@AuthPrincipal Long userId,
                                                   @Valid PagingParam pagingParam,
                                                   @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular", "rating_desc", "rating_asc", "distance_asc"}) String sort,
                                                   @Valid PlaceFilterParam placeFilterParam) {
@@ -34,13 +34,13 @@ public class PlaceController {
     }
 
     @GetMapping("/{placeId}")
-    public PlaceResponse getPlace(@AuthenticationPrincipal Long userId,
+    public PlaceResponse getPlace(@AuthPrincipal Long userId,
                                   @PathVariable Long placeId) {
         return placeService.getPlace(placeId, userId);
     }
 
     @GetMapping("/picked")
-    public CustomPage<PlaceResponse> getPlacePicked(@AuthenticationPrincipal Long userId,
+    public CustomPage<PlaceResponse> getPlacePicked(@AuthPrincipal Long userId,
                                                     @Valid PagingParam pagingParam,
                                                     @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular", "rating_desc", "rating_asc", "distance_asc"}) String sort,
                                                     @Valid PlaceFilterParam placeFilterParam
@@ -49,7 +49,7 @@ public class PlaceController {
     }
 
     @PostMapping("")
-    public PlaceResponse addPlace(@AuthenticationPrincipal Long userId,
+    public PlaceResponse addPlace(@AuthPrincipal Long userId,
                                               @Valid @RequestBody PlaceRequest placeRequest) {
         return placeService.addPlace(placeRequest, userId);
     }

@@ -6,14 +6,20 @@ import lombok.Getter;
 public enum ErrorCode {
 
     // Common
-    INVALID_INPUT_VALUE(400, "올바르지 않은 입력입니다."),
-    UNAUTHORIZED(401, "인증되지 않은 사용자입니다."),
-    TOKEN_EXPIRED(401, "인증 토큰이 만료되었습니다."),
-    TOKEN_INVALID(401, "인증 토큰이 유효하지 않습니다."),
-    ACCESS_DENIED(403, "접근 권한이 없습니다."),
+    INPUT_VALUE_INVALID(400, "올바르지 않은 입력입니다."),
     ENTITY_NOT_FOUND(404, "요청한 자원을 찾을 수 없습니다."),
     INTERNAL_SERVER_ERROR(500, "서버에 오류가 생겼습니다."),
     NOT_IMPLEMENTED(501, "아직 구현되지 않은 기능입니다."),
+
+    // Auth
+    UNAUTHORIZED(401, "인증되지 않은 사용자입니다."),
+    ACCESS_DENIED(403, "접근 권한이 없습니다."),
+    TOKEN_EXPIRED(401, "토큰이 만료되었습니다."),
+    TOKEN_INVALID(401, "토큰이 유효하지 않습니다."),
+    TOKEN_MALFORMED(500, "토큰이 잘못 생성되었습니다."),
+    REFRESH_TOKEN_NOT_FOUND(404, "유효한 리프레시 토큰을 찾을 수 없습니다."),
+    OAUTH_REQUEST_FAILED(500, "OAuth 제공자에게서 정보를 불러오는데 실패했습니다."),
+    OAUTH_SERVER_ERROR(500, "OAuth 제공자에게 오류가 생겼습니다."),
 
     // AWS
     FILE_NOT_EXISTS(400, "첨부된 파일이 없습니다."),

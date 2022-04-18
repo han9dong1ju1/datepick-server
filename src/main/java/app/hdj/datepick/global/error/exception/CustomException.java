@@ -4,22 +4,25 @@ import app.hdj.datepick.global.error.enums.ErrorCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Getter
 public class CustomException extends RuntimeException {
 
-    private final HttpStatus httpStatus;
-    private final String code;
+    private final ErrorCode errorCode;
 
     public CustomException(ErrorCode errorCode) {
         super(errorCode.getMessage());
-        this.httpStatus = HttpStatus.valueOf(errorCode.getStatus());
-        this.code = errorCode.toString();
+        this.errorCode = errorCode;
     }
 
-    public CustomException(HttpStatus httpStatus, String code, String message) {
-        super(message);
-        this.httpStatus = httpStatus;
-        this.code = code;
+    public ErrorCode getErrorCode() {
+        return errorCode;
+    }
+
+    public HttpStatus getHttpStatus() {
+        return HttpStatus.valueOf(errorCode.getStatus());
+    }
+
+    public String getCode() {
+        return errorCode.toString();
     }
 
 }

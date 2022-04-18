@@ -2,15 +2,13 @@ package app.hdj.datepick.domain.user.controller;
 
 import app.hdj.datepick.domain.user.dto.UserModifyRequest;
 import app.hdj.datepick.domain.user.dto.UserPublic;
-import app.hdj.datepick.domain.user.dto.UserRegisterRequest;
-import app.hdj.datepick.domain.user.dto.UserUnregisterRequest;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.service.UserService;
 import app.hdj.datepick.global.annotation.ImageFile;
 import app.hdj.datepick.global.common.ImageUrl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,37 +31,26 @@ public class UserController {
     }
 
     @GetMapping("me")
-    User getUserMe(@AuthenticationPrincipal Long userId) {
+    User getUserMe(@AuthPrincipal Long userId) {
         return userService.getUser(userId);
     }
 
     @PatchMapping("me")
-    User modifyUser(@AuthenticationPrincipal Long userId,
+    User modifyUser(@AuthPrincipal Long userId,
                     @Valid @RequestBody UserModifyRequest userModifyRequest) {
         return userService.modifyUser(userId, userModifyRequest);
     }
 
     @PostMapping("me/image")
     ImageUrl addUserMeImage(
-            @AuthenticationPrincipal Long userId,
+            @AuthPrincipal Long userId,
             @NotNull @ImageFile @ModelAttribute MultipartFile image) {
         return userService.addUserImage(userId, image);
     }
 
     @DeleteMapping("me/image")
-    void removeUserMeImage(@AuthenticationPrincipal Long userId) {
+    void removeUserMeImage(@AuthPrincipal Long userId) {
         userService.removeUserImage(userId);
-    }
-
-    @PostMapping("register")
-    User registerUser(@Valid @RequestBody UserRegisterRequest userRegisterRequest) {
-        return userService.registerUser(userRegisterRequest);
-    }
-
-    @PostMapping("unregister")
-    void unregisterUser(@AuthenticationPrincipal Long userId,
-                        @Valid @RequestBody UserUnregisterRequest userUnregisterRequest) {
-        userService.unregisterUser(userId, userUnregisterRequest);
     }
 
 }
