@@ -12,7 +12,7 @@ public class KakaoUserInfo implements OAuthUserInfo {
     private final static Provider provider = Provider.KAKAO;
 
     @Builder
-    public KakaoUserInfo(String uid, String name, String email) {
+    private KakaoUserInfo(String uid, String name, String email) {
         this.uid = uid;
         this.name = name;
         this.email = email;

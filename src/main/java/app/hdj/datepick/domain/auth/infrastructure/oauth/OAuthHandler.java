@@ -14,9 +14,9 @@ public class OAuthHandler {
 
     private final List<OAuthRequester> oAuthRequesters;
 
-    public OAuthUserInfo getUserInfo(final Provider provider, final String token) {
+    public OAuthUserInfo getUserInfo(final Provider provider, final String code) {
         OAuthRequester requester = getRequester(provider);
-        return requester.getUserInfo(token);
+        return requester.getUserInfo(code);
     }
 
     private OAuthRequester getRequester(final Provider provider) {

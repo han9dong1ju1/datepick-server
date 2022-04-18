@@ -14,7 +14,7 @@ public class GoogleUserInfo implements OAuthUserInfo {
     private static final Provider provider = Provider.GOOGLE;
 
     @Builder
-    public GoogleUserInfo(String uid, String name, String email) {
+    private GoogleUserInfo(String uid, String name, String email) {
         this.uid = uid;
         this.name = name;
         this.email = email;
