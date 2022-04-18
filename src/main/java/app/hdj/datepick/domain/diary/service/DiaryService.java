@@ -1,151 +1,154 @@
 package app.hdj.datepick.domain.diary.service;
 
+import app.hdj.datepick.domain.course.entity.Course;
+import app.hdj.datepick.domain.course.repository.CourseRepository;
+import app.hdj.datepick.domain.diary.dto.DiaryFilterParam;
+import app.hdj.datepick.domain.diary.dto.DiaryRequest;
+import app.hdj.datepick.domain.diary.dto.DiaryResponse;
+import app.hdj.datepick.domain.diary.entity.Diary;
+import app.hdj.datepick.domain.diary.repository.DiaryRepository;
+import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
+import app.hdj.datepick.domain.relation.repository.CoursePlaceRepository;
+import app.hdj.datepick.global.common.CustomPage;
+import app.hdj.datepick.global.common.ImageUrl;
+import app.hdj.datepick.global.common.PagingParam;
+import app.hdj.datepick.global.config.file.FileService;
+import app.hdj.datepick.global.enums.CustomSort;
+import app.hdj.datepick.global.error.enums.ErrorCode;
+import app.hdj.datepick.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class DiaryService {
 
-//    private final DiaryRepository diaryRepository;
-//    private final UserRepository userRepository;
-//    private final PlaceRepository placeRepository;
-//    private final CourseRepository courseRepository;
-//    private final PlaceReviewRepository placeReviewRepository;
-//
-//
-//    public Page<DiaryMetaDto> getMyDiaryPage(Pageable pageable) {
-//        return diaryRepository.findMyDiariesPage(pageable);
-//    }
-//
-//
-//    public void getMyDiaryDateList() {
-//
-//    }
-//
-//    public DiaryDetailDto getDiary(Long diaryId) {
-//        List<PlaceReviewDto> placeReviews = placeReviewRepository.findPlaceReviewDtoByDiaryId(diaryId);
-//        return diaryRepository.findDiaryDetail(diaryId, placeReviews);
-//    }
-//
-//
-//    @Transactional
-//    public DiaryDetailDto addDiary(DiaryModifyRequestDto diaryModifyRequestDto) {
-//
-//        ModifyDiaryDto diaryDto = diaryModifyRequestDto.getDiary();
-//        List<ModifyPlaceReviewDto> placeReviewDtos = diaryModifyRequestDto.getPlaceReviews();
-//        placeReviewDtos.stream().sorted(Comparator.comparing(ModifyPlaceReviewDto::getPlaceOrder));
-//
-//        System.out.println(placeReviewDtos.toString());
-//
-//        //User 받아오기
-//        Long userId = 12L; //TODO user id
-//        User user = userRepository.findById(userId).orElseThrow(); //TODO exception
-//
-//        System.out.println("123123123");
-//        //Course 받아오기
-//        Long courseId = diaryDto.getCourseId();
-//        Course course = courseRepository.findById(courseId).orElseThrow(); //TODO exception
-//
-//        //유효성 relation 검사
-//        if (!checkValidationAddDiary(courseId, placeReviewDtos)){
-//            new RuntimeException("다이어리 유효성 검사 실패");
-//        }
-//
-//        System.out.println("123123123");
-//        //다이어리 생성
-//        Diary diary = Diary.builder()
-//                .course(course)
-//                .user(user)
-//                .title(diaryDto.getTitle())
-//                .likeCount(0L)
-//                .build();
-//        diary = diaryRepository.save(diary);
-//
-//
-//        //Place Reviews 생성
-//        List<PlaceWithOrderDto> placeAndOrders = placeRepository.findOrderAndPlaceInCourse(courseId);
-//        System.out.println(placeAndOrders.stream().count());
-//        List<PlaceReview> placeReviews = new ArrayList<>();
-//
-//        for (int idx = 0; idx < placeReviewDtos.stream().count(); idx++){
-//            ModifyPlaceReviewDto modifyPlaceReviewDto = placeReviewDtos.get(idx);
-//            PlaceWithOrderDto placeAndOrder = placeAndOrders.get(idx);
-//
-//            PlaceReview placeReview = PlaceReview.builder()
-//                    .diary(diary)
-//                    .placeOrder(placeAndOrder.getPlaceOrder())
-//                    .rating(modifyPlaceReviewDto.getRating())
-//                    .content(modifyPlaceReviewDto.getContent())
-//                    .place(placeAndOrder.getPlace())
-//                    .user(user)
-//                    .build();
-//            placeReviews.add(placeReviewRepository.save(placeReview));
-//        }
-//        diary.setPlaceReviews(placeReviews);
-//        return getDiary(diary.getId());
-//    }
-//
-//    @Transactional
-//    public void deleteCourse(Long diaryId) {
-//        diaryRepository.deleteById(diaryId);
-//    }
-//
-//    @Transactional
-//    public DiaryDetailDto modifyDiary(Long diaryId, DiaryModifyRequestDto diaryModifyRequestDto) {
-//
-//        ModifyDiaryDto diaryDto = diaryModifyRequestDto.getDiary();
-//        //순서로 정렬
-//        List<ModifyPlaceReviewDto> placeReviewDtos = diaryModifyRequestDto.getPlaceReviews()
-//                .stream()
-//                .sorted(Comparator.comparing(ModifyPlaceReviewDto::getPlaceOrder))
-//                .collect(Collectors.toList());
-//
-//        //다이어리 변경
-//        Diary diary = diaryRepository.findById(diaryId).orElseThrow();
-//        diary.modifyDiary(diaryDto);
-//        diaryRepository.save(diary);
-//
-//        //순서로 정렬
-//        List<PlaceReview> placeReviews = placeReviewRepository.findAllByDiaryId(diaryId);
-//        placeReviews.stream().sorted(Comparator.comparing(PlaceReview::getPlaceOrder));
-//
-//        for (int idx = 0; idx < placeReviews.stream().count(); idx++){
-//            PlaceReview placeReview = placeReviews.get(idx);
-//            //요청받은 placeOrder에 맞춰서 특정부분만 변경한다.
-//            for (ModifyPlaceReviewDto placeReviewDto: placeReviewDtos){
-//                if (placeReviewDto.getPlaceOrder() == placeReview.getPlaceOrder()){
-//                    placeReview.modifyPlaceReview(placeReviewDto);
-//                    placeReviewRepository.save(placeReview);
-//                }
-//            }
-//        }
-//        return getDiary(diaryId);
-//
-//    }
-//
-//    Boolean checkValidationAddDiary(Long courseId, List<ModifyPlaceReviewDto> modifyPlaceReviewDtos){
-//
-//
-//        //Order 기준으로 정렬
-//        List<CoursePlaceRelationDto> coursePlaceRelations = courseRepository.findPlaceRelationDtoByCourseId(courseId);
-//        coursePlaceRelations.stream().sorted(Comparator.comparing(CoursePlaceRelationDto::getPlaceOrder));
-//
-//        Long placeCountInCourse = coursePlaceRelations.stream().count();
-//        Long reviewCountInDiary = modifyPlaceReviewDtos.stream().count();
-//
-//        if (placeCountInCourse != reviewCountInDiary){
-//            return Boolean.FALSE;
-//        }
-//        for(int idx = 0; idx < placeCountInCourse; idx++){
-//            CoursePlaceRelationDto coursePlaceRelationDto = coursePlaceRelations.get(idx);
-//            ModifyPlaceReviewDto placeReviewDto = modifyPlaceReviewDtos.get(idx);
-//            if(coursePlaceRelationDto.getPlaceOrder() != placeReviewDto.getPlaceOrder()){
-//                return Boolean.FALSE;
-//            }
-//        }
-//
-//        return Boolean.TRUE;
-//    }
+    private final DiaryRepository diaryRepository;
+    private final CourseRepository courseRepository;
+    private final CoursePlaceRepository coursePlaceRepository;
+    private final FileService fileService;
+
+    public CustomPage<DiaryResponse> getDiaryPage(PagingParam pagingParam,
+                                                  CustomSort customSort,
+                                                  DiaryFilterParam diaryFilterParam) {
+        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
+        Page<Diary> diaryPage = diaryRepository.findDiaryPage(diaryFilterParam, pagingParam, sort);
+        return new CustomPage<>(
+                diaryPage.getTotalElements(),
+                diaryPage.getTotalPages(),
+                diaryPage.getNumber(),
+                diaryPage.getContent().stream()
+                        .map(DiaryResponse::from)
+                        .collect(Collectors.toList())
+        );
+    }
+
+    public CustomPage<DiaryResponse> getMyDiaryPage(PagingParam pagingParam,
+                                                    CustomSort customSort,
+                                                    DiaryFilterParam diaryFilterParam) {
+        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
+        Page<Diary> diaryPage = diaryRepository.findMyDiaryPage(diaryFilterParam, pagingParam, sort);
+        return new CustomPage<>(
+                diaryPage.getTotalElements(),
+                diaryPage.getTotalPages(),
+                diaryPage.getNumber(),
+                diaryPage.getContent().stream()
+                        .map(DiaryResponse::from)
+                        .collect(Collectors.toList())
+        );
+    }
+
+
+    @Transactional
+    public DiaryResponse addDiary(DiaryRequest diaryRequest,
+                                  Long userId) {
+        //course 에 요청한 place 가 존재하지 않으면 reject
+        CoursePlaceRelation coursePlaceRelation = coursePlaceRepository.findByCourseIdAndPlaceId(diaryRequest.getCourseId(), diaryRequest.getPlaceId()).orElseThrow();
+
+        //course 가 본인 course 가 아니면 reject
+        Course course = courseRepository.findById(diaryRequest.getCourseId()).orElseThrow();
+        if (!course.getUser().getId().equals(userId)) {
+            throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
+
+        Diary diary = Diary.builder()
+                .content(diaryRequest.getContent())
+                .rating(diaryRequest.getRating())
+                .coursePlaceRelation(coursePlaceRelation)
+                .build();
+        diary = diaryRepository.save(diary);
+
+        return DiaryResponse.from(diary);
+    }
+
+    public DiaryResponse getDiary(Long diaryId, Long userId) {
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow();
+        Course course = diary.getCoursePlaceRelation().getCourse();
+
+        if (!course.getUser().getId().equals(userId) && course.getIsPrivate()) {
+            throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
+
+        return DiaryResponse.from(diary);
+    }
+
+    @Transactional
+    public DiaryResponse modifyDiary(Long diaryId,
+                                     DiaryRequest diaryRequest,
+                                     Long userId) {
+        //course 에 요청한 place 가 존재하지 않으면 reject
+        if (coursePlaceRepository.existsByCourseIdAndPlaceId(diaryRequest.getCourseId(), diaryRequest.getPlaceId())) {
+            throw new CustomException(ErrorCode.ENTITY_NOT_FOUND);
+        }
+
+        //course 가 본인 course 가 아니면 reject
+        Course course = courseRepository.findById(diaryRequest.getCourseId()).orElseThrow();
+        if (!course.getUser().getId().equals(userId)) {
+            throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
+
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow();
+        diary.setContent(diaryRequest.getContent());
+        diary.setRating(diaryRequest.getRating());
+
+        return DiaryResponse.from(diary);
+    }
+
+    @Transactional
+    public void removeDiary(Long diaryId, Long userId) {
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow();
+        Course course = diary.getCoursePlaceRelation().getCourse();
+        if (!course.getUser().getId().equals(userId)) {
+            throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
+        diaryRepository.delete(diary);
+    }
+
+    @Transactional
+    public ImageUrl addDiaryImage(Long diaryId, MultipartFile image, Long userId) {
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow();
+
+        // 다이어라가 속한 코스가 본인게 아니라면 reject
+        if (!diary.getCoursePlaceRelation().getCourse().getUser().getId().equals(userId)) {
+            throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
+        String imageUrl = fileService.add(image, "diary/" + diaryId);
+        return new ImageUrl(imageUrl);
+    }
+
+    @Transactional
+    public void removeDiaryImage(Long diaryId, String imageUrl, Long userId) {
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow();
+        if (!diary.getCoursePlaceRelation().getCourse().getUser().getId().equals(userId)) {
+            throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
+        fileService.remove(imageUrl);
+    }
 
 }
