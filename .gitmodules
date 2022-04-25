@@ -1,0 +1,3 @@
+[submodule "src/main/resources/config"]
+	path = src/main/resources/config
+	url = https://github.com/han9dong1ju1/datepick-server-secret.git
