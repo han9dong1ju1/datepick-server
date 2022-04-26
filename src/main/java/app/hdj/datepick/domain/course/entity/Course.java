@@ -61,4 +61,8 @@ public class Course extends BaseTimeEntity<Long> {
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<CoursePick> coursePicks;
 
+    public void increaseView() {
+        viewCount++;
+    }
+
 }

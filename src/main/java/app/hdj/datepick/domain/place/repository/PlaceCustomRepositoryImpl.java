@@ -42,7 +42,7 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
     public Page<Place> findPickedPlacePage(PlaceFilterParam placeFilterParam, PagingParam pagingParam, Sort sort, Long userId) {
         JPQLQuery<Place> query = jpaQueryFactory
                 .selectFrom(place)
-                .where(place.picks.any().user.id.eq(userId));
+                .where(place.placePicks.any().user.id.eq(userId));
         query = filterPlaces(query, placeFilterParam);
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), placeFilterParam.getSort(sort));
         return pagingUtil.getPageImpl(pageRequest, query);
@@ -72,7 +72,7 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
     }
 
     private <T> JPQLQuery<T> filterCourse(Long courseId, JPQLQuery<T> query) {
-        return query.where(place.coursePlaceRelations.any().course.id.eq(courseId));
+        return query.where(place.placeCourses.any().course.id.eq(courseId));
     }
 
     private <T> JPQLQuery<T> filterKeyword(String keyword, JPQLQuery<T> query) {
@@ -80,7 +80,7 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
     }
 
     private <T> JPQLQuery<T> filterCategories(List<Long> categoryId, JPQLQuery<T> query) {
-        return query.where(place.categoryRelations.any().category.id.in(categoryId));
+        return query.where(place.placeCategories.any().category.id.in(categoryId));
     }
 
     private <T> JPQLQuery<T> filterDistance(Double distance, Double latitude, Double longitude, JPQLQuery<T> query) {

@@ -16,7 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import static app.hdj.datepick.global.util.ViewUtil.getAlreadyViewed;
+import static app.hdj.datepick.global.util.ViewUtil.setViewCookie;
 
 @Slf4j
 @Validated
@@ -37,8 +41,12 @@ public class PlaceController {
 
     @GetMapping("/{placeId}")
     public PlaceResponse getPlace(@AuthPrincipal Long userId,
-                                  @PathVariable Long placeId) {
-        return placeService.getPlace(placeId, userId);
+                                  @PathVariable Long placeId,
+                                  HttpServletResponse response,
+                                  @CookieValue(name = "place_view", required = false, defaultValue = "/") String cookieValue) {
+        boolean alreadyViewed = getAlreadyViewed(cookieValue, placeId);
+        setViewCookie(alreadyViewed, "place_view", cookieValue, placeId, response);
+        return placeService.getPlace(placeId, userId, alreadyViewed);
     }
 
     @Authorize({Role.USER})

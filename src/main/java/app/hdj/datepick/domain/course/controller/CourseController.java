@@ -22,10 +22,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.List;
+
+import static app.hdj.datepick.global.util.ViewUtil.getAlreadyViewed;
+import static app.hdj.datepick.global.util.ViewUtil.setViewCookie;
 
 @Slf4j
 @Validated
@@ -74,8 +78,12 @@ public class CourseController {
 
     @GetMapping("/{courseId}")
     CourseResponse getCourse(@AuthPrincipal Long userId,
-                             @PathVariable Long courseId) {
-        return courseService.getCourse(courseId, userId);
+                             @PathVariable Long courseId,
+                             HttpServletResponse response,
+                             @CookieValue(name = "course_view", required = false, defaultValue = "/") String cookieValue) {
+        boolean alreadyViewed = getAlreadyViewed(cookieValue, courseId);
+        setViewCookie(alreadyViewed, "course_view", cookieValue, courseId, response);
+        return courseService.getCourse(courseId, userId, alreadyViewed);
     }
 
     @Authorize({Role.USER})

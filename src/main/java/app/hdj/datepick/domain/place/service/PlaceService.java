@@ -35,9 +35,6 @@ public class PlaceService {
     private final CategoryRepository categoryRepository;
     private final PlaceCategoryRelationRepository placeCategoryRelationRepository;
 
-    @PersistenceContext
-    private EntityManager em;
-
     public CustomPage<PlaceResponse> getPlacePage(PagingParam pagingParam,
                                                   CustomSort customSort,
                                                   PlaceFilterParam placeFilterParam,
@@ -71,8 +68,14 @@ public class PlaceService {
         );
     }
 
-    public PlaceResponse getPlace(Long placeId, Long userId) {
+    @Transactional
+    public PlaceResponse getPlace(Long placeId, Long userId, boolean alreadyViewed) {
         Place place = placeRepository.findById(placeId).orElseThrow();
+
+        if (!alreadyViewed) {
+            place.increaseView();
+        }
+
         return PlaceResponse.from(place, userId);
     }
 
@@ -111,8 +114,6 @@ public class PlaceService {
         }
 
         placeCategoryRelationRepository.saveAll(placeCategoryRelations);
-
-        em.refresh(place);
 
         return PlaceResponse.from(place, userId);
     }

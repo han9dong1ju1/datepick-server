@@ -112,11 +112,16 @@ public class CourseService {
         return CourseResponse.from(course, userId);
     }
 
-    public CourseResponse getCourse(Long courseId, Long userId) {
+    @Transactional
+    public CourseResponse getCourse(Long courseId, Long userId, boolean alreadyViewed) {
         Course course = courseRepository.findById(courseId).orElseThrow();
 
         if (!course.getUser().getId().equals(userId) && course.getIsPrivate()) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
+
+        if (!alreadyViewed) {
+            course.increaseView();
         }
 
         return CourseResponse.from(course, userId);
