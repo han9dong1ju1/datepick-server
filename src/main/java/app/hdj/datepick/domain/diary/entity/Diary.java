@@ -20,8 +20,7 @@ public class Diary extends BaseTimeEntity<Long> {
     @Column(nullable = false, columnDefinition = "text")
     private String content;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_place_id", nullable = false)
+    @OneToOne(mappedBy = "diary", fetch = FetchType.LAZY)
     private CoursePlaceRelation coursePlaceRelation;
 
 }

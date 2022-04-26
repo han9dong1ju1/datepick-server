@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.category.controller;
 
-import app.hdj.datepick.domain.category.entity.Category;
+import app.hdj.datepick.domain.category.dto.CategoryResponse;
 import app.hdj.datepick.domain.category.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("")
-    public List<Category> getCategoryList() {
+    public List<CategoryResponse> getCategoryList() {
         return categoryService.getCategoryList();
     }
 

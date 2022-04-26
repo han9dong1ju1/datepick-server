@@ -1,11 +1,15 @@
 package app.hdj.datepick.domain.category.entity;
 
+import app.hdj.datepick.domain.relation.entity.PlaceCategoryRelation;
 import app.hdj.datepick.global.entity.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,8 +22,7 @@ public class Category extends BaseEntity<Long> {
     @Column(unique = true)
     private String name;
 
-    @Column
-    @ColumnDefault("0")
-    private Long placeCount;
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    private List<PlaceCategoryRelation> categoryPlaces;
 
 }

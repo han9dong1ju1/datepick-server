@@ -6,17 +6,15 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class CategoryResponse {
+public class CategorySimpleResponse {
 
     private Long id;
     private String name;
-    private Long placeCount;
 
-    public static CategoryResponse from(Category category) {
-        return new CategoryResponse(
+    public static CategorySimpleResponse from(Category category) {
+        return new CategorySimpleResponse(
                 category.getId(),
-                category.getName(),
-                (long) category.getCategoryPlaces().size()
+                category.getName()
         );
     }
 

@@ -3,7 +3,7 @@ package app.hdj.datepick.domain.course.controller;
 import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import app.hdj.datepick.domain.auth.annotation.Authorize;
 import app.hdj.datepick.domain.course.dto.CourseFilterParam;
-import app.hdj.datepick.domain.course.dto.CoursePublic;
+import app.hdj.datepick.domain.course.dto.CourseResponse;
 import app.hdj.datepick.domain.course.dto.CourseRequest;
 import app.hdj.datepick.domain.course.service.CoursePickService;
 import app.hdj.datepick.domain.course.service.CoursePlaceService;
@@ -39,50 +39,50 @@ public class CourseController {
     private final CoursePickService coursePickService;
 
     @GetMapping("")
-    CustomPage<CoursePublic> getCoursePage(@AuthPrincipal Long userId,
-                                           @Valid PagingParam pagingParam,
-                                           @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular"}) String sort,
-                                           @Valid CourseFilterParam courseFilterParam) {
+    CustomPage<CourseResponse> getCoursePage(@AuthPrincipal Long userId,
+                                             @Valid PagingParam pagingParam,
+                                             @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular"}) String sort,
+                                             @Valid CourseFilterParam courseFilterParam) {
         return courseService.getPublicCoursePage(pagingParam, CustomSort.from(sort), courseFilterParam, userId);
     }
 
     @Authorize({Role.USER})
     @GetMapping("me")
-    CustomPage<CoursePublic> getMyCoursePage(@AuthPrincipal Long userId,
-                                             @Valid PagingParam pagingParam,
-                                             @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular"}) String sort,
-                                             @Valid CourseFilterParam courseFilterParam) {
+    CustomPage<CourseResponse> getMyCoursePage(@AuthPrincipal Long userId,
+                                               @Valid PagingParam pagingParam,
+                                               @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular"}) String sort,
+                                               @Valid CourseFilterParam courseFilterParam) {
         courseFilterParam.setUserId(userId);
         return courseService.getCoursePage(pagingParam, CustomSort.from(sort), courseFilterParam, userId);
     }
 
     @Authorize({Role.USER})
     @GetMapping("picked")
-    CustomPage<CoursePublic> getPickedCoursePage(@AuthPrincipal Long userId,
-                                                 @Valid PagingParam pagingParam,
-                                                 @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular"}) String sort,
-                                                 @Valid CourseFilterParam courseFilterParam) {
+    CustomPage<CourseResponse> getPickedCoursePage(@AuthPrincipal Long userId,
+                                                   @Valid PagingParam pagingParam,
+                                                   @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular"}) String sort,
+                                                   @Valid CourseFilterParam courseFilterParam) {
         return courseService.getPickedCoursePage(pagingParam, CustomSort.from(sort), courseFilterParam, userId);
     }
 
     @Authorize({Role.USER})
     @PostMapping("")
-    CoursePublic addCourse(@AuthPrincipal Long userId,
-                           @Valid @RequestBody CourseRequest courseRequest) {
+    CourseResponse addCourse(@AuthPrincipal Long userId,
+                             @Valid @RequestBody CourseRequest courseRequest) {
         return courseService.addCourse(courseRequest, userId);
     }
 
     @GetMapping("/{courseId}")
-    CoursePublic getCourse(@AuthPrincipal Long userId,
-                           @PathVariable Long courseId) {
+    CourseResponse getCourse(@AuthPrincipal Long userId,
+                             @PathVariable Long courseId) {
         return courseService.getCourse(courseId, userId);
     }
 
     @Authorize({Role.USER})
     @PatchMapping("/{courseId}")
-    CoursePublic modifyCourse(@AuthPrincipal Long userId,
-                              @PathVariable Long courseId,
-                              @Valid @RequestBody CourseRequest courseRequest) {
+    CourseResponse modifyCourse(@AuthPrincipal Long userId,
+                                @PathVariable Long courseId,
+                                @Valid @RequestBody CourseRequest courseRequest) {
         return courseService.modifyCourse(courseId, courseRequest, userId);
     }
 

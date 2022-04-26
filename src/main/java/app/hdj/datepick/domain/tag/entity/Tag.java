@@ -1,11 +1,14 @@
 package app.hdj.datepick.domain.tag.entity;
 
+import app.hdj.datepick.domain.relation.entity.CourseTagRelation;
 import app.hdj.datepick.global.entity.BaseEntity;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,8 +21,7 @@ public class Tag extends BaseEntity<Byte> {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column
-    @ColumnDefault("0")
-    private Long courseCount;
+    @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
+    private List<CourseTagRelation> tagCourses;
 
 }

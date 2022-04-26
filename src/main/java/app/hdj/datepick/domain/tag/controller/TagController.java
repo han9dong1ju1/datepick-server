@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.tag.controller;
 
-import app.hdj.datepick.domain.tag.entity.Tag;
+import app.hdj.datepick.domain.tag.dto.TagResponse;
 import app.hdj.datepick.domain.tag.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ public class TagController {
     private final TagService tagService;
 
     @GetMapping("")
-    public List<Tag> getTagList() {
+    public List<TagResponse> getTagList() {
         return tagService.getTagList();
     }
 

@@ -66,7 +66,7 @@ public class PlaceService {
                 pickedPlacePage.getTotalPages(),
                 pickedPlacePage.getNumber(),
                 pickedPlacePage.getContent().stream().map(
-                        place -> PlaceResponse.fromOnlyPicked(place, userId)
+                        place -> PlaceResponse.from(place, userId)
                 ).collect(Collectors.toList())
         );
     }
@@ -87,10 +87,6 @@ public class PlaceService {
                 .address(placeRequest.getAddress())
                 .latitude(placeRequest.getLatitude())
                 .longitude(placeRequest.getLongitude())
-                .pickCount(0L)
-                .reviewCount(0L)
-                .viewCount(0L)
-                .rating(0F)
                 .build();
 
         place = placeRepository.save(place);
@@ -102,7 +98,7 @@ public class PlaceService {
 
         for (String name : categoryNameList) {
             if (!existCategoryNameList.contains(name)) {
-                categoryList.add(Category.builder().name(name).placeCount(0L).build());
+                categoryList.add(Category.builder().name(name).build());
             }
         }
 

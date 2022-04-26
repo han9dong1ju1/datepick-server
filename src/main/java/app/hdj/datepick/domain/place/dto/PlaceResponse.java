@@ -1,8 +1,9 @@
 package app.hdj.datepick.domain.place.dto;
 
 
-import app.hdj.datepick.domain.category.dto.CategoryResponse;
+import app.hdj.datepick.domain.category.dto.CategorySimpleResponse;
 import app.hdj.datepick.domain.place.entity.Place;
+import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -26,7 +28,7 @@ public class PlaceResponse {
     private Double latitude;
     private Double longitude;
 
-    private List<CategoryResponse> categories;
+    private List<CategorySimpleResponse> categories;
 
     private Boolean isPicked;
     private Long viewCount;
@@ -46,36 +48,14 @@ public class PlaceResponse {
                 .latitude(place.getLatitude())
                 .longitude(place.getLongitude())
                 .viewCount(place.getViewCount())
-                .reviewCount(place.getReviewCount())
-                .pickCount(place.getPickCount())
+                .reviewCount(place.getPlaceCourses().stream().map(CoursePlaceRelation::getDiary).filter(Objects::nonNull).count())
+                .pickCount((long) place.getPlacePicks().size())
                 .createdAt(place.getCreatedAt())
                 .updatedAt(place.getUpdatedAt())
-                .isPicked(userId != null && place.getPicks().stream().anyMatch(placePick -> placePick.getUser().getId().equals(userId)))
-                .categories(place.getCategoryRelations().stream().map(
-                        categoryRelation -> CategoryResponse.from(categoryRelation.getCategory())
+                .isPicked(userId != null && place.getPlacePicks().stream().anyMatch(placePick -> placePick.getUser().getId().equals(userId)))
+                .categories(place.getPlaceCategories().stream().map(
+                        categoryRelation -> CategorySimpleResponse.from(categoryRelation.getCategory())
                 ).collect(Collectors.toList())).build();
-    }
-
-    public static PlaceResponse fromOnlyPicked(Place place, Long userId) {
-
-        return PlaceResponse.builder()
-                .id(place.getId())
-                .kakaoId(place.getKakaoId())
-                .name(place.getName())
-                .rating(place.getRating())
-                .address(place.getAddress())
-                .latitude(place.getLatitude())
-                .longitude(place.getLongitude())
-                .viewCount(place.getViewCount())
-                .reviewCount(place.getReviewCount())
-                .pickCount(place.getPickCount())
-                .createdAt(place.getCreatedAt())
-                .updatedAt(place.getUpdatedAt())
-                .isPicked(true)
-                .categories(place.getCategoryRelations().stream().map(
-                        categoryRelation -> CategoryResponse.from(categoryRelation.getCategory())
-                ).collect(Collectors.toList()))
-                .build();
     }
 
 }

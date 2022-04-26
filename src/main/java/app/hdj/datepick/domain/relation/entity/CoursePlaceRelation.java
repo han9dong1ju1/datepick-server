@@ -1,6 +1,7 @@
 package app.hdj.datepick.domain.relation.entity;
 
 import app.hdj.datepick.domain.course.entity.Course;
+import app.hdj.datepick.domain.diary.entity.Diary;
 import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.global.entity.BaseEntity;
 import lombok.*;
@@ -28,5 +29,9 @@ public class CoursePlaceRelation extends BaseEntity<Long> {
 
     @Column
     private String memo;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "diary_id")
+    private Diary diary;
 
 }

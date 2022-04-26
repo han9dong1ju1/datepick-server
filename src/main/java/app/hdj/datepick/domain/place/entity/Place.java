@@ -44,25 +44,15 @@ public class Place extends BaseTimeEntity<Long> {
     @ColumnDefault("0")
     private Long viewCount;
 
-    @Column(nullable = false)
-    @ColumnDefault("0")
-    private Long reviewCount;
-
-    @Column(nullable = false)
-    @ColumnDefault("0")
-    private Long pickCount;
-
-
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
-    private List<PlaceCategoryRelation> categoryRelations;
+    private List<PlaceCategoryRelation> placeCategories;
 
     @JsonIgnore
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
-    private List<CoursePlaceRelation> coursePlaceRelations;
+    private List<CoursePlaceRelation> placeCourses;
 
     @JsonIgnore
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
-    private List<PlacePick> picks;
-
+    private List<PlacePick> placePicks;
 
 }

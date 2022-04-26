@@ -6,13 +6,13 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class TagPublic {
+public class TagSimpleResponse {
 
     private Byte id;
     private String name;
 
-    public static TagPublic from(Tag tag) {
-        return new TagPublic(
+    public static TagSimpleResponse from(Tag tag) {
+        return new TagSimpleResponse(
                 tag.getId(),
                 tag.getName()
         );

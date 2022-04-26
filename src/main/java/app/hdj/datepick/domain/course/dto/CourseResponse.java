@@ -2,7 +2,7 @@ package app.hdj.datepick.domain.course.dto;
 
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.relation.entity.CourseTagRelation;
-import app.hdj.datepick.domain.tag.dto.TagPublic;
+import app.hdj.datepick.domain.tag.dto.TagSimpleResponse;
 import app.hdj.datepick.domain.user.dto.UserPublic;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
-public class CoursePublic {
+public class CourseResponse {
 
     private Long id;
     private String title;
@@ -27,11 +27,11 @@ public class CoursePublic {
     private Long pickCount;
     private Boolean isPicked;
     private UserPublic user;
-    private List<TagPublic> tags;
+    private List<TagSimpleResponse> tags;
 
-    public static CoursePublic from(Course course, Long userId) {
+    public static CourseResponse from(Course course, Long userId) {
         final Comparator<CourseTagRelation> comp = Comparator.comparingInt(ctr -> ctr.getTag().getId());
-        return new CoursePublic(
+        return new CourseResponse(
                 course.getId(),
                 course.getTitle(),
                 course.getMeetAt(),
@@ -40,13 +40,13 @@ public class CoursePublic {
                 course.getCreatedAt(),
                 course.getUpdatedAt(),
                 course.getViewCount(),
-                course.getPickCount(),
+                (long) course.getCoursePicks().size(),
                 userId != null && course.getCoursePicks().stream()
                         .anyMatch(coursePick -> coursePick.getUser().getId().equals(userId)),
                 UserPublic.from(course.getUser()),
                 course.getCourseTags().stream()
                         .sorted(comp)
-                        .map(courseTagRelation -> TagPublic.from(courseTagRelation.getTag()))
+                        .map(courseTagRelation -> TagSimpleResponse.from(courseTagRelation.getTag()))
                         .collect(Collectors.toList())
         );
     }
