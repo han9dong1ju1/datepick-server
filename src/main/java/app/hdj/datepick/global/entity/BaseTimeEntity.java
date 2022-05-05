@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class BaseTimeEntity<ID extends Serializable> extends BaseEntity<ID> {
+public class BaseTimeEntity {
     @Column(updatable = false, nullable = false)
     @ColumnDefault("CURRENT_TIMESTAMP")
     @CreatedDate

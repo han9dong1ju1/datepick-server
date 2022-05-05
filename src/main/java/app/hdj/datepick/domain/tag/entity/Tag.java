@@ -1,13 +1,9 @@
 package app.hdj.datepick.domain.tag.entity;
 
 import app.hdj.datepick.domain.relation.entity.CourseTagRelation;
-import app.hdj.datepick.global.entity.BaseEntity;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
@@ -16,12 +12,20 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Tag extends BaseEntity<Byte> {
+public class Tag {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Integer id;
 
     @Column(nullable = false, unique = true)
     private String name;
 
     @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
-    private List<CourseTagRelation> tagCourses;
+    private List<CourseTagRelation> tagCourses = List.of();
 
+    @Builder
+    private Tag(String name) {
+        this.name = name;
+    }
 }

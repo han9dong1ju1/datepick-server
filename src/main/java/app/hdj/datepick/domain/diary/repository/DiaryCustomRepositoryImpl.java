@@ -28,7 +28,7 @@ public class DiaryCustomRepositoryImpl implements DiaryCustomRepository {
     public Page<Diary> findDiaryPage(DiaryFilterParam diaryFilterParam, PagingParam pagingParam, Sort sort) {
         JPQLQuery<Diary> query = jpaQueryFactory
                 .selectFrom(diary)
-                .where(diary.coursePlaceRelation.course.isPrivate.eq(false));
+                .where(diary.coursePlace.course.isPrivate.eq(false));
 
         query = filterDiaries(query, diaryFilterParam);
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), sort);
@@ -73,15 +73,15 @@ public class DiaryCustomRepositoryImpl implements DiaryCustomRepository {
     }
 
     private JPQLQuery<Diary> filterUser(Long userId, JPQLQuery<Diary> query) {
-        return query.where(diary.coursePlaceRelation.course.user.id.eq(userId));
+        return query.where(diary.coursePlace.course.user.id.eq(userId));
     }
 
     private JPQLQuery<Diary> filterPlace(Long placeId, JPQLQuery<Diary> query) {
-        return query.where(diary.coursePlaceRelation.place.id.eq(placeId));
+        return query.where(diary.coursePlace.place.id.eq(placeId));
     }
 
     private JPQLQuery<Diary> filterCourse(Long courseId, JPQLQuery<Diary> query) {
-        return query.where(diary.coursePlaceRelation.course.id.eq(courseId));
+        return query.where(diary.coursePlace.course.id.eq(courseId));
     }
 
 

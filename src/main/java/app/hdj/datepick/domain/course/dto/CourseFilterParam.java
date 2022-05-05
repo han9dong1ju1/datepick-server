@@ -13,7 +13,7 @@ public class CourseFilterParam {
 
     private String keyword;
 
-    private List<@Positive Byte> tagId;
+    private List<@Positive Integer> tagId;
 
     @Positive
     private Long featuredId;

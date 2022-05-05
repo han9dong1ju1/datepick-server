@@ -79,7 +79,7 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
         }
 
         if (courseFilterParam.getTagId() != null && !courseFilterParam.getTagId().isEmpty()) {
-            for (Byte id : courseFilterParam.getTagId()) {
+            for (Integer id : courseFilterParam.getTagId()) {
                 query = query.where(course.courseTags.any().tag.id.eq(id));
             }
         }

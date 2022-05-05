@@ -2,23 +2,21 @@ package app.hdj.datepick.domain.relation.entity;
 
 import app.hdj.datepick.domain.category.entity.Category;
 import app.hdj.datepick.domain.place.entity.Place;
-import app.hdj.datepick.global.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class PlaceCategoryRelation extends BaseEntity<Long> {
+public class PlaceCategoryRelation {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Long id;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "place_id", nullable = false)
     private Place place;
@@ -26,4 +24,11 @@ public class PlaceCategoryRelation extends BaseEntity<Long> {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    @Builder
+    private PlaceCategoryRelation(Long id, Place place, Category category) {
+        this.id = id;
+        this.place = place;
+        this.category = category;
+    }
 }

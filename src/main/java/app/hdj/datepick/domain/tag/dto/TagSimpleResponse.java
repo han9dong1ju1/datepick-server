@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class TagSimpleResponse {
 
-    private Byte id;
+    private Integer id;
     private String name;
 
     public static TagSimpleResponse from(Tag tag) {

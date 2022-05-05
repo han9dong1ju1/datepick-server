@@ -3,25 +3,22 @@ package app.hdj.datepick.domain.place.entity;
 import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import app.hdj.datepick.domain.relation.entity.PlaceCategoryRelation;
 import app.hdj.datepick.global.entity.BaseTimeEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
-@DynamicUpdate
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Place extends BaseTimeEntity<Long> {
+public class Place extends BaseTimeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Long id;
 
     @Column(unique = true)
     private String kakaoId;
@@ -44,21 +41,29 @@ public class Place extends BaseTimeEntity<Long> {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private Long viewCount;
+    private Long viewCount = 0L;
+
+    @Builder
+    private Place(Long id, String kakaoId, String name, Float rating, String address, Double latitude, Double longitude) {
+        this.id = id;
+        this.kakaoId = kakaoId;
+        this.name = name;
+        this.rating = Optional.ofNullable(rating).orElse(0F);
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
-    private List<PlaceCategoryRelation> placeCategories;
+    private List<PlaceCategoryRelation> placeCategories = List.of();
 
-    @JsonIgnore
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
-    private List<CoursePlaceRelation> placeCourses;
+    private List<CoursePlaceRelation> placeCourses = List.of();
 
-    @JsonIgnore
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
-    private List<PlacePick> placePicks;
+    private List<PlacePick> placePicks = List.of();
 
     public void increaseView() {
         viewCount++;
     }
-
 }

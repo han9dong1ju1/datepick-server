@@ -1,25 +1,21 @@
-package app.hdj.datepick.domain.relation.entity;
+package app.hdj.datepick.domain.course.entity;
 
-import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.entity.BaseTimeEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class CoursePick extends BaseTimeEntity<Long> {
+public class CoursePick extends BaseTimeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Long id;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -28,4 +24,10 @@ public class CoursePick extends BaseTimeEntity<Long> {
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
+    @Builder
+    private CoursePick(Long id, User user, Course course) {
+        this.id = id;
+        this.user = user;
+        this.course = course;
+    }
 }
