@@ -2,7 +2,6 @@ package app.hdj.datepick.domain.relation.entity;
 
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.tag.entity.Tag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,7 +16,6 @@ public class CourseTagRelation {
     @Column
     private Long id;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;

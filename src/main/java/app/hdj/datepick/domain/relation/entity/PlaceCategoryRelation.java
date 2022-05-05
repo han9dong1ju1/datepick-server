@@ -2,7 +2,6 @@ package app.hdj.datepick.domain.relation.entity;
 
 import app.hdj.datepick.domain.category.entity.Category;
 import app.hdj.datepick.domain.place.entity.Place;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
