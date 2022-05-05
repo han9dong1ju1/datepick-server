@@ -5,12 +5,7 @@ import org.springframework.data.domain.Sort;
 
 @Getter
 public enum CustomSort {
-    LATEST,
-    PICK,
-    POPULAR,
-    RATING_DESC,
-    RATING_ASC,
-    DISTANCE,
+    LATEST, PICK, POPULAR, RATING_DESC, RATING_ASC, DISTANCE,
     ;
 
     public static CustomSort from(String value) {
@@ -46,5 +41,4 @@ public enum CustomSort {
         }
         return toSort(customSort);
     }
-
 }

@@ -4,13 +4,12 @@ import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.relation.entity.CourseTagRelation;
 import app.hdj.datepick.domain.tag.dto.TagSimpleResponse;
 import app.hdj.datepick.domain.user.dto.UserPublic;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
@@ -30,25 +29,18 @@ public class CourseResponse {
     private List<TagSimpleResponse> tags;
 
     public static CourseResponse from(Course course, Long userId) {
-        final Comparator<CourseTagRelation> comp = Comparator.comparingInt(ctr -> ctr.getTag().getId());
-        return new CourseResponse(
-                course.getId(),
-                course.getTitle(),
-                course.getMeetAt(),
-                course.getImageUrl(),
-                course.getIsPrivate(),
-                course.getCreatedAt(),
-                course.getUpdatedAt(),
-                course.getViewCount(),
-                (long) course.getCoursePicks().size(),
-                userId != null && course.getCoursePicks().stream()
-                        .anyMatch(coursePick -> coursePick.getUser().getId().equals(userId)),
-                UserPublic.from(course.getUser()),
-                course.getCourseTags().stream()
-                        .sorted(comp)
-                        .map(courseTagRelation -> TagSimpleResponse.from(courseTagRelation.getTag()))
-                        .collect(Collectors.toList())
-        );
+        final Comparator<CourseTagRelation> comp = Comparator.comparingInt(
+            ctr -> ctr.getTag().getId());
+        return new CourseResponse(course.getId(), course.getTitle(), course.getMeetAt(),
+                                  course.getImageUrl(), course.getIsPrivate(),
+                                  course.getCreatedAt(), course.getUpdatedAt(),
+                                  course.getViewCount(), (long) course.getCoursePicks().size(),
+                                  userId != null && course.getCoursePicks().stream().anyMatch(
+                                      coursePick -> coursePick.getUser().getId().equals(userId)),
+                                  UserPublic.from(course.getUser()),
+                                  course.getCourseTags().stream().sorted(comp).map(
+                                          courseTagRelation -> TagSimpleResponse.from(
+                                              courseTagRelation.getTag()))
+                                      .collect(Collectors.toList()));
     }
-
 }

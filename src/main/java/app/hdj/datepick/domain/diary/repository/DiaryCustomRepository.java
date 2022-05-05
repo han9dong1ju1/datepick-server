@@ -7,6 +7,12 @@ import app.hdj.datepick.global.enums.CustomSort;
 import org.springframework.data.domain.Page;
 
 public interface DiaryCustomRepository {
-    Page<Diary> findDiaryPage(DiaryFilterParam diaryFilterParam, PagingParam pagingParam, CustomSort sort);
-    Page<Diary> findMyDiaryPage(DiaryFilterParam diaryFilterParam, PagingParam pagingParam, CustomSort sort);
+
+    Page<Diary> findDiaryPage(
+        DiaryFilterParam diaryFilterParam, PagingParam pagingParam, CustomSort sort
+    );
+
+    Page<Diary> findMyDiaryPage(
+        DiaryFilterParam diaryFilterParam, PagingParam pagingParam, CustomSort sort
+    );
 }

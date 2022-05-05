@@ -2,9 +2,8 @@ package app.hdj.datepick.domain.auth.infrastructure.oauth;
 
 import app.hdj.datepick.domain.user.enums.Gender;
 import app.hdj.datepick.domain.user.enums.Provider;
-import lombok.Builder;
-
 import java.util.Map;
+import lombok.Builder;
 
 public class GoogleUserInfo implements OAuthUserInfo {
 
@@ -24,11 +23,7 @@ public class GoogleUserInfo implements OAuthUserInfo {
         String uid = (String) body.get("id");
         String name = ((String) body.get("name")).replaceAll("\\s+", "");
         String email = (String) body.get("email");
-        return GoogleUserInfo.builder()
-                .uid(uid)
-                .name(name)
-                .email(email)
-                .build();
+        return GoogleUserInfo.builder().uid(uid).name(name).email(email).build();
     }
 
     @Override
@@ -55,5 +50,4 @@ public class GoogleUserInfo implements OAuthUserInfo {
     public Gender getGender() {
         return null;
     }
-
 }

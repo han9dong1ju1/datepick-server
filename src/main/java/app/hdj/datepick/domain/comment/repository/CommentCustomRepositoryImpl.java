@@ -1,5 +1,7 @@
 package app.hdj.datepick.domain.comment.repository;
 
+import static app.hdj.datepick.domain.comment.entity.QComment.comment;
+
 import app.hdj.datepick.domain.comment.dto.CommentFilterParam;
 import app.hdj.datepick.domain.comment.entity.Comment;
 import app.hdj.datepick.global.common.PagingParam;
@@ -13,8 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-import static app.hdj.datepick.domain.comment.entity.QComment.comment;
-
 @Slf4j
 @RequiredArgsConstructor
 @Repository
@@ -24,15 +24,19 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository {
     private final PagingUtil pagingUtil;
 
     @Override
-    public Page<Comment> findCommentPage(PagingParam pagingParam, CommentFilterParam commentFilterParam) {
-        JPAQuery<Comment> query = jpaQueryFactory
-                .selectFrom(comment);
+    public Page<Comment> findCommentPage(
+        PagingParam pagingParam, CommentFilterParam commentFilterParam
+    ) {
+        JPAQuery<Comment> query = jpaQueryFactory.selectFrom(comment);
         query = filterComments(query, commentFilterParam);
-        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), Sort.by("createdAt").descending());
+        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(),
+                                                 Sort.by("createdAt").descending());
         return pagingUtil.getPageImpl(pageRequest, query);
     }
 
-    private JPAQuery<Comment> filterComments(JPAQuery<Comment> query, CommentFilterParam commentFilterParam) {
+    private JPAQuery<Comment> filterComments(
+        JPAQuery<Comment> query, CommentFilterParam commentFilterParam
+    ) {
         query = filterCourse(commentFilterParam.getCourseId(), query);
         if (commentFilterParam.getParentId() != null) {
             query = filterParent(commentFilterParam.getParentId(), query);
@@ -52,11 +56,10 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository {
 
     @Override
     public Page<Comment> findMyCommentPage(PagingParam pagingParam, Long userId) {
-        JPAQuery<Comment> query = jpaQueryFactory
-                .selectFrom(comment)
-                .where(comment.user.id.eq(userId));
-        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), Sort.by("createdAt").descending());
+        JPAQuery<Comment> query = jpaQueryFactory.selectFrom(comment)
+            .where(comment.user.id.eq(userId));
+        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(),
+                                                 Sort.by("createdAt").descending());
         return pagingUtil.getPageImpl(pageRequest, query);
     }
-
 }

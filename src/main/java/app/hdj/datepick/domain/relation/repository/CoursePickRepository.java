@@ -7,5 +7,4 @@ public interface CoursePickRepository {
     void save(Long courseId, Long userId);
 
     void remove(Long courseId, Long userId);
-
 }

@@ -12,12 +12,11 @@ import app.hdj.datepick.global.common.CustomPage;
 import app.hdj.datepick.global.common.PagingParam;
 import app.hdj.datepick.global.error.enums.ErrorCode;
 import app.hdj.datepick.global.error.exception.CustomException;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,34 +26,30 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
-    public CustomPage<CommentPublic> getCommentPage(PagingParam pagingParam,
-                                                    CommentFilterParam commentFilterParam) {
-        Page<Comment> commentPage = commentRepository.findCommentPage(pagingParam, commentFilterParam);
+    public CustomPage<CommentPublic> getCommentPage(
+        PagingParam pagingParam, CommentFilterParam commentFilterParam
+    ) {
+        Page<Comment> commentPage = commentRepository.findCommentPage(pagingParam,
+                                                                      commentFilterParam);
 
-        return new CustomPage<>(
-                commentPage.getTotalElements(),
-                commentPage.getTotalPages(),
-                commentPage.getNumber(),
-                commentPage.getContent().stream()
-                        .map(CommentPublic::from)
-                        .collect(Collectors.toList())
-        );
+        return new CustomPage<>(commentPage.getTotalElements(), commentPage.getTotalPages(),
+                                commentPage.getNumber(),
+                                commentPage.getContent().stream().map(CommentPublic::from)
+                                    .collect(Collectors.toList()));
     }
 
     public CustomPage<CommentPublic> getMyCommentPage(PagingParam pagingParam, Long userId) {
         Page<Comment> commentPage = commentRepository.findMyCommentPage(pagingParam, userId);
 
-        return new CustomPage<>(
-                commentPage.getTotalElements(),
-                commentPage.getTotalPages(),
-                commentPage.getNumber(),
-                commentPage.getContent().stream()
-                        .map(CommentPublic::from)
-                        .collect(Collectors.toList())
-        );
+        return new CustomPage<>(commentPage.getTotalElements(), commentPage.getTotalPages(),
+                                commentPage.getNumber(),
+                                commentPage.getContent().stream().map(CommentPublic::from)
+                                    .collect(Collectors.toList()));
     }
 
-    public CommentPublic addComment(CommentFilterParam commentFilterParam, CommentRequest commentRequest, Long userId) {
+    public CommentPublic addComment(
+        CommentFilterParam commentFilterParam, CommentRequest commentRequest, Long userId
+    ) {
         User user = userRepository.findById(userId).orElseThrow();
 
         Comment parent = null;
@@ -62,12 +57,9 @@ public class CommentService {
             parent = Comment.builder().id(commentFilterParam.getParentId()).build();
         }
 
-        Comment comment = Comment.builder()
-                .user(user)
-                .course(Course.builder().id(commentFilterParam.getCourseId()).build())
-                .content(commentRequest.getContent())
-                .parent(parent)
-                .build();
+        Comment comment = Comment.builder().user(user)
+            .course(Course.builder().id(commentFilterParam.getCourseId()).build())
+            .content(commentRequest.getContent()).parent(parent).build();
         commentRepository.save(comment);
 
         return CommentPublic.from(comment);
@@ -92,5 +84,4 @@ public class CommentService {
 
         commentRepository.delete(comment);
     }
-
 }

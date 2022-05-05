@@ -1,12 +1,12 @@
 package app.hdj.datepick.domain.auth.infrastructure;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.common.net.HttpHeaders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class AuthorizationExtractorTest {
 
@@ -83,5 +83,4 @@ class AuthorizationExtractorTest {
         // then
         assertThat(extractedToken).isNull();
     }
-
 }

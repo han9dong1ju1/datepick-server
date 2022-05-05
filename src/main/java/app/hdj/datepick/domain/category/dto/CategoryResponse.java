@@ -13,11 +13,7 @@ public class CategoryResponse {
     private Long placeCount;
 
     public static CategoryResponse from(Category category) {
-        return new CategoryResponse(
-                category.getId(),
-                category.getName(),
-                (long) category.getCategoryPlaces().size()
-        );
+        return new CategoryResponse(category.getId(), category.getName(),
+                                    (long) category.getCategoryPlaces().size());
     }
-
 }

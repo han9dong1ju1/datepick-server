@@ -1,16 +1,15 @@
 package app.hdj.datepick.domain.relation.repository;
 
+import static app.hdj.datepick.domain.course.entity.QCoursePick.coursePick;
+
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.course.entity.CoursePick;
 import app.hdj.datepick.domain.user.entity.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import static app.hdj.datepick.domain.course.entity.QCoursePick.coursePick;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
 @Repository
@@ -23,12 +22,9 @@ public class CoursePickRepositoryImpl implements CoursePickRepository {
 
     @Override
     public boolean exists(Long courseId, Long userId) {
-        Integer fetchOne = jpaQueryFactory
-                .selectOne()
-                .from(coursePick)
-                .where(coursePick.user.id.eq(userId))
-                .where(coursePick.course.id.eq(courseId))
-                .fetchFirst();
+        Integer fetchOne = jpaQueryFactory.selectOne().from(coursePick)
+            .where(coursePick.user.id.eq(userId)).where(coursePick.course.id.eq(courseId))
+            .fetchFirst();
         return fetchOne != null;
     }
 
@@ -36,18 +32,13 @@ public class CoursePickRepositoryImpl implements CoursePickRepository {
     public void save(Long courseId, Long userId) {
         Course course = Course.builder().id(courseId).build();
         User user = User.builder().id(userId).build();
-        CoursePick coursePick = CoursePick.builder()
-                .course(course)
-                .user(user)
-                .build();
+        CoursePick coursePick = CoursePick.builder().course(course).user(user).build();
         em.persist(coursePick);
     }
 
     @Override
     public void remove(Long courseId, Long userId) {
-        jpaQueryFactory.delete(coursePick)
-                .where(coursePick.user.id.eq(userId))
-                .where(coursePick.course.id.eq(courseId))
-                .execute();
+        jpaQueryFactory.delete(coursePick).where(coursePick.user.id.eq(userId))
+            .where(coursePick.course.id.eq(courseId)).execute();
     }
 }

@@ -15,12 +15,7 @@ public class UserPublic {
     private String imageUrl;
 
     public static UserPublic from(User user) {
-        return new UserPublic(
-                user.getId(),
-                user.getNickname(),
-                user.getGender(),
-                user.getImageUrl()
-        );
+        return new UserPublic(user.getId(), user.getNickname(), user.getGender(),
+                              user.getImageUrl());
     }
-
 }

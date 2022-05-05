@@ -1,5 +1,7 @@
 package app.hdj.datepick.domain.course.repository;
 
+import static app.hdj.datepick.domain.course.entity.QCourse.course;
+
 import app.hdj.datepick.domain.course.dto.CourseFilterParam;
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.relation.entity.QCourseFeaturedRelation;
@@ -14,8 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import static app.hdj.datepick.domain.course.entity.QCourse.course;
-
 @Slf4j
 @RequiredArgsConstructor
 @Repository
@@ -25,10 +25,11 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     private final PagingUtil pagingUtil;
 
     @Override
-    public Page<Course> findPublicCoursePage(CourseFilterParam courseFilterParam, PagingParam pagingParam, CustomSort sort) {
-        JPQLQuery<Course> query = jpaQueryFactory
-                .selectFrom(course)
-                .where(course.isPrivate.eq(false));
+    public Page<Course> findPublicCoursePage(
+        CourseFilterParam courseFilterParam, PagingParam pagingParam, CustomSort sort
+    ) {
+        JPQLQuery<Course> query = jpaQueryFactory.selectFrom(course)
+            .where(course.isPrivate.eq(false));
         query = filterCourses(query, courseFilterParam);
         query = applySort(query, sort);
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize());
@@ -36,9 +37,10 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     }
 
     @Override
-    public Page<Course> findCoursePage(CourseFilterParam courseFilterParam, PagingParam pagingParam, CustomSort sort) {
-        JPQLQuery<Course> query = jpaQueryFactory
-                .selectFrom(course);
+    public Page<Course> findCoursePage(
+        CourseFilterParam courseFilterParam, PagingParam pagingParam, CustomSort sort
+    ) {
+        JPQLQuery<Course> query = jpaQueryFactory.selectFrom(course);
         query = filterCourses(query, courseFilterParam);
         query = applySort(query, sort);
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize());
@@ -46,18 +48,20 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     }
 
     @Override
-    public Page<Course> findPickedCoursePage(CourseFilterParam courseFilterParam, PagingParam pagingParam, CustomSort sort, Long userId) {
-        JPQLQuery<Course> query = jpaQueryFactory
-                .selectFrom(course)
-                .where(course.isPrivate.eq(false))
-                .where(course.coursePicks.any().user.id.eq(userId));
+    public Page<Course> findPickedCoursePage(
+        CourseFilterParam courseFilterParam, PagingParam pagingParam, CustomSort sort, Long userId
+    ) {
+        JPQLQuery<Course> query = jpaQueryFactory.selectFrom(course)
+            .where(course.isPrivate.eq(false)).where(course.coursePicks.any().user.id.eq(userId));
         query = filterCourses(query, courseFilterParam);
         query = applySort(query, sort);
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize());
         return pagingUtil.getPageImpl(pageRequest, query);
     }
 
-    private JPQLQuery<Course> filterCourses(JPQLQuery<Course> query, CourseFilterParam courseFilterParam) {
+    private JPQLQuery<Course> filterCourses(
+        JPQLQuery<Course> query, CourseFilterParam courseFilterParam
+    ) {
         if (courseFilterParam.getKeyword() != null) {
             query = query.where(course.title.contains(courseFilterParam.getKeyword()));
         }
@@ -68,14 +72,14 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
 
         if (courseFilterParam.getFeaturedId() != null) {
             QCourseFeaturedRelation courseFeatured = new QCourseFeaturedRelation("courseFeatured");
-            query = query
-                    .leftJoin(course.courseFeatureds, courseFeatured)
-                    .where(courseFeatured.featured.id.eq(courseFilterParam.getFeaturedId()))
-                    .orderBy(courseFeatured.courseOrder.asc());
+            query = query.leftJoin(course.courseFeatureds, courseFeatured)
+                .where(courseFeatured.featured.id.eq(courseFilterParam.getFeaturedId()))
+                .orderBy(courseFeatured.courseOrder.asc());
         }
 
         if (courseFilterParam.getPlaceId() != null) {
-            query = query.where(course.coursePlaces.any().place.id.eq(courseFilterParam.getPlaceId()));
+            query = query.where(
+                course.coursePlaces.any().place.id.eq(courseFilterParam.getPlaceId()));
         }
 
         if (courseFilterParam.getTagId() != null && !courseFilterParam.getTagId().isEmpty()) {
@@ -104,5 +108,4 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
 
         return query;
     }
-
 }

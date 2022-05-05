@@ -1,5 +1,7 @@
 package app.hdj.datepick.domain.place.repository;
 
+import static app.hdj.datepick.domain.place.entity.QPlace.place;
+
 import app.hdj.datepick.domain.place.dto.PlaceFilterParam;
 import app.hdj.datepick.domain.place.entity.Place;
 import app.hdj.datepick.global.common.PagingParam;
@@ -15,17 +17,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import static app.hdj.datepick.domain.place.entity.QPlace.place;
-
 @Slf4j
 @RequiredArgsConstructor
 @Repository
 public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
+
     private final JPAQueryFactory jpaQueryFactory;
     private final PagingUtil pagingUtil;
 
     @Override
-    public Page<Place> findPlacePage(PlaceFilterParam placeFilterParam, PagingParam pagingParam, CustomSort sort) {
+    public Page<Place> findPlacePage(
+        PlaceFilterParam placeFilterParam, PagingParam pagingParam, CustomSort sort
+    ) {
         JPQLQuery<Place> query = jpaQueryFactory.selectFrom(place);
         query = filterPlaces(query, placeFilterParam);
         query = applySort(query, placeFilterParam, sort);
@@ -35,41 +38,47 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
 
 
     @Override
-    public Page<Place> findPickedPlacePage(PlaceFilterParam placeFilterParam, PagingParam pagingParam, CustomSort sort, Long userId) {
-        JPQLQuery<Place> query = jpaQueryFactory
-                .selectFrom(place)
-                .where(place.placePicks.any().user.id.eq(userId));
+    public Page<Place> findPickedPlacePage(
+        PlaceFilterParam placeFilterParam, PagingParam pagingParam, CustomSort sort, Long userId
+    ) {
+        JPQLQuery<Place> query = jpaQueryFactory.selectFrom(place)
+            .where(place.placePicks.any().user.id.eq(userId));
         query = filterPlaces(query, placeFilterParam);
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize());
         return pagingUtil.getPageImpl(pageRequest, query);
     }
 
-    private JPQLQuery<Place> filterPlaces(JPQLQuery<Place> query, PlaceFilterParam placeFilterParam) {
+    private JPQLQuery<Place> filterPlaces(
+        JPQLQuery<Place> query, PlaceFilterParam placeFilterParam
+    ) {
         if (placeFilterParam.getKeyword() != null) {
             query = query.where(place.name.contains(placeFilterParam.getKeyword()));
         }
 
         if (placeFilterParam.getCourseId() != null) {
-            query = query.where(place.placeCourses.any().course.id.eq(placeFilterParam.getCourseId()));
+            query = query.where(
+                place.placeCourses.any().course.id.eq(placeFilterParam.getCourseId()));
         }
 
-        if (placeFilterParam.getCategoryId() != null && !placeFilterParam.getCategoryId().isEmpty()) {
-            query = query.where(place.placeCategories.any().category.id.in(placeFilterParam.getCategoryId()));
+        if (placeFilterParam.getCategoryId() != null && !placeFilterParam.getCategoryId()
+            .isEmpty()) {
+            query = query.where(
+                place.placeCategories.any().category.id.in(placeFilterParam.getCategoryId()));
         }
 
         if (placeFilterParam.getDistance() != null) {
             NumberExpression<Double> distanceExpression = GeoQueryUtil.getDistanceExpression(
-                    placeFilterParam.getLatitude(),
-                    placeFilterParam.getLongitude(),
-                    place.latitude,
-                    place.longitude);
+                placeFilterParam.getLatitude(), placeFilterParam.getLongitude(), place.latitude,
+                place.longitude);
             query = query.where(distanceExpression.loe(placeFilterParam.getDistance()));
         }
 
         return query;
     }
 
-    private JPQLQuery<Place> applySort(JPQLQuery<Place> query, PlaceFilterParam placeFilterParam, CustomSort sort) {
+    private JPQLQuery<Place> applySort(
+        JPQLQuery<Place> query, PlaceFilterParam placeFilterParam, CustomSort sort
+    ) {
         if (sort == null) {
             sort = CustomSort.LATEST;
         }
@@ -79,10 +88,8 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
                 query = query.orderBy(place.createdAt.desc());
             case DISTANCE:
                 NumberExpression<Double> distanceExpression = GeoQueryUtil.getDistanceExpression(
-                        placeFilterParam.getLatitude(),
-                        placeFilterParam.getLongitude(),
-                        place.latitude,
-                        place.longitude);
+                    placeFilterParam.getLatitude(), placeFilterParam.getLongitude(), place.latitude,
+                    place.longitude);
                 query = query.orderBy(distanceExpression.asc());
                 break;
             case PICK:

@@ -14,8 +14,7 @@ public class KakaoOAuthRequester implements OAuthRequester {
 
     @Override
     public boolean supports(Provider provider) {
-//        return provider.equals(Provider.KAKAO);
+        // return provider.equals(Provider.KAKAO);
         return false;
     }
-
 }

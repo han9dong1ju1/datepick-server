@@ -7,5 +7,4 @@ public interface FileService {
     String add(MultipartFile multipartFile, String path);
 
     void remove(String key);
-
 }

@@ -12,10 +12,6 @@ public class TagSimpleResponse {
     private String name;
 
     public static TagSimpleResponse from(Tag tag) {
-        return new TagSimpleResponse(
-                tag.getId(),
-                tag.getName()
-        );
+        return new TagSimpleResponse(tag.getId(), tag.getName());
     }
-
 }
