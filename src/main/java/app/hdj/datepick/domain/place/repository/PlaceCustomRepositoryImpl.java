@@ -21,7 +21,6 @@ import static app.hdj.datepick.domain.place.entity.QPlace.place;
 @RequiredArgsConstructor
 @Repository
 public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
-
     private final JPAQueryFactory jpaQueryFactory;
     private final PagingUtil pagingUtil;
 
@@ -76,6 +75,8 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
         }
 
         switch (sort) {
+            case LATEST:
+                query = query.orderBy(place.createdAt.desc());
             case DISTANCE:
                 NumberExpression<Double> distanceExpression = GeoQueryUtil.getDistanceExpression(
                         placeFilterParam.getLatitude(),
@@ -99,5 +100,4 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
 
         return query;
     }
-
 }
