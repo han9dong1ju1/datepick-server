@@ -8,9 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Tag {
     @Id

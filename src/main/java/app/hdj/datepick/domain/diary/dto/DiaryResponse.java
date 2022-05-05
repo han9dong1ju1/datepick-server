@@ -5,6 +5,8 @@ import app.hdj.datepick.domain.user.dto.UserPublic;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
 public class DiaryResponse {
@@ -14,6 +16,8 @@ public class DiaryResponse {
     private Float rating;
     private Long courseId;
     private UserPublic user;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public static DiaryResponse from(Diary diary) {
         return new DiaryResponse(
@@ -21,8 +25,9 @@ public class DiaryResponse {
                 diary.getContent(),
                 diary.getRating(),
                 diary.getCoursePlace().getCourse().getId(),
-                UserPublic.from(diary.getCoursePlace().getCourse().getUser())
-
+                UserPublic.from(diary.getCoursePlace().getCourse().getUser()),
+                diary.getCreatedAt(),
+                diary.getUpdatedAt()
         );
     }
 }
