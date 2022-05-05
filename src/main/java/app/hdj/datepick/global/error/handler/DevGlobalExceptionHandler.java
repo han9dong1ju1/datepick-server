@@ -21,9 +21,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @Slf4j
-@Profile("prod")
+@Profile("!prod")
 @RestControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class DevGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> handleValidation(
         HttpStatus status, List<FieldError> fieldErrors, BindException ex
@@ -70,15 +70,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleCustomException(CustomException e) {
         BaseResponse<Object> response = new BaseResponse<>(e.getMessage(), e.getCode());
         return new ResponseEntity<>(response, e.getHttpStatus());
-    }
-
-    // 그 외 모든 예외 처리
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public BaseResponse<Object> handleException(Exception e) {
-        log.error("Message: {}\nCause: {}\nStackTrace: {}", e.getMessage(), e.getCause(),
-                  e.getStackTrace());
-        return new BaseResponse<>(ErrorCode.INTERNAL_SERVER_ERROR.getMessage(), null, null);
     }
 
     @Override

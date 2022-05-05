@@ -99,11 +99,13 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
         switch (sort) {
             case LATEST:
                 query = query.orderBy(course.createdAt.desc());
+                break;
             case PICK:
                 query = query.orderBy(course.coursePicks.size().desc());
                 break;
             case POPULAR:
                 query = query.orderBy(course.viewCount.desc());  // TODO: 인기도 기준 재설정
+                break;
         }
 
         return query;

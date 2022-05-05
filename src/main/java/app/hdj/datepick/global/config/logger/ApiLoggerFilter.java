@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j
-@Profile({"local", "dev"})
+@Profile("!prod")
 @Component
 public class ApiLoggerFilter extends OncePerRequestFilter {
 
