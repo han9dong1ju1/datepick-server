@@ -1,13 +1,14 @@
 package app.hdj.datepick.domain.place.dto;
 
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PlaceRequest {
 
     @NotNull

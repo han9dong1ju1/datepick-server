@@ -18,7 +18,9 @@ public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, Ch
     public void initialize(ValueOfEnum annotation) {
         List<String> acceptedStrings = Arrays.asList(annotation.acceptedValues());
         List<String> enumValues = Stream.of(annotation.enumClass().getEnumConstants())
-            .map(Enum::name).map(String::toUpperCase).collect(Collectors.toList());
+            .map(Enum::name)
+            .map(String::toUpperCase)
+            .collect(Collectors.toList());
         if (acceptedStrings.isEmpty()) {
             this.acceptedValues = enumValues;
         } else {
@@ -37,7 +39,7 @@ public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, Ch
         context.buildConstraintViolationWithTemplate(
             "[" + String.join(", ", acceptedValues) + "] 중 하나의 값이어야 합니다").addConstraintViolation();
 
-        return acceptedValues.contains(value.toString()) || acceptedValues.contains(
-            value.toString().toUpperCase());
+        return acceptedValues.contains(value.toString()) || acceptedValues.contains(value.toString()
+                                                                                        .toUpperCase());
     }
 }

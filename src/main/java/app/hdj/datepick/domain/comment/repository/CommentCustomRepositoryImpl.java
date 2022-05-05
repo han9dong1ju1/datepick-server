@@ -29,7 +29,8 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository {
     ) {
         JPAQuery<Comment> query = jpaQueryFactory.selectFrom(comment);
         query = filterComments(query, commentFilterParam);
-        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(),
+        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(),
+                                                 pagingParam.getSize(),
                                                  Sort.by("createdAt").descending());
         return pagingUtil.getPageImpl(pageRequest, query);
     }
@@ -58,7 +59,8 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository {
     public Page<Comment> findMyCommentPage(PagingParam pagingParam, Long userId) {
         JPAQuery<Comment> query = jpaQueryFactory.selectFrom(comment)
             .where(comment.user.id.eq(userId));
-        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(),
+        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(),
+                                                 pagingParam.getSize(),
                                                  Sort.by("createdAt").descending());
         return pagingUtil.getPageImpl(pageRequest, query);
     }

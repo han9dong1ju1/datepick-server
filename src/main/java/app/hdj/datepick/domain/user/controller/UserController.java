@@ -2,13 +2,13 @@ package app.hdj.datepick.domain.user.controller;
 
 import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import app.hdj.datepick.domain.auth.annotation.Authorize;
-import app.hdj.datepick.domain.user.dto.UserModifyRequest;
-import app.hdj.datepick.domain.user.dto.UserPublic;
+import app.hdj.datepick.domain.user.dto.UserRequest;
+import app.hdj.datepick.domain.user.dto.UserResponse;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.enums.Role;
 import app.hdj.datepick.domain.user.service.UserService;
 import app.hdj.datepick.global.annotation.ImageFile;
-import app.hdj.datepick.global.common.ImageUrl;
+import app.hdj.datepick.global.common.ImageUrlResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("{userId}")
-    UserPublic getUser(@PathVariable Long userId) {
+    UserResponse getUser(@PathVariable Long userId) {
         return userService.getPublicUser(userId);
     }
 
@@ -48,14 +48,14 @@ public class UserController {
     @Authorize({Role.USER})
     @PatchMapping("me")
     User modifyUser(
-        @AuthPrincipal Long userId, @Valid @RequestBody UserModifyRequest userModifyRequest
+        @AuthPrincipal Long userId, @Valid @RequestBody UserRequest userRequest
     ) {
-        return userService.modifyUser(userId, userModifyRequest);
+        return userService.modifyUser(userId, userRequest);
     }
 
     @Authorize({Role.USER})
     @PostMapping("me/image")
-    ImageUrl addUserMeImage(
+    ImageUrlResponse addUserMeImage(
         @AuthPrincipal Long userId, @NotNull @ImageFile @ModelAttribute MultipartFile image
     ) {
         return userService.addUserImage(userId, image);

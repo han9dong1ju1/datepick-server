@@ -52,7 +52,8 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
         CourseFilterParam courseFilterParam, PagingParam pagingParam, CustomSort sort, Long userId
     ) {
         JPQLQuery<Course> query = jpaQueryFactory.selectFrom(course)
-            .where(course.isPrivate.eq(false)).where(course.coursePicks.any().user.id.eq(userId));
+            .where(course.isPrivate.eq(false))
+            .where(course.coursePicks.any().user.id.eq(userId));
         query = filterCourses(query, courseFilterParam);
         query = applySort(query, sort);
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize());
@@ -78,8 +79,7 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
         }
 
         if (courseFilterParam.getPlaceId() != null) {
-            query = query.where(
-                course.coursePlaces.any().place.id.eq(courseFilterParam.getPlaceId()));
+            query = query.where(course.coursePlaces.any().place.id.eq(courseFilterParam.getPlaceId()));
         }
 
         if (courseFilterParam.getTagId() != null && !courseFilterParam.getTagId().isEmpty()) {

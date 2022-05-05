@@ -12,7 +12,7 @@ import app.hdj.datepick.domain.tag.repository.TagRepository;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.repository.UserRepository;
 import app.hdj.datepick.global.common.CustomPage;
-import app.hdj.datepick.global.common.ImageUrl;
+import app.hdj.datepick.global.common.ImageUrlResponse;
 import app.hdj.datepick.global.common.PagingParam;
 import app.hdj.datepick.global.config.file.FileService;
 import app.hdj.datepick.global.enums.CustomSort;
@@ -48,9 +48,13 @@ public class CourseService {
         Long userId
     ) {
         Page<Course> coursePage = courseRepository.findPublicCoursePage(courseFilterParam,
-                                                                        pagingParam, customSort);
-        return new CustomPage<>(coursePage.getTotalElements(), coursePage.getTotalPages(),
-                                coursePage.getNumber(), coursePage.getContent().stream()
+                                                                        pagingParam,
+                                                                        customSort);
+        return new CustomPage<>(coursePage.getTotalElements(),
+                                coursePage.getTotalPages(),
+                                coursePage.getNumber(),
+                                coursePage.getContent()
+                                    .stream()
                                     .map(course -> CourseResponse.from(course, userId))
                                     .collect(Collectors.toList()));
     }
@@ -61,10 +65,14 @@ public class CourseService {
         CourseFilterParam courseFilterParam,
         Long userId
     ) {
-        Page<Course> coursePage = courseRepository.findCoursePage(courseFilterParam, pagingParam,
+        Page<Course> coursePage = courseRepository.findCoursePage(courseFilterParam,
+                                                                  pagingParam,
                                                                   customSort);
-        return new CustomPage<>(coursePage.getTotalElements(), coursePage.getTotalPages(),
-                                coursePage.getNumber(), coursePage.getContent().stream()
+        return new CustomPage<>(coursePage.getTotalElements(),
+                                coursePage.getTotalPages(),
+                                coursePage.getNumber(),
+                                coursePage.getContent()
+                                    .stream()
                                     .map(course -> CourseResponse.from(course, userId))
                                     .collect(Collectors.toList()));
     }
@@ -76,10 +84,14 @@ public class CourseService {
         Long userId
     ) {
         Page<Course> coursePage = courseRepository.findPickedCoursePage(courseFilterParam,
-                                                                        pagingParam, customSort,
+                                                                        pagingParam,
+                                                                        customSort,
                                                                         userId);
-        return new CustomPage<>(coursePage.getTotalElements(), coursePage.getTotalPages(),
-                                coursePage.getNumber(), coursePage.getContent().stream()
+        return new CustomPage<>(coursePage.getTotalElements(),
+                                coursePage.getTotalPages(),
+                                coursePage.getNumber(),
+                                coursePage.getContent()
+                                    .stream()
                                     .map(course -> CourseResponse.from(course, userId))
                                     .collect(Collectors.toList()));
     }
@@ -87,12 +99,21 @@ public class CourseService {
     @Transactional
     public CourseResponse addCourse(CourseRequest courseRequest, Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
-        Course course = Course.builder().title(courseRequest.getTitle())
-            .meetAt(courseRequest.getMeetAt()).isPrivate(courseRequest.getIsPrivate()).user(user)
+        final Course course = Course.builder()
+            .title(courseRequest.getTitle())
+            .meetAt(courseRequest.getMeetAt())
+            .isPrivate(courseRequest.getIsPrivate())
+            .user(user)
             .build();
-        log.info(course.toString());
-        course = courseRepository.save(course);
-        log.info(course.toString());
+        courseRepository.save(course);
+
+        List<Tag> tags = tagRepository.findAllById(courseRequest.getTagIds());
+        List<CourseTagRelation> courseTags = tags.stream()
+            .map(tag -> CourseTagRelation.builder().course(course).tag(tag).build())
+            .collect(Collectors.toList());
+        courseTagRepository.saveAll(courseTags);
+        course.setCourseTags(courseTags);
+
         return CourseResponse.from(course, userId);
     }
 
@@ -138,7 +159,9 @@ public class CourseService {
         List<CourseTagRelation> newCourseTags = new ArrayList<>();
         List<Tag> tags = tagRepository.findAllById(newTagIds);
         for (Tag tag : tags) {
-            CourseTagRelation courseTag = CourseTagRelation.builder().course(course).tag(tag)
+            CourseTagRelation courseTag = CourseTagRelation.builder()
+                .course(course)
+                .tag(tag)
                 .build();
             newCourseTags.add(courseTag);
         }
@@ -159,7 +182,7 @@ public class CourseService {
     }
 
     @Transactional
-    public ImageUrl addCourseImage(Long courseId, MultipartFile image, Long userId) {
+    public ImageUrlResponse addCourseImage(Long courseId, MultipartFile image, Long userId) {
         Course course = courseRepository.findById(courseId).orElseThrow();
         if (!course.getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
@@ -173,7 +196,7 @@ public class CourseService {
         imageUrl = fileService.add(image, "course/" + courseId);
         course.setImageUrl(imageUrl);
 
-        return new ImageUrl(imageUrl);
+        return new ImageUrlResponse(imageUrl);
     }
 
     @Transactional

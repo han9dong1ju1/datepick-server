@@ -10,7 +10,7 @@ import app.hdj.datepick.domain.user.enums.Role;
 import app.hdj.datepick.global.annotation.ImageFile;
 import app.hdj.datepick.global.annotation.ValueOfEnum;
 import app.hdj.datepick.global.common.CustomPage;
-import app.hdj.datepick.global.common.ImageUrl;
+import app.hdj.datepick.global.common.ImageUrlResponse;
 import app.hdj.datepick.global.common.PagingParam;
 import app.hdj.datepick.global.enums.CustomSort;
 import javax.validation.Valid;
@@ -96,7 +96,7 @@ public class DiaryController {
 
     @Authorize({Role.USER})
     @PostMapping("/{diaryId}/image")
-    ImageUrl addDiaryImage(
+    ImageUrlResponse addDiaryImage(
         @AuthPrincipal Long userId,
         @PathVariable Long diaryId,
         @NotNull @ImageFile @ModelAttribute MultipartFile image

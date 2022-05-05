@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.featured.controller;
 
-import app.hdj.datepick.domain.featured.dto.FeaturedRequestParam;
+import app.hdj.datepick.domain.featured.dto.FeaturedFilterParam;
 import app.hdj.datepick.domain.featured.entity.Featured;
 import app.hdj.datepick.domain.featured.service.FeaturedService;
 import app.hdj.datepick.global.common.CustomPage;
@@ -23,9 +23,9 @@ public class FeaturedController {
 
     @GetMapping("")
     public CustomPage<Featured> getFeaturedPage(
-        @Valid FeaturedRequestParam featuredRequestParam, @Valid PagingParam pagingParam
+        @Valid FeaturedFilterParam featuredFilterParam, @Valid PagingParam pagingParam
     ) {
-        return featuredService.getFeaturedPage(featuredRequestParam, pagingParam);
+        return featuredService.getFeaturedPage(featuredFilterParam, pagingParam);
     }
 
     @GetMapping("/{featuredId}")

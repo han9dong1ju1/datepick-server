@@ -22,7 +22,9 @@ public class CustomPage<T> {
     }
 
     public static <T> CustomPage<T> from(Page<T> page) {
-        return new CustomPage<>(page.getTotalElements(), page.getTotalPages(), page.getNumber(),
+        return new CustomPage<>(page.getTotalElements(),
+                                page.getTotalPages(),
+                                page.getNumber(),
                                 page.getContent());
     }
 }

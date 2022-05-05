@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.tag.controller;
 
-import app.hdj.datepick.domain.tag.dto.TagResponse;
+import app.hdj.datepick.domain.tag.dto.TagWithCountResponse;
 import app.hdj.datepick.domain.tag.service.TagService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class TagController {
     private final TagService tagService;
 
     @GetMapping("")
-    public List<TagResponse> getTagList() {
+    public List<TagWithCountResponse> getTagList() {
         return tagService.getTagList();
     }
 }

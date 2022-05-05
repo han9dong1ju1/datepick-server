@@ -18,11 +18,11 @@ public class GeoQueryUtil {
         NumberPath<Double> pathLatitude,
         NumberPath<Double> pathLongitude
     ) {
-        return acos(
-            sin(radians(Expressions.constant(latitude))).multiply(sin(radians(pathLatitude))).add(
-                cos(radians(Expressions.constant(latitude))).multiply(cos(radians(pathLatitude)))
-                    .multiply(cos(radians(Expressions.constant(longitude)).subtract(
-                        radians(pathLongitude)))))).multiply(6371);
+        return acos(sin(radians(Expressions.constant(latitude))).multiply(sin(radians(pathLatitude)))
+                        .add(cos(radians(Expressions.constant(latitude))).multiply(cos(radians(
+                                pathLatitude)))
+                                 .multiply(cos(radians(Expressions.constant(longitude)).subtract(
+                                     radians(pathLongitude)))))).multiply(6371);
 
     }
 }

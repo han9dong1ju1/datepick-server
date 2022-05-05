@@ -29,7 +29,8 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
 
         // from
         if (courseId != null) {
-            query.from(courseFeaturedRelation).innerJoin(courseFeaturedRelation.featured, featured)
+            query.from(courseFeaturedRelation)
+                .innerJoin(courseFeaturedRelation.featured, featured)
                 .where(courseFeaturedRelation.course.id.eq(courseId));
         } else {
             query.from(featured);

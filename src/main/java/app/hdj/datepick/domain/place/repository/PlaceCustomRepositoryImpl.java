@@ -56,19 +56,19 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
         }
 
         if (placeFilterParam.getCourseId() != null) {
-            query = query.where(
-                place.placeCourses.any().course.id.eq(placeFilterParam.getCourseId()));
+            query = query.where(place.placeCourses.any().course.id.eq(placeFilterParam.getCourseId()));
         }
 
         if (placeFilterParam.getCategoryId() != null && !placeFilterParam.getCategoryId()
             .isEmpty()) {
-            query = query.where(
-                place.placeCategories.any().category.id.in(placeFilterParam.getCategoryId()));
+            query = query.where(place.placeCategories.any().category.id.in(placeFilterParam.getCategoryId()));
         }
 
         if (placeFilterParam.getDistance() != null) {
             NumberExpression<Double> distanceExpression = GeoQueryUtil.getDistanceExpression(
-                placeFilterParam.getLatitude(), placeFilterParam.getLongitude(), place.latitude,
+                placeFilterParam.getLatitude(),
+                placeFilterParam.getLongitude(),
+                place.latitude,
                 place.longitude);
             query = query.where(distanceExpression.loe(placeFilterParam.getDistance()));
         }
@@ -89,7 +89,9 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
                 break;
             case DISTANCE:
                 NumberExpression<Double> distanceExpression = GeoQueryUtil.getDistanceExpression(
-                    placeFilterParam.getLatitude(), placeFilterParam.getLongitude(), place.latitude,
+                    placeFilterParam.getLatitude(),
+                    placeFilterParam.getLongitude(),
+                    place.latitude,
                     place.longitude);
                 query = query.orderBy(distanceExpression.asc());
                 break;
