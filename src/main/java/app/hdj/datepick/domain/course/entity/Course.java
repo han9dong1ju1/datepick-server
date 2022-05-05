@@ -31,31 +31,41 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 public class Course extends BaseTimeEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    User user;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
+
     @Column(nullable = false)
     private String title;
+
     @Column
     private LocalDateTime meetAt;
+
     @Column
     private String imageUrl;
+
     @Column(nullable = false)
     @ColumnDefault("false")
     private Boolean isPrivate;
+
     @Column(nullable = false)
     @ColumnDefault("0")
     private Long viewCount = 0L;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<CourseTagRelation> courseTags = List.of();
+
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<CourseFeaturedRelation> courseFeatureds = List.of();
+
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<CoursePlaceRelation> coursePlaces = List.of();
+
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<CoursePick> coursePicks = List.of();
 

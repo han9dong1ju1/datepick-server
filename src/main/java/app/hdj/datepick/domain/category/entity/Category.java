@@ -28,6 +28,7 @@ public class Category {
 
     @Column(unique = true)
     private String name;
+
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<PlaceCategoryRelation> categoryPlaces = List.of();
 

@@ -23,12 +23,14 @@ import lombok.Setter;
 @Entity
 public class Comment extends BaseTimeEntity {
 
-    @Column(nullable = false)
-    String content;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
+
+    @Column(nullable = false)
+    private String content;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
