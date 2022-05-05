@@ -42,8 +42,7 @@ public class CoursePlaceService {
         coursePlaces.sort(Comparator.comparingInt(CoursePlaceRelation::getPlaceOrder));
         Byte maxOrder = coursePlaces.size() > 0 ? coursePlaces.get(coursePlaces.size() - 1).getPlaceOrder() : -1;
         for (Long placeId : placeIds) {
-            Place place = Place.builder().build();
-            place.setId(placeId);
+            Place place = Place.builder().id(placeId).build();
             maxOrder++;
             CoursePlaceRelation newCoursePlace = CoursePlaceRelation.builder()
                     .course(course)

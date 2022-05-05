@@ -57,18 +57,14 @@ public class CommentService {
     public CommentPublic addComment(CommentFilterParam commentFilterParam, CommentRequest commentRequest, Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
 
-        Course course = Course.builder().build();
-        course.setId(commentFilterParam.getCourseId());
-
         Comment parent = null;
         if (commentFilterParam.getParentId() != null) {
-            parent = Comment.builder().build();
-            parent.setId(commentFilterParam.getParentId());
+            parent = Comment.builder().id(commentFilterParam.getParentId()).build();
         }
 
         Comment comment = Comment.builder()
                 .user(user)
-                .course(course)
+                .course(Course.builder().id(commentFilterParam.getCourseId()).build())
                 .content(commentRequest.getContent())
                 .parent(parent)
                 .build();
