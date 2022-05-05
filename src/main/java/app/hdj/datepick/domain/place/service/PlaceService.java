@@ -36,10 +36,14 @@ public class PlaceService {
         PlaceFilterParam placeFilterParam,
         Long userId
     ) {
-        Page<Place> placePage = placeRepository.findPlacePage(placeFilterParam, pagingParam,
+        Page<Place> placePage = placeRepository.findPlacePage(placeFilterParam,
+                                                              pagingParam,
                                                               customSort);
-        return new CustomPage<>(placePage.getTotalElements(), placePage.getTotalPages(),
-                                placePage.getNumber(), placePage.getContent().stream()
+        return new CustomPage<>(placePage.getTotalElements(),
+                                placePage.getTotalPages(),
+                                placePage.getNumber(),
+                                placePage.getContent()
+                                    .stream()
                                     .map(place -> PlaceResponse.from(place, userId))
                                     .collect(Collectors.toList()));
     }
@@ -51,10 +55,14 @@ public class PlaceService {
         Long userId
     ) {
         Page<Place> pickedPlacePage = placeRepository.findPickedPlacePage(placeFilterParam,
-                                                                          pagingParam, customSort,
+                                                                          pagingParam,
+                                                                          customSort,
                                                                           userId);
-        return new CustomPage<>(pickedPlacePage.getTotalElements(), pickedPlacePage.getTotalPages(),
-                                pickedPlacePage.getNumber(), pickedPlacePage.getContent().stream()
+        return new CustomPage<>(pickedPlacePage.getTotalElements(),
+                                pickedPlacePage.getTotalPages(),
+                                pickedPlacePage.getNumber(),
+                                pickedPlacePage.getContent()
+                                    .stream()
                                     .map(place -> PlaceResponse.from(place, userId))
                                     .collect(Collectors.toList()));
     }
@@ -72,23 +80,32 @@ public class PlaceService {
 
     @Transactional
     public PlaceResponse addPlace(PlaceRequest placeRequest) {
-        Place place = Place.builder().kakaoId(placeRequest.getKakaoId())
-            .name(placeRequest.getName()).address(placeRequest.getAddress())
-            .latitude(placeRequest.getLatitude()).longitude(placeRequest.getLongitude()).build();
+        Place place = Place.builder()
+            .kakaoId(placeRequest.getKakaoId())
+            .name(placeRequest.getName())
+            .address(placeRequest.getAddress())
+            .latitude(placeRequest.getLatitude())
+            .longitude(placeRequest.getLongitude())
+            .build();
         final Place finalPlace = placeRepository.save(place);
 
         List<String> categoryNames = Arrays.asList(placeRequest.getCategories().split(" > "));
         List<Category> categories = categoryRepository.findCategoryByNameIn(categoryNames);
-        List<String> existingNames = categories.stream().map(Category::getName)
+        List<String> existingNames = categories.stream()
+            .map(Category::getName)
             .collect(Collectors.toList());
-        categories.addAll(categoryNames.stream().filter(name -> !existingNames.contains(name))
+        categories.addAll(categoryNames.stream()
+                              .filter(name -> !existingNames.contains(name))
                               .map(name -> Category.builder().name(name).build())
                               .collect(Collectors.toList()));
         categories = categoryRepository.saveAll(categories);
 
-        List<PlaceCategoryRelation> placeCategoryRelations = categories.stream().map(
-            category -> PlaceCategoryRelation.builder().place(finalPlace).category(category)
-                .build()).collect(Collectors.toList());
+        List<PlaceCategoryRelation> placeCategoryRelations = categories.stream()
+            .map(category -> PlaceCategoryRelation.builder()
+                .place(finalPlace)
+                .category(category)
+                .build())
+            .collect(Collectors.toList());
 
         placeCategoryRelationRepository.saveAll(placeCategoryRelations);
         place.setPlaceCategories(placeCategoryRelations);

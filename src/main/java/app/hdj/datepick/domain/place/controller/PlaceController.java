@@ -44,7 +44,9 @@ public class PlaceController {
             "rating_desc", "rating_asc", "distance"}) String sort,
         @Valid PlaceFilterParam placeFilterParam
     ) {
-        return placeService.getPlacePage(pagingParam, CustomSort.from(sort), placeFilterParam,
+        return placeService.getPlacePage(pagingParam,
+                                         CustomSort.from(sort),
+                                         placeFilterParam,
                                          userId);
     }
 
@@ -69,7 +71,9 @@ public class PlaceController {
             "rating_desc", "rating_asc", "distance"}) String sort,
         @Valid PlaceFilterParam placeFilterParam
     ) {
-        return placeService.getPickedPlacePage(pagingParam, CustomSort.from(sort), placeFilterParam,
+        return placeService.getPickedPlacePage(pagingParam,
+                                               CustomSort.from(sort),
+                                               placeFilterParam,
                                                userId);
     }
 

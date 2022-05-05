@@ -10,7 +10,7 @@ import app.hdj.datepick.domain.diary.repository.DiaryRepository;
 import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import app.hdj.datepick.domain.relation.repository.CoursePlaceRepository;
 import app.hdj.datepick.global.common.CustomPage;
-import app.hdj.datepick.global.common.ImageUrl;
+import app.hdj.datepick.global.common.ImageUrlResponse;
 import app.hdj.datepick.global.common.PagingParam;
 import app.hdj.datepick.global.config.file.FileService;
 import app.hdj.datepick.global.enums.CustomSort;
@@ -35,22 +35,30 @@ public class DiaryService {
     public CustomPage<DiaryResponse> getDiaryPage(
         PagingParam pagingParam, CustomSort customSort, DiaryFilterParam diaryFilterParam
     ) {
-        Page<Diary> diaryPage = diaryRepository.findDiaryPage(diaryFilterParam, pagingParam,
+        Page<Diary> diaryPage = diaryRepository.findDiaryPage(diaryFilterParam,
+                                                              pagingParam,
                                                               customSort);
-        return new CustomPage<>(diaryPage.getTotalElements(), diaryPage.getTotalPages(),
+        return new CustomPage<>(diaryPage.getTotalElements(),
+                                diaryPage.getTotalPages(),
                                 diaryPage.getNumber(),
-                                diaryPage.getContent().stream().map(DiaryResponse::from)
+                                diaryPage.getContent()
+                                    .stream()
+                                    .map(DiaryResponse::from)
                                     .collect(Collectors.toList()));
     }
 
     public CustomPage<DiaryResponse> getMyDiaryPage(
         PagingParam pagingParam, CustomSort customSort, DiaryFilterParam diaryFilterParam
     ) {
-        Page<Diary> diaryPage = diaryRepository.findMyDiaryPage(diaryFilterParam, pagingParam,
+        Page<Diary> diaryPage = diaryRepository.findMyDiaryPage(diaryFilterParam,
+                                                                pagingParam,
                                                                 customSort);
-        return new CustomPage<>(diaryPage.getTotalElements(), diaryPage.getTotalPages(),
+        return new CustomPage<>(diaryPage.getTotalElements(),
+                                diaryPage.getTotalPages(),
                                 diaryPage.getNumber(),
-                                diaryPage.getContent().stream().map(DiaryResponse::from)
+                                diaryPage.getContent()
+                                    .stream()
+                                    .map(DiaryResponse::from)
                                     .collect(Collectors.toList()));
     }
 
@@ -61,7 +69,8 @@ public class DiaryService {
     ) {
         //course 에 요청한 place 가 존재하지 않으면 reject
         CoursePlaceRelation coursePlace = coursePlaceRepository.findByCourseIdAndPlaceId(
-            diaryRequest.getCourseId(), diaryRequest.getPlaceId()).orElseThrow();
+            diaryRequest.getCourseId(),
+            diaryRequest.getPlaceId()).orElseThrow();
 
         //course 가 본인 course 가 아니면 reject
         Course course = courseRepository.findById(diaryRequest.getCourseId()).orElseThrow();
@@ -69,8 +78,11 @@ public class DiaryService {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
         }
 
-        Diary diary = Diary.builder().content(diaryRequest.getContent())
-            .rating(diaryRequest.getRating()).coursePlace(coursePlace).build();
+        Diary diary = Diary.builder()
+            .content(diaryRequest.getContent())
+            .rating(diaryRequest.getRating())
+            .coursePlace(coursePlace)
+            .build();
         diary = diaryRepository.save(diary);
 
         return DiaryResponse.from(diary);
@@ -121,7 +133,7 @@ public class DiaryService {
     }
 
     @Transactional
-    public ImageUrl addDiaryImage(Long diaryId, MultipartFile image, Long userId) {
+    public ImageUrlResponse addDiaryImage(Long diaryId, MultipartFile image, Long userId) {
         Diary diary = diaryRepository.findById(diaryId).orElseThrow();
 
         // 다이어라가 속한 코스가 본인게 아니라면 reject
@@ -129,7 +141,7 @@ public class DiaryService {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
         }
         String imageUrl = fileService.add(image, "diary/" + diaryId);
-        return new ImageUrl(imageUrl);
+        return new ImageUrlResponse(imageUrl);
     }
 
     @Transactional

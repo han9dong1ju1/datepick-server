@@ -1,11 +1,11 @@
 package app.hdj.datepick.domain.user.service;
 
-import app.hdj.datepick.domain.user.dto.UserModifyRequest;
-import app.hdj.datepick.domain.user.dto.UserPublic;
+import app.hdj.datepick.domain.user.dto.UserRequest;
+import app.hdj.datepick.domain.user.dto.UserResponse;
 import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.domain.user.enums.Gender;
 import app.hdj.datepick.domain.user.repository.UserRepository;
-import app.hdj.datepick.global.common.ImageUrl;
+import app.hdj.datepick.global.common.ImageUrlResponse;
 import app.hdj.datepick.global.config.file.FileService;
 import app.hdj.datepick.global.error.enums.ErrorCode;
 import app.hdj.datepick.global.error.exception.CustomException;
@@ -29,7 +29,7 @@ public class UserService {
     @PersistenceContext
     private EntityManager em;
 
-    public UserPublic getPublicUser(Long id) {
+    public UserResponse getPublicUser(Long id) {
         User user = userRepository.findById(id).orElseThrow();
 
         // 삭제한 유저일 경우
@@ -37,23 +37,22 @@ public class UserService {
             throw new CustomException(ErrorCode.USER_UNREGISTERED);
         }
 
-        return new UserPublic(user.getId(), user.getNickname(), user.getGender(),
-                              user.getImageUrl());
+        return UserResponse.from(user);
     }
 
     public User getUser(Long id) {
         return userRepository.findById(id).orElseThrow();
     }
 
-    public User modifyUser(Long userId, UserModifyRequest userModifyRequest) {
+    public User modifyUser(Long userId, UserRequest userRequest) {
         User user = userRepository.findById(userId).orElseThrow();
 
-        Gender gender = Gender.from(userModifyRequest.getGender());
+        Gender gender = Gender.from(userRequest.getGender());
         if (gender != null) {
             user.setGender(gender);
         }
 
-        String nickname = userModifyRequest.getNickname();
+        String nickname = userRequest.getNickname();
         if (nickname != null) {
             user.setNickname(nickname);
         }
@@ -62,7 +61,7 @@ public class UserService {
     }
 
     @Transactional
-    public ImageUrl addUserImage(Long userId, MultipartFile image) {
+    public ImageUrlResponse addUserImage(Long userId, MultipartFile image) {
         User user = userRepository.findById(userId).orElseThrow();
         String imageUrl = user.getImageUrl();
         if (imageUrl != null) {
@@ -72,7 +71,7 @@ public class UserService {
         imageUrl = fileService.add(image, "profile-image/" + userId);
         user.setImageUrl(imageUrl);
 
-        return new ImageUrl(imageUrl);
+        return new ImageUrlResponse(imageUrl);
     }
 
     @Transactional

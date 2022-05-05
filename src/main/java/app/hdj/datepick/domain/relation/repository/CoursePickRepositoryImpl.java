@@ -22,8 +22,10 @@ public class CoursePickRepositoryImpl implements CoursePickRepository {
 
     @Override
     public boolean exists(Long courseId, Long userId) {
-        Integer fetchOne = jpaQueryFactory.selectOne().from(coursePick)
-            .where(coursePick.user.id.eq(userId)).where(coursePick.course.id.eq(courseId))
+        Integer fetchOne = jpaQueryFactory.selectOne()
+            .from(coursePick)
+            .where(coursePick.user.id.eq(userId))
+            .where(coursePick.course.id.eq(courseId))
             .fetchFirst();
         return fetchOne != null;
     }
@@ -38,7 +40,9 @@ public class CoursePickRepositoryImpl implements CoursePickRepository {
 
     @Override
     public void remove(Long courseId, Long userId) {
-        jpaQueryFactory.delete(coursePick).where(coursePick.user.id.eq(userId))
-            .where(coursePick.course.id.eq(courseId)).execute();
+        jpaQueryFactory.delete(coursePick)
+            .where(coursePick.user.id.eq(userId))
+            .where(coursePick.course.id.eq(courseId))
+            .execute();
     }
 }

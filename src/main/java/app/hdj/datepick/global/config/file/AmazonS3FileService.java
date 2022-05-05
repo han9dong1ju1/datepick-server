@@ -32,8 +32,10 @@ public class AmazonS3FileService implements FileService {
             multipartFile.getOriginalFilename());
 
         try {
-            amazonS3Client.putObject(
-                new PutObjectRequest(bucket, key, multipartFile.getInputStream(), null));
+            amazonS3Client.putObject(new PutObjectRequest(bucket,
+                                                          key,
+                                                          multipartFile.getInputStream(),
+                                                          null));
         } catch (IOException e) {
             throw new CustomException(ErrorCode.FILE_UPLOAD_FAILED);
         }

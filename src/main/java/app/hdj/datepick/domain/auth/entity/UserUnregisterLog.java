@@ -1,5 +1,6 @@
-package app.hdj.datepick.domain.user.entity;
+package app.hdj.datepick.domain.auth.entity;
 
+import app.hdj.datepick.domain.user.entity.User;
 import app.hdj.datepick.global.entity.BaseTimeEntity;
 import java.time.LocalDateTime;
 import javax.persistence.Column;

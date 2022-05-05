@@ -47,19 +47,27 @@ public class GoogleOAuthRequester implements OAuthRequester {
     }
 
     private String getAccessToken(String code) {
-        Map<String, Object> responseBody = WebClient.builder().baseUrl(tokenRequestUri).build()
-            .post().uri(
-                uriBuilder -> uriBuilder.queryParam("code", code).queryParam("client_id", clientId)
-                    .queryParam("client_secret", clientSecret)
-                    .queryParam("redirect_uri", redirectUri)
-                    .queryParam("grant_type", "authorization_code").build())
+        Map<String, Object> responseBody = WebClient.builder()
+            .baseUrl(tokenRequestUri)
+            .build()
+            .post()
+            .uri(uriBuilder -> uriBuilder.queryParam("code", code)
+                .queryParam("client_id", clientId)
+                .queryParam("client_secret", clientSecret)
+                .queryParam("redirect_uri", redirectUri)
+                .queryParam("grant_type", "authorization_code")
+                .build())
             .headers(httpHeaders -> {
                 httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
                 httpHeaders.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
-            }).retrieve().onStatus(status -> !status.is2xxSuccessful(), response -> {
+            })
+            .retrieve()
+            .onStatus(status -> !status.is2xxSuccessful(), response -> {
                 throw new CustomException(ErrorCode.OAUTH_REQUEST_FAILED);
-            }).bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
-            }).blockOptional()
+            })
+            .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
+            })
+            .blockOptional()
             .orElseThrow(() -> new CustomException(ErrorCode.OAUTH_REQUEST_FAILED));
         if (!responseBody.containsKey("access_token")) {
             throw new CustomException(ErrorCode.OAUTH_SERVER_ERROR);
@@ -68,15 +76,22 @@ public class GoogleOAuthRequester implements OAuthRequester {
     }
 
     private GoogleUserInfo getUserInfoByAccessToken(String accessToken) {
-        Map<String, Object> responseBody = WebClient.builder().baseUrl(userRequestUri).build().get()
+        Map<String, Object> responseBody = WebClient.builder()
+            .baseUrl(userRequestUri)
+            .build()
+            .get()
             .headers(httpHeaders -> {
                 httpHeaders.setBearerAuth(accessToken);
                 httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
                 httpHeaders.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
-            }).retrieve().onStatus(status -> !status.is2xxSuccessful(), response -> {
+            })
+            .retrieve()
+            .onStatus(status -> !status.is2xxSuccessful(), response -> {
                 throw new CustomException(ErrorCode.OAUTH_REQUEST_FAILED);
-            }).bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
-            }).blockOptional()
+            })
+            .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
+            })
+            .blockOptional()
             .orElseThrow(() -> new CustomException(ErrorCode.OAUTH_REQUEST_FAILED));
         return GoogleUserInfo.from(responseBody);
     }

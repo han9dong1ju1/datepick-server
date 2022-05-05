@@ -27,8 +27,10 @@ public class DiaryCustomRepositoryImpl implements DiaryCustomRepository {
     public Page<Diary> findDiaryPage(
         DiaryFilterParam diaryFilterParam, PagingParam pagingParam, CustomSort sort
     ) {
-        JPQLQuery<Diary> query = jpaQueryFactory.selectFrom(diary).leftJoin(diary.coursePlace)
-            .fetchJoin().where(diary.coursePlace.course.isPrivate.eq(false));
+        JPQLQuery<Diary> query = jpaQueryFactory.selectFrom(diary)
+            .leftJoin(diary.coursePlace)
+            .fetchJoin()
+            .where(diary.coursePlace.course.isPrivate.eq(false));
         query = filterDiaries(query, diaryFilterParam);
         query = applySort(query, sort);
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize());
@@ -39,7 +41,8 @@ public class DiaryCustomRepositoryImpl implements DiaryCustomRepository {
     public Page<Diary> findMyDiaryPage(
         DiaryFilterParam diaryFilterParam, PagingParam pagingParam, CustomSort sort
     ) {
-        JPQLQuery<Diary> query = jpaQueryFactory.selectFrom(diary).leftJoin(diary.coursePlace)
+        JPQLQuery<Diary> query = jpaQueryFactory.selectFrom(diary)
+            .leftJoin(diary.coursePlace)
             .fetchJoin();
         query = filterDiaries(query, diaryFilterParam);
         query = applySort(query, sort);

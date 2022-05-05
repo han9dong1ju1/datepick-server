@@ -39,15 +39,21 @@ public class JwtUtil {
     }
 
     public String createAccessToken(Map<String, Object> payload, LocalDateTime issuedAt) {
-        return Jwts.builder().setIssuedAt(Timestamp.valueOf(issuedAt))
-            .setExpiration(Timestamp.valueOf(getAccessTokenExpireAt(issuedAt))).addClaims(payload)
-            .signWith(key).compact();
+        return Jwts.builder()
+            .setIssuedAt(Timestamp.valueOf(issuedAt))
+            .setExpiration(Timestamp.valueOf(getAccessTokenExpireAt(issuedAt)))
+            .addClaims(payload)
+            .signWith(key)
+            .compact();
     }
 
     public String createRefreshToken(Map<String, Object> payload, LocalDateTime issuedAt) {
-        return Jwts.builder().setIssuedAt(Timestamp.valueOf(issuedAt))
-            .setExpiration(Timestamp.valueOf(getRefreshTokenExpireAt(issuedAt))).addClaims(payload)
-            .signWith(key).compact();
+        return Jwts.builder()
+            .setIssuedAt(Timestamp.valueOf(issuedAt))
+            .setExpiration(Timestamp.valueOf(getRefreshTokenExpireAt(issuedAt)))
+            .addClaims(payload)
+            .signWith(key)
+            .compact();
     }
 
     private LocalDateTime getAccessTokenExpireAt(LocalDateTime issuedAt) {

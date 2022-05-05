@@ -27,7 +27,10 @@ public class ApiLoggerFilter extends OncePerRequestFilter {
 
         // After
         long end = System.currentTimeMillis();
-        log.info("[RESPONSE] {} - {} {} - {}ms", request.getMethod(), request.getRequestURI(),
-                 response.getStatus(), (end - start));
+        log.info("[RESPONSE] {} - {} {} - {}ms",
+                 request.getMethod(),
+                 request.getRequestURI(),
+                 response.getStatus(),
+                 (end - start));
     }
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class FeaturedRequestParam {
+public class FeaturedFilterParam {
 
     private Boolean isPinned;
     @Positive

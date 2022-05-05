@@ -49,17 +49,23 @@ public class AuthService {
         String uuid = UUID.randomUUID().toString();
         String accessToken = jwtUtil.createAccessToken(createAccessTokenPayload(user, uuid), now);
         String refreshToken = jwtUtil.createRefreshToken(createRefreshTokenPayload(uuid), now);
-        RefreshToken token = RefreshToken.builder().token(HashingUtil.hash(refreshToken))
-            .userId(user.getId()).uuid(uuid).expireAt(jwtUtil.getRefreshTokenExpireAt(now)).build();
+        RefreshToken token = RefreshToken.builder()
+            .token(HashingUtil.hash(refreshToken))
+            .userId(user.getId())
+            .uuid(uuid)
+            .expireAt(jwtUtil.getRefreshTokenExpireAt(now))
+            .build();
         refreshTokenRepository.save(token);
-        return new AllTokenResponse(accessToken, jwtUtil.getAccessTokenExpireIntervalInSeconds(),
+        return new AllTokenResponse(accessToken,
+                                    jwtUtil.getAccessTokenExpireIntervalInSeconds(),
                                     refreshToken);
     }
 
     @Transactional
     public AllTokenResponse refreshToken(String token) {
         RefreshToken refreshToken = refreshTokenRepository.findByUuidAndExpireAtAfter(
-                getUuidFromToken(token), LocalDateTime.now())
+                getUuidFromToken(token),
+                LocalDateTime.now())
             .orElseThrow(() -> new CustomException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
         return updateToken(refreshToken);
     }
@@ -75,13 +81,18 @@ public class AuthService {
         token.setUuid(uuid);
         token.setExpireAt(jwtUtil.getRefreshTokenExpireAt(now));
         refreshTokenRepository.save(token);
-        return new AllTokenResponse(accessToken, jwtUtil.getAccessTokenExpireIntervalInSeconds(),
+        return new AllTokenResponse(accessToken,
+                                    jwtUtil.getAccessTokenExpireIntervalInSeconds(),
                                     refreshToken);
     }
 
     private Map<String, Object> createAccessTokenPayload(User user, String uuid) {
-        return Map.of(USER_ID_CLAIM_KEY, user.getId(), USER_AUTHORITIES_CLAIM_KEY,
-                      List.of(Role.USER.toString()), TOKEN_UUID_CLAIM_KEY, uuid);
+        return Map.of(USER_ID_CLAIM_KEY,
+                      user.getId(),
+                      USER_AUTHORITIES_CLAIM_KEY,
+                      List.of(Role.USER.toString()),
+                      TOKEN_UUID_CLAIM_KEY,
+                      uuid);
     }
 
     private Map<String, Object> createRefreshTokenPayload(String uuid) {
@@ -94,9 +105,13 @@ public class AuthService {
     }
 
     private User createUserByUserInfo(OAuthUserInfo userInfo) {
-        return User.builder().uid(userInfo.getUid()).provider(userInfo.getProvider())
-            .email(userInfo.getEmail()).nickname(createNickname(userInfo.getName()))
-            .gender(userInfo.getGender()).build();
+        return User.builder()
+            .uid(userInfo.getUid())
+            .provider(userInfo.getProvider())
+            .email(userInfo.getEmail())
+            .nickname(createNickname(userInfo.getName()))
+            .gender(userInfo.getGender())
+            .build();
     }
 
     private String createNickname(String name) {

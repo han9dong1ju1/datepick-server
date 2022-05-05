@@ -3,7 +3,7 @@ package app.hdj.datepick.domain.course.service;
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.course.repository.CourseRepository;
 import app.hdj.datepick.domain.place.entity.Place;
-import app.hdj.datepick.domain.relation.dto.CoursePlacePublic;
+import app.hdj.datepick.domain.relation.dto.CoursePlaceResponse;
 import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import app.hdj.datepick.domain.relation.repository.CoursePlaceRepository;
 import app.hdj.datepick.global.error.enums.ErrorCode;
@@ -24,16 +24,17 @@ public class CoursePlaceService {
     private final CoursePlaceRepository coursePlaceRepository;
     private final CourseRepository courseRepository;
 
-    public List<CoursePlacePublic> getCoursePlaces(Long courseId) {
+    public List<CoursePlaceResponse> getCoursePlaces(Long courseId) {
         List<CoursePlaceRelation> coursePlaceRelations = coursePlaceRepository.findByCourseId(
             courseId);
         coursePlaceRelations.sort(Comparator.comparingInt(CoursePlaceRelation::getPlaceOrder));
-        return coursePlaceRelations.stream().map(CoursePlacePublic::from)
+        return coursePlaceRelations.stream()
+            .map(CoursePlaceResponse::from)
             .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<CoursePlacePublic> addCoursePlaces(
+    public List<CoursePlaceResponse> addCoursePlaces(
         Long userId, Long courseId, List<Long> placeIds
     ) {
         Course course = courseRepository.findById(courseId).orElseThrow();
@@ -49,16 +50,19 @@ public class CoursePlaceService {
         for (Long placeId : placeIds) {
             Place place = Place.builder().id(placeId).build();
             maxOrder++;
-            CoursePlaceRelation newCoursePlace = CoursePlaceRelation.builder().course(course)
-                .place(place).placeOrder(maxOrder).build();
+            CoursePlaceRelation newCoursePlace = CoursePlaceRelation.builder()
+                .course(course)
+                .place(place)
+                .placeOrder(maxOrder)
+                .build();
             newCoursePlace = coursePlaceRepository.save(newCoursePlace);
             coursePlaces.add(newCoursePlace);
         }
-        return coursePlaces.stream().map(CoursePlacePublic::from).collect(Collectors.toList());
+        return coursePlaces.stream().map(CoursePlaceResponse::from).collect(Collectors.toList());
     }
 
     @Transactional
-    public List<CoursePlacePublic> modifyCoursePlacesOrder(
+    public List<CoursePlaceResponse> modifyCoursePlacesOrder(
         Long userId, Long courseId, List<Long> coursePlaceIds
     ) {
         Course course = courseRepository.findById(courseId).orElseThrow();
@@ -75,11 +79,11 @@ public class CoursePlaceService {
             coursePlace.setPlaceOrder((byte) index);
         }
         coursePlaces.sort(Comparator.comparingInt(CoursePlaceRelation::getPlaceOrder));
-        return coursePlaces.stream().map(CoursePlacePublic::from).collect(Collectors.toList());
+        return coursePlaces.stream().map(CoursePlaceResponse::from).collect(Collectors.toList());
     }
 
     @Transactional
-    public List<CoursePlacePublic> removeCoursePlaces(
+    public List<CoursePlaceResponse> removeCoursePlaces(
         Long userId, Long courseId, List<Long> coursePlaceIds
     ) {
         Course course = courseRepository.findById(courseId).orElseThrow();
@@ -94,6 +98,6 @@ public class CoursePlaceService {
         for (int i = 0; i < bound; i++) {
             coursePlaces.get(i).setPlaceOrder((byte) i);
         }
-        return coursePlaces.stream().map(CoursePlacePublic::from).collect(Collectors.toList());
+        return coursePlaces.stream().map(CoursePlaceResponse::from).collect(Collectors.toList());
     }
 }

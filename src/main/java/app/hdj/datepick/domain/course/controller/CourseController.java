@@ -11,12 +11,12 @@ import app.hdj.datepick.domain.course.dto.CourseResponse;
 import app.hdj.datepick.domain.course.service.CoursePickService;
 import app.hdj.datepick.domain.course.service.CoursePlaceService;
 import app.hdj.datepick.domain.course.service.CourseService;
-import app.hdj.datepick.domain.relation.dto.CoursePlacePublic;
+import app.hdj.datepick.domain.relation.dto.CoursePlaceResponse;
 import app.hdj.datepick.domain.user.enums.Role;
 import app.hdj.datepick.global.annotation.ImageFile;
 import app.hdj.datepick.global.annotation.ValueOfEnum;
 import app.hdj.datepick.global.common.CustomPage;
-import app.hdj.datepick.global.common.ImageUrl;
+import app.hdj.datepick.global.common.ImageUrlResponse;
 import app.hdj.datepick.global.common.PagingParam;
 import app.hdj.datepick.global.enums.CustomSort;
 import java.util.List;
@@ -58,8 +58,10 @@ public class CourseController {
             "popular"}) String sort,
         @Valid CourseFilterParam courseFilterParam
     ) {
-        return courseService.getPublicCoursePage(pagingParam, CustomSort.from(sort),
-                                                 courseFilterParam, userId);
+        return courseService.getPublicCoursePage(pagingParam,
+                                                 CustomSort.from(sort),
+                                                 courseFilterParam,
+                                                 userId);
     }
 
     @Authorize({Role.USER})
@@ -72,7 +74,9 @@ public class CourseController {
         @Valid CourseFilterParam courseFilterParam
     ) {
         courseFilterParam.setUserId(userId);
-        return courseService.getCoursePage(pagingParam, CustomSort.from(sort), courseFilterParam,
+        return courseService.getCoursePage(pagingParam,
+                                           CustomSort.from(sort),
+                                           courseFilterParam,
                                            userId);
     }
 
@@ -85,16 +89,18 @@ public class CourseController {
             "popular"}) String sort,
         @Valid CourseFilterParam courseFilterParam
     ) {
-        return courseService.getPickedCoursePage(pagingParam, CustomSort.from(sort),
-                                                 courseFilterParam, userId);
+        return courseService.getPickedCoursePage(pagingParam,
+                                                 CustomSort.from(sort),
+                                                 courseFilterParam,
+                                                 userId);
     }
 
-    @Authorize({Role.USER})
+    //    @Authorize({Role.USER})
     @PostMapping("")
     CourseResponse addCourse(
         @AuthPrincipal Long userId, @Valid @RequestBody CourseRequest courseRequest
     ) {
-        return courseService.addCourse(courseRequest, userId);
+        return courseService.addCourse(courseRequest, 1L);
     }
 
     @GetMapping("/{courseId}")
@@ -128,13 +134,13 @@ public class CourseController {
     }
 
     @GetMapping("/{courseId}/places")
-    List<CoursePlacePublic> getCoursePlaces(@PathVariable Long courseId) {
+    List<CoursePlaceResponse> getCoursePlaces(@PathVariable Long courseId) {
         return coursePlaceService.getCoursePlaces(courseId);
     }
 
     @Authorize({Role.USER})
     @PostMapping("/{courseId}/places")
-    List<CoursePlacePublic> addCoursePlaces(
+    List<CoursePlaceResponse> addCoursePlaces(
         @AuthPrincipal Long userId,
         @PathVariable Long courseId,
         @Valid @RequestBody List<@Positive Long> placeIds
@@ -144,7 +150,7 @@ public class CourseController {
 
     @Authorize({Role.USER})
     @PatchMapping("/{courseId}/places")
-    List<CoursePlacePublic> modifyCoursePlaces(
+    List<CoursePlaceResponse> modifyCoursePlaces(
         @AuthPrincipal Long userId,
         @PathVariable Long courseId,
         @Valid @RequestBody List<@Positive Long> coursePlaceIds
@@ -154,7 +160,7 @@ public class CourseController {
 
     @Authorize({Role.USER})
     @DeleteMapping("/{courseId}/places")
-    List<CoursePlacePublic> removeCoursePlaces(
+    List<CoursePlaceResponse> removeCoursePlaces(
         @AuthPrincipal Long userId,
         @PathVariable Long courseId,
         @Valid @RequestBody List<@Positive Long> coursePlaceIds
@@ -164,7 +170,7 @@ public class CourseController {
 
     @Authorize({Role.USER})
     @PostMapping("/{courseId}/image")
-    ImageUrl addCourseImage(
+    ImageUrlResponse addCourseImage(
         @AuthPrincipal Long userId,
         @PathVariable Long courseId,
         @NotNull @ImageFile @ModelAttribute MultipartFile image

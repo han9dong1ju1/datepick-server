@@ -47,13 +47,12 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         Map<String, Object> payload = jwtUtil.getPayload(token);
         if (!payload.containsKey(AuthService.USER_AUTHORITIES_CLAIM_KEY) || !payload.containsKey(
-            AuthService.USER_ID_CLAIM_KEY) || !payload.containsKey(
-            AuthService.TOKEN_UUID_CLAIM_KEY)) {
+            AuthService.USER_ID_CLAIM_KEY)
+            || !payload.containsKey(AuthService.TOKEN_UUID_CLAIM_KEY)) {
             throw new CustomException(ErrorCode.TOKEN_MALFORMED);
         }
 
-        List<String> authorities = (List<String>) payload.get(
-            AuthService.USER_AUTHORITIES_CLAIM_KEY);
+        List<String> authorities = (List<String>) payload.get(AuthService.USER_AUTHORITIES_CLAIM_KEY);
         for (Role role : authorize.value()) {
             if (!authorities.contains(role.toString())) {
                 throw new CustomException(ErrorCode.ACCESS_DENIED);

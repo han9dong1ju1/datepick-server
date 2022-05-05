@@ -19,7 +19,9 @@ public class OAuthHandler {
     }
 
     private OAuthRequester getRequester(final Provider provider) {
-        return oAuthRequesters.stream().filter(requester -> requester.supports(provider))
-            .findFirst().orElseThrow(() -> new CustomException(ErrorCode.NOT_IMPLEMENTED));
+        return oAuthRequesters.stream()
+            .filter(requester -> requester.supports(provider))
+            .findFirst()
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_IMPLEMENTED));
     }
 }

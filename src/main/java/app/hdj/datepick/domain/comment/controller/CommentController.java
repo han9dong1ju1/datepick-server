@@ -3,8 +3,8 @@ package app.hdj.datepick.domain.comment.controller;
 import app.hdj.datepick.domain.auth.annotation.AuthPrincipal;
 import app.hdj.datepick.domain.auth.annotation.Authorize;
 import app.hdj.datepick.domain.comment.dto.CommentFilterParam;
-import app.hdj.datepick.domain.comment.dto.CommentPublic;
 import app.hdj.datepick.domain.comment.dto.CommentRequest;
+import app.hdj.datepick.domain.comment.dto.CommentResponse;
 import app.hdj.datepick.domain.comment.service.CommentService;
 import app.hdj.datepick.domain.user.enums.Role;
 import app.hdj.datepick.global.common.CustomPage;
@@ -32,7 +32,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("")
-    CustomPage<CommentPublic> getCommentPage(
+    CustomPage<CommentResponse> getCommentPage(
         @Valid PagingParam pagingParam, @Valid CommentFilterParam commentFilterParam
     ) {
         return commentService.getCommentPage(pagingParam, commentFilterParam);
@@ -40,7 +40,7 @@ public class CommentController {
 
     @Authorize({Role.USER})
     @GetMapping("me")
-    CustomPage<CommentPublic> getMyCommentPage(
+    CustomPage<CommentResponse> getMyCommentPage(
         @AuthPrincipal Long userId, @Valid PagingParam pagingParam
     ) {
         return commentService.getMyCommentPage(pagingParam, userId);
@@ -48,7 +48,7 @@ public class CommentController {
 
     @Authorize({Role.USER})
     @PostMapping("")
-    CommentPublic addComment(
+    CommentResponse addComment(
         @AuthPrincipal Long userId,
         @Valid CommentFilterParam commentFilterParam,
         @Valid @RequestBody CommentRequest commentRequest
@@ -58,7 +58,7 @@ public class CommentController {
 
     @Authorize({Role.USER})
     @PatchMapping("{commentId}")
-    CommentPublic modifyComment(
+    CommentResponse modifyComment(
         @AuthPrincipal Long userId,
         @PathVariable Long commentId,
         @Valid @RequestBody CommentRequest commentRequest

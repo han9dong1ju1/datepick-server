@@ -1,6 +1,6 @@
 package app.hdj.datepick.domain.category.controller;
 
-import app.hdj.datepick.domain.category.dto.CategoryResponse;
+import app.hdj.datepick.domain.category.dto.CategoryWithCountResponse;
 import app.hdj.datepick.domain.category.service.CategoryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("")
-    public List<CategoryResponse> getCategoryList() {
+    public List<CategoryWithCountResponse> getCategoryList() {
         return categoryService.getCategoryList();
     }
 }
