@@ -8,20 +8,18 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
+import java.util.Optional;
 
-@DynamicInsert
-@DynamicUpdate
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class User extends BaseTimeEntity<Long> {
+public class User extends BaseTimeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Long id;
 
     @Column(nullable = false)
     private String uid;
@@ -51,4 +49,16 @@ public class User extends BaseTimeEntity<Long> {
     @Column
     private String imageUrl;
 
+    @Builder
+    private User(Long id, String uid, Provider provider, String nickname, String email, Gender gender, Boolean isBanned, Boolean isDeleted, String imageUrl) {
+        this.id = id;
+        this.uid = uid;
+        this.provider = provider;
+        this.nickname = nickname;
+        this.email = email;
+        this.gender = gender;
+        this.isBanned = Optional.ofNullable(isBanned).orElse(false);
+        this.isDeleted = Optional.ofNullable(isDeleted).orElse(false);
+        this.imageUrl = imageUrl;
+    }
 }

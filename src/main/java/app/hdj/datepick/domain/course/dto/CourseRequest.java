@@ -23,6 +23,6 @@ public class CourseRequest {
     @NotNull
     private Boolean isPrivate;
 
-    private List<@Positive Byte> tagIds;
+    private List<@Positive Integer> tagIds;
 
 }

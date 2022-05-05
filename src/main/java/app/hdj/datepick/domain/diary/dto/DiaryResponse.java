@@ -20,8 +20,8 @@ public class DiaryResponse {
                 diary.getId(),
                 diary.getContent(),
                 diary.getRating(),
-                diary.getCoursePlaceRelation().getCourse().getId(),
-                UserPublic.from(diary.getCoursePlaceRelation().getCourse().getUser())
+                diary.getCoursePlace().getCourse().getId(),
+                UserPublic.from(diary.getCoursePlace().getCourse().getUser())
 
         );
     }

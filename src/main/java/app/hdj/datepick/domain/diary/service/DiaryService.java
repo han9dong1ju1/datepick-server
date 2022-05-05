@@ -69,7 +69,7 @@ public class DiaryService {
     public DiaryResponse addDiary(DiaryRequest diaryRequest,
                                   Long userId) {
         //course 에 요청한 place 가 존재하지 않으면 reject
-        CoursePlaceRelation coursePlaceRelation = coursePlaceRepository.findByCourseIdAndPlaceId(diaryRequest.getCourseId(), diaryRequest.getPlaceId()).orElseThrow();
+        CoursePlaceRelation coursePlace = coursePlaceRepository.findByCourseIdAndPlaceId(diaryRequest.getCourseId(), diaryRequest.getPlaceId()).orElseThrow();
 
         //course 가 본인 course 가 아니면 reject
         Course course = courseRepository.findById(diaryRequest.getCourseId()).orElseThrow();
@@ -80,7 +80,7 @@ public class DiaryService {
         Diary diary = Diary.builder()
                 .content(diaryRequest.getContent())
                 .rating(diaryRequest.getRating())
-                .coursePlaceRelation(coursePlaceRelation)
+                .coursePlace(coursePlace)
                 .build();
         diary = diaryRepository.save(diary);
 
@@ -89,7 +89,7 @@ public class DiaryService {
 
     public DiaryResponse getDiary(Long diaryId, Long userId) {
         Diary diary = diaryRepository.findById(diaryId).orElseThrow();
-        Course course = diary.getCoursePlaceRelation().getCourse();
+        Course course = diary.getCoursePlace().getCourse();
 
         if (!course.getUser().getId().equals(userId) && course.getIsPrivate()) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
@@ -123,7 +123,7 @@ public class DiaryService {
     @Transactional
     public void removeDiary(Long diaryId, Long userId) {
         Diary diary = diaryRepository.findById(diaryId).orElseThrow();
-        Course course = diary.getCoursePlaceRelation().getCourse();
+        Course course = diary.getCoursePlace().getCourse();
         if (!course.getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
         }
@@ -135,7 +135,7 @@ public class DiaryService {
         Diary diary = diaryRepository.findById(diaryId).orElseThrow();
 
         // 다이어라가 속한 코스가 본인게 아니라면 reject
-        if (!diary.getCoursePlaceRelation().getCourse().getUser().getId().equals(userId)) {
+        if (!diary.getCoursePlace().getCourse().getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
         }
         String imageUrl = fileService.add(image, "diary/" + diaryId);
@@ -145,7 +145,7 @@ public class DiaryService {
     @Transactional
     public void removeDiaryImage(Long diaryId, String imageUrl, Long userId) {
         Diary diary = diaryRepository.findById(diaryId).orElseThrow();
-        if (!diary.getCoursePlaceRelation().getCourse().getUser().getId().equals(userId)) {
+        if (!diary.getCoursePlace().getCourse().getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
         }
         fileService.remove(imageUrl);

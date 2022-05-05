@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class TagResponse {
 
-    private Byte id;
+    private Integer id;
     private String name;
     private Long courseCount;
 

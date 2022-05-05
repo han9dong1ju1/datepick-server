@@ -130,9 +130,9 @@ public class CourseService {
 
         List<CourseTagRelation> courseTags = course.getCourseTags();
         List<CourseTagRelation> removeCourseTags = new CopyOnWriteArrayList<>(courseTags);
-        List<Byte> newTagIds = courseRequest.getTagIds();
+        List<Integer> newTagIds = courseRequest.getTagIds();
         for (CourseTagRelation courseTag : removeCourseTags) {
-            Byte tagId = courseTag.getTag().getId();
+            Integer tagId = courseTag.getTag().getId();
             if (newTagIds.contains(tagId)) {
                 removeCourseTags.remove(courseTag);
                 newTagIds.remove(tagId);
