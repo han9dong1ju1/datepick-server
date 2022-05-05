@@ -10,7 +10,7 @@ public enum CustomSort {
     POPULAR,
     RATING_DESC,
     RATING_ASC,
-    DISTANCE_ASC,
+    DISTANCE,
     ;
 
     public static CustomSort from(String value) {
@@ -26,7 +26,7 @@ public enum CustomSort {
         switch (customSort) {
             case PICK:
                 return Sort.by("pickCount").descending();
-            case DISTANCE_ASC:
+            case DISTANCE:
                 return Sort.by("distance").ascending();
             case POPULAR:
                 return Sort.by("popularity").descending();

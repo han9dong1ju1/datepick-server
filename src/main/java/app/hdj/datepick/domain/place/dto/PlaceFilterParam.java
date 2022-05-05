@@ -25,11 +25,4 @@ public class PlaceFilterParam {
     @Positive
     private Long courseId;
 
-    public Sort getSort(Sort sort) {
-        if (distance != null) {
-            return Sort.unsorted();
-        }
-        return sort;
-    }
-
 }

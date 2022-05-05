@@ -34,7 +34,7 @@ public class PlaceController {
     @GetMapping("")
     public CustomPage<PlaceResponse> getPlacePage(@AuthPrincipal Long userId,
                                                   @Valid PagingParam pagingParam,
-                                                  @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular", "rating_desc", "rating_asc", "distance_asc"}) String sort,
+                                                  @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular", "rating_desc", "rating_asc", "distance"}) String sort,
                                                   @Valid PlaceFilterParam placeFilterParam) {
         return placeService.getPlacePage(pagingParam, CustomSort.from(sort), placeFilterParam, userId);
     }
@@ -53,16 +53,15 @@ public class PlaceController {
     @GetMapping("/picked")
     public CustomPage<PlaceResponse> getPlacePicked(@AuthPrincipal Long userId,
                                                     @Valid PagingParam pagingParam,
-                                                    @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular", "rating_desc", "rating_asc", "distance_asc"}) String sort,
+                                                    @ValueOfEnum(enumClass = CustomSort.class, acceptedValues = {"latest", "pick", "popular", "rating_desc", "rating_asc", "distance"}) String sort,
                                                     @Valid PlaceFilterParam placeFilterParam) {
         return placeService.getPickedPlacePage(pagingParam, CustomSort.from(sort), placeFilterParam, userId);
     }
 
     @Authorize({Role.USER})
     @PostMapping("")
-    public PlaceResponse addPlace(@AuthPrincipal Long userId,
-                                  @Valid @RequestBody PlaceRequest placeRequest) {
-        return placeService.addPlace(placeRequest, userId);
+    public PlaceResponse addPlace(@Valid @RequestBody PlaceRequest placeRequest) {
+        return placeService.addPlace(placeRequest);
     }
 
 }

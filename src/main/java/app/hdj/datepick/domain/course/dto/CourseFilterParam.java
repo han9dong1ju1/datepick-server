@@ -24,13 +24,6 @@ public class CourseFilterParam {
     @Positive
     private Long userId;
 
-    public Sort getSort(Sort sort) {
-        if (featuredId != null) {
-            return Sort.unsorted();
-        }
-        return sort;
-    }
-
     public void setUserId(Long userId) {
         this.userId = userId;
     }

@@ -1,8 +1,8 @@
 package app.hdj.datepick.domain.course.service;
 
 import app.hdj.datepick.domain.course.dto.CourseFilterParam;
-import app.hdj.datepick.domain.course.dto.CourseResponse;
 import app.hdj.datepick.domain.course.dto.CourseRequest;
+import app.hdj.datepick.domain.course.dto.CourseResponse;
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.course.repository.CourseRepository;
 import app.hdj.datepick.domain.relation.entity.CourseTagRelation;
@@ -21,13 +21,10 @@ import app.hdj.datepick.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -45,16 +42,11 @@ public class CourseService {
     private final TagRepository tagRepository;
     private final FileService fileService;
 
-    @PersistenceContext
-    private EntityManager em;
-
     public CustomPage<CourseResponse> getPublicCoursePage(PagingParam pagingParam,
                                                           CustomSort customSort,
                                                           CourseFilterParam courseFilterParam,
                                                           Long userId) {
-        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
-        Page<Course> coursePage = courseRepository.findPublicCoursePage(courseFilterParam, pagingParam, sort);
-
+        Page<Course> coursePage = courseRepository.findPublicCoursePage(courseFilterParam, pagingParam, customSort);
         return new CustomPage<>(
                 coursePage.getTotalElements(),
                 coursePage.getTotalPages(),
@@ -69,9 +61,7 @@ public class CourseService {
                                                     CustomSort customSort,
                                                     CourseFilterParam courseFilterParam,
                                                     Long userId) {
-        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
-        Page<Course> coursePage = courseRepository.findCoursePage(courseFilterParam, pagingParam, sort);
-
+        Page<Course> coursePage = courseRepository.findCoursePage(courseFilterParam, pagingParam, customSort);
         return new CustomPage<>(
                 coursePage.getTotalElements(),
                 coursePage.getTotalPages(),
@@ -82,10 +72,11 @@ public class CourseService {
         );
     }
 
-    public CustomPage<CourseResponse> getPickedCoursePage(PagingParam pagingParam, CustomSort customSort, CourseFilterParam courseFilterParam, Long userId) {
-        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
-        Page<Course> coursePage = courseRepository.findPickedCoursePage(courseFilterParam, pagingParam, sort, userId);
-
+    public CustomPage<CourseResponse> getPickedCoursePage(PagingParam pagingParam,
+                                                          CustomSort customSort,
+                                                          CourseFilterParam courseFilterParam,
+                                                          Long userId) {
+        Page<Course> coursePage = courseRepository.findPickedCoursePage(courseFilterParam, pagingParam, customSort, userId);
         return new CustomPage<>(
                 coursePage.getTotalElements(),
                 coursePage.getTotalPages(),
@@ -99,16 +90,15 @@ public class CourseService {
     @Transactional
     public CourseResponse addCourse(CourseRequest courseRequest, Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
-
         Course course = Course.builder()
-                .user(user)
                 .title(courseRequest.getTitle())
                 .meetAt(courseRequest.getMeetAt())
                 .isPrivate(courseRequest.getIsPrivate())
+                .user(user)
                 .build();
+        log.info(course.toString());
         course = courseRepository.save(course);
-        em.refresh(course);
-
+        log.info(course.toString());
         return CourseResponse.from(course, userId);
     }
 
