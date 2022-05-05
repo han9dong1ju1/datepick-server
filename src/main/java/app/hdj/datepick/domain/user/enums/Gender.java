@@ -1,7 +1,8 @@
 package app.hdj.datepick.domain.user.enums;
 
 public enum Gender {
-    M, F,
+    M,
+    F,
     ;
 
     public static Gender from(String value) {

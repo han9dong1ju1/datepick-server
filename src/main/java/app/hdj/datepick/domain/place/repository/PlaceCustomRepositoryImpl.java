@@ -86,6 +86,7 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
         switch (sort) {
             case LATEST:
                 query = query.orderBy(place.createdAt.desc());
+                break;
             case DISTANCE:
                 NumberExpression<Double> distanceExpression = GeoQueryUtil.getDistanceExpression(
                     placeFilterParam.getLatitude(), placeFilterParam.getLongitude(), place.latitude,

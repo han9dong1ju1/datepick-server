@@ -19,7 +19,6 @@ import app.hdj.datepick.global.error.exception.CustomException;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,7 +46,6 @@ public class DiaryService {
     public CustomPage<DiaryResponse> getMyDiaryPage(
         PagingParam pagingParam, CustomSort customSort, DiaryFilterParam diaryFilterParam
     ) {
-        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
         Page<Diary> diaryPage = diaryRepository.findMyDiaryPage(diaryFilterParam, pagingParam,
                                                                 customSort);
         return new CustomPage<>(diaryPage.getTotalElements(), diaryPage.getTotalPages(),

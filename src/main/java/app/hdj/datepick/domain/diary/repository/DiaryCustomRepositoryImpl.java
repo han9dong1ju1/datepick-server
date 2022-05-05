@@ -77,6 +77,7 @@ public class DiaryCustomRepositoryImpl implements DiaryCustomRepository {
         switch (sort) {
             case LATEST:
                 query = query.orderBy(diary.createdAt.desc());
+                break;
             case RATING_ASC:
                 query = query.orderBy(diary.rating.asc());
                 break;
@@ -84,7 +85,7 @@ public class DiaryCustomRepositoryImpl implements DiaryCustomRepository {
                 query = query.orderBy(diary.rating.desc());
                 break;
         }
-        
+
         return query;
     }
 }
