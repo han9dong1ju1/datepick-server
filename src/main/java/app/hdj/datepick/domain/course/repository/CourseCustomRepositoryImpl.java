@@ -93,6 +93,8 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
         }
 
         switch (sort) {
+            case LATEST:
+                query = query.orderBy(course.createdAt.desc());
             case PICK:
                 query = query.orderBy(course.coursePicks.size().desc());
                 break;

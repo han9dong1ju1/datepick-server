@@ -37,8 +37,7 @@ public class DiaryService {
     public CustomPage<DiaryResponse> getDiaryPage(PagingParam pagingParam,
                                                   CustomSort customSort,
                                                   DiaryFilterParam diaryFilterParam) {
-        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
-        Page<Diary> diaryPage = diaryRepository.findDiaryPage(diaryFilterParam, pagingParam, sort);
+        Page<Diary> diaryPage = diaryRepository.findDiaryPage(diaryFilterParam, pagingParam, customSort);
         return new CustomPage<>(
                 diaryPage.getTotalElements(),
                 diaryPage.getTotalPages(),
@@ -53,7 +52,7 @@ public class DiaryService {
                                                     CustomSort customSort,
                                                     DiaryFilterParam diaryFilterParam) {
         Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
-        Page<Diary> diaryPage = diaryRepository.findMyDiaryPage(diaryFilterParam, pagingParam, sort);
+        Page<Diary> diaryPage = diaryRepository.findMyDiaryPage(diaryFilterParam, pagingParam, customSort);
         return new CustomPage<>(
                 diaryPage.getTotalElements(),
                 diaryPage.getTotalPages(),

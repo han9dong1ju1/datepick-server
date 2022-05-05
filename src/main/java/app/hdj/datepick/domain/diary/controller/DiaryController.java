@@ -28,7 +28,6 @@ import javax.validation.constraints.NotNull;
 @RestController
 @RequestMapping("v1/diary")
 public class DiaryController {
-
     private final DiaryService diaryService;
 
     @GetMapping("")
