@@ -9,15 +9,14 @@ import app.hdj.datepick.global.common.ImageUrl;
 import app.hdj.datepick.global.config.file.FileService;
 import app.hdj.datepick.global.error.enums.ErrorCode;
 import app.hdj.datepick.global.error.exception.CustomException;
+import java.util.NoSuchElementException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.NoSuchElementException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -38,12 +37,8 @@ public class UserService {
             throw new CustomException(ErrorCode.USER_UNREGISTERED);
         }
 
-        return new UserPublic(
-                user.getId(),
-                user.getNickname(),
-                user.getGender(),
-                user.getImageUrl()
-        );
+        return new UserPublic(user.getId(), user.getNickname(), user.getGender(),
+                              user.getImageUrl());
     }
 
     public User getUser(Long id) {
@@ -92,5 +87,4 @@ public class UserService {
 
         fileService.remove(imageUrl);
     }
-
 }

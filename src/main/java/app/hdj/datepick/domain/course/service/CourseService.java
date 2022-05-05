@@ -18,18 +18,17 @@ import app.hdj.datepick.global.config.file.FileService;
 import app.hdj.datepick.global.enums.CustomSort;
 import app.hdj.datepick.global.error.enums.ErrorCode;
 import app.hdj.datepick.global.error.exception.CustomException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -42,60 +41,55 @@ public class CourseService {
     private final TagRepository tagRepository;
     private final FileService fileService;
 
-    public CustomPage<CourseResponse> getPublicCoursePage(PagingParam pagingParam,
-                                                          CustomSort customSort,
-                                                          CourseFilterParam courseFilterParam,
-                                                          Long userId) {
-        Page<Course> coursePage = courseRepository.findPublicCoursePage(courseFilterParam, pagingParam, customSort);
-        return new CustomPage<>(
-                coursePage.getTotalElements(),
-                coursePage.getTotalPages(),
-                coursePage.getNumber(),
-                coursePage.getContent().stream()
-                        .map(course -> CourseResponse.from(course, userId))
-                        .collect(Collectors.toList())
-        );
+    public CustomPage<CourseResponse> getPublicCoursePage(
+        PagingParam pagingParam,
+        CustomSort customSort,
+        CourseFilterParam courseFilterParam,
+        Long userId
+    ) {
+        Page<Course> coursePage = courseRepository.findPublicCoursePage(courseFilterParam,
+                                                                        pagingParam, customSort);
+        return new CustomPage<>(coursePage.getTotalElements(), coursePage.getTotalPages(),
+                                coursePage.getNumber(), coursePage.getContent().stream()
+                                    .map(course -> CourseResponse.from(course, userId))
+                                    .collect(Collectors.toList()));
     }
 
-    public CustomPage<CourseResponse> getCoursePage(PagingParam pagingParam,
-                                                    CustomSort customSort,
-                                                    CourseFilterParam courseFilterParam,
-                                                    Long userId) {
-        Page<Course> coursePage = courseRepository.findCoursePage(courseFilterParam, pagingParam, customSort);
-        return new CustomPage<>(
-                coursePage.getTotalElements(),
-                coursePage.getTotalPages(),
-                coursePage.getNumber(),
-                coursePage.getContent().stream()
-                        .map(course -> CourseResponse.from(course, userId))
-                        .collect(Collectors.toList())
-        );
+    public CustomPage<CourseResponse> getCoursePage(
+        PagingParam pagingParam,
+        CustomSort customSort,
+        CourseFilterParam courseFilterParam,
+        Long userId
+    ) {
+        Page<Course> coursePage = courseRepository.findCoursePage(courseFilterParam, pagingParam,
+                                                                  customSort);
+        return new CustomPage<>(coursePage.getTotalElements(), coursePage.getTotalPages(),
+                                coursePage.getNumber(), coursePage.getContent().stream()
+                                    .map(course -> CourseResponse.from(course, userId))
+                                    .collect(Collectors.toList()));
     }
 
-    public CustomPage<CourseResponse> getPickedCoursePage(PagingParam pagingParam,
-                                                          CustomSort customSort,
-                                                          CourseFilterParam courseFilterParam,
-                                                          Long userId) {
-        Page<Course> coursePage = courseRepository.findPickedCoursePage(courseFilterParam, pagingParam, customSort, userId);
-        return new CustomPage<>(
-                coursePage.getTotalElements(),
-                coursePage.getTotalPages(),
-                coursePage.getNumber(),
-                coursePage.getContent().stream()
-                        .map(course -> CourseResponse.from(course, userId))
-                        .collect(Collectors.toList())
-        );
+    public CustomPage<CourseResponse> getPickedCoursePage(
+        PagingParam pagingParam,
+        CustomSort customSort,
+        CourseFilterParam courseFilterParam,
+        Long userId
+    ) {
+        Page<Course> coursePage = courseRepository.findPickedCoursePage(courseFilterParam,
+                                                                        pagingParam, customSort,
+                                                                        userId);
+        return new CustomPage<>(coursePage.getTotalElements(), coursePage.getTotalPages(),
+                                coursePage.getNumber(), coursePage.getContent().stream()
+                                    .map(course -> CourseResponse.from(course, userId))
+                                    .collect(Collectors.toList()));
     }
 
     @Transactional
     public CourseResponse addCourse(CourseRequest courseRequest, Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
-        Course course = Course.builder()
-                .title(courseRequest.getTitle())
-                .meetAt(courseRequest.getMeetAt())
-                .isPrivate(courseRequest.getIsPrivate())
-                .user(user)
-                .build();
+        Course course = Course.builder().title(courseRequest.getTitle())
+            .meetAt(courseRequest.getMeetAt()).isPrivate(courseRequest.getIsPrivate()).user(user)
+            .build();
         log.info(course.toString());
         course = courseRepository.save(course);
         log.info(course.toString());
@@ -144,11 +138,13 @@ public class CourseService {
         List<CourseTagRelation> newCourseTags = new ArrayList<>();
         List<Tag> tags = tagRepository.findAllById(newTagIds);
         for (Tag tag : tags) {
-            CourseTagRelation courseTag = CourseTagRelation.builder().course(course).tag(tag).build();
+            CourseTagRelation courseTag = CourseTagRelation.builder().course(course).tag(tag)
+                .build();
             newCourseTags.add(courseTag);
         }
         courseTagRepository.saveAll(newCourseTags);
-        course.setCourseTags(Stream.concat(courseTags.stream(), newCourseTags.stream()).collect(Collectors.toList()));
+        course.setCourseTags(Stream.concat(courseTags.stream(), newCourseTags.stream())
+                                 .collect(Collectors.toList()));
 
         return CourseResponse.from(course, userId);
     }

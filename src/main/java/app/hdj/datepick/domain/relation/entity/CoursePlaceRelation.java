@@ -3,15 +3,27 @@ package app.hdj.datepick.domain.relation.entity;
 import app.hdj.datepick.domain.course.entity.Course;
 import app.hdj.datepick.domain.diary.entity.Diary;
 import app.hdj.datepick.domain.place.entity.Place;
-import lombok.*;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class CoursePlaceRelation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -36,7 +48,9 @@ public class CoursePlaceRelation {
     private Diary diary;
 
     @Builder
-    private CoursePlaceRelation(Long id, Byte placeOrder, String memo, Course course, Place place, Diary diary) {
+    private CoursePlaceRelation(
+        Long id, Byte placeOrder, String memo, Course course, Place place, Diary diary
+    ) {
         this.id = id;
         this.placeOrder = placeOrder;
         this.memo = memo;

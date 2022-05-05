@@ -2,10 +2,9 @@ package app.hdj.datepick.domain.comment.dto;
 
 import app.hdj.datepick.domain.comment.entity.Comment;
 import app.hdj.datepick.domain.user.dto.UserPublic;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -20,21 +19,11 @@ public class CommentPublic {
     private UserPublic user;
 
     public static CommentPublic from(Comment comment) {
-        UserPublic user = new UserPublic(
-                comment.getUser().getId(),
-                comment.getUser().getNickname(),
-                comment.getUser().getGender(),
-                comment.getUser().getImageUrl()
-        );
-        return new CommentPublic(
-                comment.getId(),
-                comment.getContent(),
-                comment.getCourse().getId(),
-                comment.getParent() != null ? comment.getParent().getId() : null,
-                comment.getCreatedAt(),
-                comment.getUpdatedAt(),
-                user
-        );
+        UserPublic user = new UserPublic(comment.getUser().getId(), comment.getUser().getNickname(),
+                                         comment.getUser().getGender(),
+                                         comment.getUser().getImageUrl());
+        return new CommentPublic(comment.getId(), comment.getContent(), comment.getCourse().getId(),
+                                 comment.getParent() != null ? comment.getParent().getId() : null,
+                                 comment.getCreatedAt(), comment.getUpdatedAt(), user);
     }
-
 }

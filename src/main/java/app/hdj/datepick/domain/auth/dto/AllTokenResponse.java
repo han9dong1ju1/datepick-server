@@ -10,5 +10,4 @@ public class AllTokenResponse {
     private String accessToken;
     private long expireIn;
     private String refreshToken;
-
 }

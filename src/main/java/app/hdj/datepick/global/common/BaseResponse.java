@@ -42,5 +42,4 @@ public class BaseResponse<T> {
         this.error = c.getSimpleName();
         this.data = null;
     }
-
 }

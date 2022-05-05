@@ -6,8 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum Provider {
-    GOOGLE,
-    KAKAO,
+    GOOGLE, KAKAO,
     ;
 
     public static Provider from(String value) {

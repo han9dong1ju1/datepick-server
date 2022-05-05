@@ -3,13 +3,12 @@ package app.hdj.datepick.domain.auth.config;
 import app.hdj.datepick.domain.auth.infrastructure.AuthInterceptor;
 import app.hdj.datepick.domain.auth.infrastructure.AuthPrincipalArgumentResolver;
 import app.hdj.datepick.domain.auth.infrastructure.AuthUuidArgumentResolver;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Configuration

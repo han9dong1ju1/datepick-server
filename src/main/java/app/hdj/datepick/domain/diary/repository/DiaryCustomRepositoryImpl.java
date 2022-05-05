@@ -1,5 +1,7 @@
 package app.hdj.datepick.domain.diary.repository;
 
+import static app.hdj.datepick.domain.diary.entity.QDiary.diary;
+
 import app.hdj.datepick.domain.diary.dto.DiaryFilterParam;
 import app.hdj.datepick.domain.diary.entity.Diary;
 import app.hdj.datepick.global.common.PagingParam;
@@ -13,22 +15,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import static app.hdj.datepick.domain.diary.entity.QDiary.diary;
-
 @Slf4j
 @RequiredArgsConstructor
 @Repository
 public class DiaryCustomRepositoryImpl implements DiaryCustomRepository {
+
     private final JPAQueryFactory jpaQueryFactory;
     private final PagingUtil pagingUtil;
 
     @Override
-    public Page<Diary> findDiaryPage(DiaryFilterParam diaryFilterParam, PagingParam pagingParam, CustomSort sort) {
-        JPQLQuery<Diary> query = jpaQueryFactory
-                .selectFrom(diary)
-                .leftJoin(diary.coursePlace)
-                .fetchJoin()
-                .where(diary.coursePlace.course.isPrivate.eq(false));
+    public Page<Diary> findDiaryPage(
+        DiaryFilterParam diaryFilterParam, PagingParam pagingParam, CustomSort sort
+    ) {
+        JPQLQuery<Diary> query = jpaQueryFactory.selectFrom(diary).leftJoin(diary.coursePlace)
+            .fetchJoin().where(diary.coursePlace.course.isPrivate.eq(false));
         query = filterDiaries(query, diaryFilterParam);
         query = applySort(query, sort);
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize());
@@ -36,18 +36,20 @@ public class DiaryCustomRepositoryImpl implements DiaryCustomRepository {
     }
 
     @Override
-    public Page<Diary> findMyDiaryPage(DiaryFilterParam diaryFilterParam, PagingParam pagingParam, CustomSort sort) {
-        JPQLQuery<Diary> query = jpaQueryFactory
-                .selectFrom(diary)
-                .leftJoin(diary.coursePlace)
-                .fetchJoin();
+    public Page<Diary> findMyDiaryPage(
+        DiaryFilterParam diaryFilterParam, PagingParam pagingParam, CustomSort sort
+    ) {
+        JPQLQuery<Diary> query = jpaQueryFactory.selectFrom(diary).leftJoin(diary.coursePlace)
+            .fetchJoin();
         query = filterDiaries(query, diaryFilterParam);
         query = applySort(query, sort);
         PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize());
         return pagingUtil.getPageImpl(pageRequest, query);
     }
 
-    private JPQLQuery<Diary> filterDiaries(JPQLQuery<Diary> query, DiaryFilterParam diaryFilterParam) {
+    private JPQLQuery<Diary> filterDiaries(
+        JPQLQuery<Diary> query, DiaryFilterParam diaryFilterParam
+    ) {
         if (diaryFilterParam.getKeyword() != null) {
             query = query.where(diary.content.contains(diaryFilterParam.getKeyword()));
         }
@@ -82,7 +84,7 @@ public class DiaryCustomRepositoryImpl implements DiaryCustomRepository {
                 query = query.orderBy(diary.rating.desc());
                 break;
         }
-
+        
         return query;
     }
 }

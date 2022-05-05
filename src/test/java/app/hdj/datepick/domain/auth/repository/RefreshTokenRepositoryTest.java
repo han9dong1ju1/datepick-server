@@ -1,18 +1,17 @@
 package app.hdj.datepick.domain.auth.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowableOfType;
+
 import app.hdj.datepick.RepositoryTest;
 import app.hdj.datepick.domain.auth.entity.RefreshToken;
+import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-
-import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.catchThrowableOfType;
 
 class RefreshTokenRepositoryTest extends RepositoryTest {
 
@@ -24,19 +23,11 @@ class RefreshTokenRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        savedToken = RefreshToken.builder()
-                .token("token1")
-                .userId(1L)
-                .uuid("uuid1")
-                .expireAt(LocalDateTime.now())
-                .build();
+        savedToken = RefreshToken.builder().token("token1").userId(1L).uuid("uuid1")
+            .expireAt(LocalDateTime.now()).build();
         refreshTokenRepository.save(savedToken);
-        newToken = RefreshToken.builder()
-                .token("token2")
-                .userId(2L)
-                .uuid("uuid2")
-                .expireAt(LocalDateTime.now())
-                .build();
+        newToken = RefreshToken.builder().token("token2").userId(2L).uuid("uuid2")
+            .expireAt(LocalDateTime.now()).build();
     }
 
     @Test
@@ -71,7 +62,8 @@ class RefreshTokenRepositoryTest extends RepositoryTest {
         newToken.setToken(savedToken.getToken());
 
         // when
-        Exception throwable = catchThrowableOfType(() -> refreshTokenRepository.save(newToken), Exception.class);
+        Exception throwable = catchThrowableOfType(() -> refreshTokenRepository.save(newToken),
+                                                   Exception.class);
 
         // then
         assertThat(throwable).isInstanceOf(DataAccessException.class);
@@ -84,7 +76,8 @@ class RefreshTokenRepositoryTest extends RepositoryTest {
         newToken.setUuid(savedToken.getUuid());
 
         // when
-        Exception throwable = catchThrowableOfType(() -> refreshTokenRepository.save(newToken), Exception.class);
+        Exception throwable = catchThrowableOfType(() -> refreshTokenRepository.save(newToken),
+                                                   Exception.class);
 
         // then
         assertThat(throwable).isInstanceOf(DataAccessException.class);
@@ -98,7 +91,8 @@ class RefreshTokenRepositoryTest extends RepositoryTest {
         String savedTokenUuid = savedToken.getUuid();
 
         // when
-        RefreshToken foundRefreshToken = refreshTokenRepository.findByUuidAndExpireAtAfter(savedTokenUuid, now).orElseThrow();
+        RefreshToken foundRefreshToken = refreshTokenRepository.findByUuidAndExpireAtAfter(
+            savedTokenUuid, now).orElseThrow();
 
         // then
         assertThat(foundRefreshToken).isEqualTo(savedToken);
@@ -112,7 +106,9 @@ class RefreshTokenRepositoryTest extends RepositoryTest {
         String savedTokenUuid = savedToken.getUuid();
 
         // when
-        Exception throwable = catchThrowableOfType(() -> refreshTokenRepository.findByUuidAndExpireAtAfter(savedTokenUuid, now).orElseThrow(), Exception.class);
+        Exception throwable = catchThrowableOfType(
+            () -> refreshTokenRepository.findByUuidAndExpireAtAfter(savedTokenUuid, now)
+                .orElseThrow(), Exception.class);
 
         // then
         assertThat(throwable).isInstanceOf(NoSuchElementException.class);
@@ -126,10 +122,11 @@ class RefreshTokenRepositoryTest extends RepositoryTest {
         String newTokenUuid = newToken.getUuid();
 
         // when
-        Exception throwable = catchThrowableOfType(() -> refreshTokenRepository.findByUuidAndExpireAtAfter(newTokenUuid, now).orElseThrow(), Exception.class);
+        Exception throwable = catchThrowableOfType(
+            () -> refreshTokenRepository.findByUuidAndExpireAtAfter(newTokenUuid, now)
+                .orElseThrow(), Exception.class);
 
         // then
         assertThat(throwable).isInstanceOf(NoSuchElementException.class);
     }
-
 }

@@ -42,5 +42,4 @@ public class KakaoUserInfo implements OAuthUserInfo {
     public Gender getGender() {
         return null;
     }
-
 }

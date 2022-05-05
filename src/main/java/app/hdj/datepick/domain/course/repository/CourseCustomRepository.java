@@ -8,9 +8,15 @@ import org.springframework.data.domain.Page;
 
 public interface CourseCustomRepository {
 
-    Page<Course> findPublicCoursePage(CourseFilterParam courseFilterParam, PagingParam pagingParam, CustomSort sort);
+    Page<Course> findPublicCoursePage(
+        CourseFilterParam courseFilterParam, PagingParam pagingParam, CustomSort sort
+    );
 
-    Page<Course> findCoursePage(CourseFilterParam courseFilterParam, PagingParam pagingParam, CustomSort sort);
+    Page<Course> findCoursePage(
+        CourseFilterParam courseFilterParam, PagingParam pagingParam, CustomSort sort
+    );
 
-    Page<Course> findPickedCoursePage(CourseFilterParam courseFilterParam, PagingParam pagingParam, CustomSort sort, Long userId);
+    Page<Course> findPickedCoursePage(
+        CourseFilterParam courseFilterParam, PagingParam pagingParam, CustomSort sort, Long userId
+    );
 }

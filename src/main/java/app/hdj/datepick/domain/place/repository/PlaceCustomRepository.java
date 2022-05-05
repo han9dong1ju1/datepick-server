@@ -7,6 +7,12 @@ import app.hdj.datepick.global.enums.CustomSort;
 import org.springframework.data.domain.Page;
 
 public interface PlaceCustomRepository {
-    Page<Place> findPlacePage(PlaceFilterParam placeFilterParam, PagingParam pagingParam, CustomSort sort);
-    Page<Place> findPickedPlacePage(PlaceFilterParam placeFilterParam, PagingParam pagingParam, CustomSort sort, Long userId);
+
+    Page<Place> findPlacePage(
+        PlaceFilterParam placeFilterParam, PagingParam pagingParam, CustomSort sort
+    );
+
+    Page<Place> findPickedPlacePage(
+        PlaceFilterParam placeFilterParam, PagingParam pagingParam, CustomSort sort, Long userId
+    );
 }

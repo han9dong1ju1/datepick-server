@@ -13,11 +13,6 @@ public class TagResponse {
     private Long courseCount;
 
     public static TagResponse from(Tag tag) {
-        return new TagResponse(
-                tag.getId(),
-                tag.getName(),
-                (long) tag.getTagCourses().size()
-        );
+        return new TagResponse(tag.getId(), tag.getName(), (long) tag.getTagCourses().size());
     }
-
 }

@@ -42,6 +42,12 @@ public class Place extends BaseTimeEntity {
     @Column(nullable = false)
     @ColumnDefault("0")
     private Long viewCount = 0L;
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    private List<PlaceCategoryRelation> placeCategories = List.of();
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    private List<CoursePlaceRelation> placeCourses = List.of();
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    private List<PlacePick> placePicks = List.of();
 
     @Builder
     private Place(Long id, String kakaoId, String name, Float rating, String address, Double latitude, Double longitude) {
@@ -53,15 +59,6 @@ public class Place extends BaseTimeEntity {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-
-    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
-    private List<PlaceCategoryRelation> placeCategories = List.of();
-
-    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
-    private List<CoursePlaceRelation> placeCourses = List.of();
-
-    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
-    private List<PlacePick> placePicks = List.of();
 
     public void increaseView() {
         viewCount++;

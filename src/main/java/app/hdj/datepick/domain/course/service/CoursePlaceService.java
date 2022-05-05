@@ -8,14 +8,13 @@ import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import app.hdj.datepick.domain.relation.repository.CoursePlaceRepository;
 import app.hdj.datepick.global.error.enums.ErrorCode;
 import app.hdj.datepick.global.error.exception.CustomException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,13 +25,17 @@ public class CoursePlaceService {
     private final CourseRepository courseRepository;
 
     public List<CoursePlacePublic> getCoursePlaces(Long courseId) {
-        List<CoursePlaceRelation> coursePlaceRelations = coursePlaceRepository.findByCourseId(courseId);
+        List<CoursePlaceRelation> coursePlaceRelations = coursePlaceRepository.findByCourseId(
+            courseId);
         coursePlaceRelations.sort(Comparator.comparingInt(CoursePlaceRelation::getPlaceOrder));
-        return coursePlaceRelations.stream().map(CoursePlacePublic::from).collect(Collectors.toList());
+        return coursePlaceRelations.stream().map(CoursePlacePublic::from)
+            .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<CoursePlacePublic> addCoursePlaces(Long userId, Long courseId, List<Long> placeIds) {
+    public List<CoursePlacePublic> addCoursePlaces(
+        Long userId, Long courseId, List<Long> placeIds
+    ) {
         Course course = courseRepository.findById(courseId).orElseThrow();
         if (!course.getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
@@ -40,15 +43,14 @@ public class CoursePlaceService {
 
         List<CoursePlaceRelation> coursePlaces = coursePlaceRepository.findByCourseId(courseId);
         coursePlaces.sort(Comparator.comparingInt(CoursePlaceRelation::getPlaceOrder));
-        Byte maxOrder = coursePlaces.size() > 0 ? coursePlaces.get(coursePlaces.size() - 1).getPlaceOrder() : -1;
+        Byte maxOrder =
+            coursePlaces.size() > 0 ? coursePlaces.get(coursePlaces.size() - 1).getPlaceOrder()
+                : -1;
         for (Long placeId : placeIds) {
             Place place = Place.builder().id(placeId).build();
             maxOrder++;
-            CoursePlaceRelation newCoursePlace = CoursePlaceRelation.builder()
-                    .course(course)
-                    .place(place)
-                    .placeOrder(maxOrder)
-                    .build();
+            CoursePlaceRelation newCoursePlace = CoursePlaceRelation.builder().course(course)
+                .place(place).placeOrder(maxOrder).build();
             newCoursePlace = coursePlaceRepository.save(newCoursePlace);
             coursePlaces.add(newCoursePlace);
         }
@@ -56,7 +58,9 @@ public class CoursePlaceService {
     }
 
     @Transactional
-    public List<CoursePlacePublic> modifyCoursePlacesOrder(Long userId, Long courseId, List<Long> coursePlaceIds) {
+    public List<CoursePlacePublic> modifyCoursePlacesOrder(
+        Long userId, Long courseId, List<Long> coursePlaceIds
+    ) {
         Course course = courseRepository.findById(courseId).orElseThrow();
         if (!course.getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
@@ -75,7 +79,9 @@ public class CoursePlaceService {
     }
 
     @Transactional
-    public List<CoursePlacePublic> removeCoursePlaces(Long userId, Long courseId, List<Long> coursePlaceIds) {
+    public List<CoursePlacePublic> removeCoursePlaces(
+        Long userId, Long courseId, List<Long> coursePlaceIds
+    ) {
         Course course = courseRepository.findById(courseId).orElseThrow();
         if (!course.getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
@@ -90,5 +96,4 @@ public class CoursePlaceService {
         }
         return coursePlaces.stream().map(CoursePlacePublic::from).collect(Collectors.toList());
     }
-
 }

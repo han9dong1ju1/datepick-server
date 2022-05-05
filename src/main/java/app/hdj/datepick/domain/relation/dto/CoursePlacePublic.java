@@ -12,9 +12,7 @@ public class CoursePlacePublic {
     private Long placeId;
 
     public static CoursePlacePublic from(CoursePlaceRelation coursePlaceRelation) {
-        return new CoursePlacePublic(
-                coursePlaceRelation.getId(),
-                coursePlaceRelation.getPlace().getId()
-        );
+        return new CoursePlacePublic(coursePlaceRelation.getId(),
+                                     coursePlaceRelation.getPlace().getId());
     }
 }

@@ -16,8 +16,6 @@ public class UserModifyRequest {
 
     @ValueOfEnum(enumClass = Gender.class)
     private String gender;
-
     @Length(max = 16)
     private String nickname;
-
 }

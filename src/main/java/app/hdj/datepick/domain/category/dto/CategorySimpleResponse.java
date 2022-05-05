@@ -12,10 +12,6 @@ public class CategorySimpleResponse {
     private String name;
 
     public static CategorySimpleResponse from(Category category) {
-        return new CategorySimpleResponse(
-                category.getId(),
-                category.getName()
-        );
+        return new CategorySimpleResponse(category.getId(), category.getName());
     }
-
 }

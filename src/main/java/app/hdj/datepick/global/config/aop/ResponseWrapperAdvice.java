@@ -14,19 +14,27 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 public class ResponseWrapperAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
-    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+    public boolean supports(
+        MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType
+    ) {
         return true;
     }
 
     @Override
-    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+    public Object beforeBodyWrite(
+        Object body,
+        MethodParameter returnType,
+        MediaType selectedContentType,
+        Class<? extends HttpMessageConverter<?>> selectedConverterType,
+        ServerHttpRequest request,
+        ServerHttpResponse response
+    ) {
         if (body == null) {
             return new BaseResponse<>(null, null, null);
-        } else if (returnType.getParameterType().equals(BaseResponse.class) ||
-                returnType.getParameterType().equals(ResponseEntity.class)) {
+        } else if (returnType.getParameterType().equals(BaseResponse.class)
+            || returnType.getParameterType().equals(ResponseEntity.class)) {
             return body;
         }
         return new BaseResponse<>(null, null, body);
     }
-
 }
