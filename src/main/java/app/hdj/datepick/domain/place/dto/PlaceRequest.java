@@ -1,14 +1,14 @@
 package app.hdj.datepick.domain.place.dto;
 
-import com.google.common.collect.Sets;
+import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-import java.util.Set;
-
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PlaceRequest {
 
     @NotNull
@@ -19,14 +19,8 @@ public class PlaceRequest {
     private String categories;
     @NotNull
     private String address;
-
     @NotNull
     private Double latitude;
     @NotNull
     private Double longitude;
-
-    public static Set<String> parseCategories(String categories) {
-        return Sets.newHashSet(categories.trim().split(">"));
-    }
-
 }

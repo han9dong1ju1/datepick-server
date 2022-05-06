@@ -1,9 +1,9 @@
 package app.hdj.datepick.global.util;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
 import java.time.LocalTime;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 public class ViewUtil {
 
@@ -11,7 +11,13 @@ public class ViewUtil {
         return cookieValue.contains("/" + id + "/");
     }
 
-    public static void setViewCookie(boolean alreadyViewed, String cookieName, String cookieValue, Long id, HttpServletResponse response) {
+    public static void setViewCookie(
+        boolean alreadyViewed,
+        String cookieName,
+        String cookieValue,
+        Long id,
+        HttpServletResponse response
+    ) {
         if (alreadyViewed) {
             return;
         }
@@ -26,5 +32,4 @@ public class ViewUtil {
         cookie.setHttpOnly(true);
         return cookie;
     }
-
 }

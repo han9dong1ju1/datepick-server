@@ -1,7 +1,7 @@
 package app.hdj.datepick.domain.featured.service;
 
+import app.hdj.datepick.domain.featured.dto.FeaturedFilterParam;
 import app.hdj.datepick.domain.featured.entity.Featured;
-import app.hdj.datepick.domain.featured.param.FeaturedRequestParam;
 import app.hdj.datepick.domain.featured.repository.FeaturedRepository;
 import app.hdj.datepick.global.common.CustomPage;
 import app.hdj.datepick.global.common.PagingParam;
@@ -19,22 +19,19 @@ public class FeaturedService {
 
     private final FeaturedRepository featuredRepository;
 
-    public CustomPage<Featured> getFeaturedPage(FeaturedRequestParam featuredRequestParam, PagingParam pagingParam) {
-        // 페이징된 데이터 가져옴
-        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(), pagingParam.getSize(), Sort.by("createdAt").descending());
-        Page<Featured> featuredPage = featuredRepository.findFeaturedPage(featuredRequestParam.getIsPinned(), featuredRequestParam.getCourseId(), pageRequest);
-
-        // CustomPage로 말아서 반환
-        return new CustomPage<>(
-                featuredPage.getTotalElements(),
-                featuredPage.getTotalPages(),
-                featuredPage.getNumber(),
-                featuredPage.getContent()
-        );
+    public CustomPage<Featured> getFeaturedPage(
+        FeaturedFilterParam featuredFilterParam, PagingParam pagingParam
+    ) {
+        PageRequest pageRequest = PageRequest.of(pagingParam.getPage(),
+                                                 pagingParam.getSize(),
+                                                 Sort.by("createdAt").descending());
+        Page<Featured> featuredPage = featuredRepository.findFeaturedPage(featuredFilterParam.getIsPinned(),
+                                                                          featuredFilterParam.getCourseId(),
+                                                                          pageRequest);
+        return CustomPage.from(featuredPage);
     }
 
     public Featured getFeatured(Long featuredId) {
         return featuredRepository.findById(featuredId).orElseThrow();
     }
-
 }

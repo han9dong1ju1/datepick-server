@@ -5,15 +5,14 @@ import app.hdj.datepick.domain.auth.service.AuthService;
 import app.hdj.datepick.domain.user.enums.Role;
 import app.hdj.datepick.global.error.enums.ErrorCode;
 import app.hdj.datepick.global.error.exception.CustomException;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Component
@@ -22,7 +21,9 @@ public class AuthInterceptor implements HandlerInterceptor {
     private final JwtUtil jwtUtil;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(
+        HttpServletRequest request, HttpServletResponse response, Object handler
+    ) {
         Authorize authorize = getAuthorize((HandlerMethod) handler);
         if (authorize != null) {
             String token = AuthorizationExtractor.extract(request);
@@ -45,9 +46,9 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         Map<String, Object> payload = jwtUtil.getPayload(token);
-        if (!payload.containsKey(AuthService.USER_AUTHORITIES_CLAIM_KEY) ||
-                !payload.containsKey(AuthService.USER_ID_CLAIM_KEY) ||
-                !payload.containsKey(AuthService.TOKEN_UUID_CLAIM_KEY)) {
+        if (!payload.containsKey(AuthService.USER_AUTHORITIES_CLAIM_KEY) || !payload.containsKey(
+            AuthService.USER_ID_CLAIM_KEY)
+            || !payload.containsKey(AuthService.TOKEN_UUID_CLAIM_KEY)) {
             throw new CustomException(ErrorCode.TOKEN_MALFORMED);
         }
 
@@ -58,5 +59,4 @@ public class AuthInterceptor implements HandlerInterceptor {
             }
         }
     }
-
 }

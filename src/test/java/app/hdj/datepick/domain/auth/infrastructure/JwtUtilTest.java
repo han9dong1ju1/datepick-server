@@ -1,5 +1,9 @@
 package app.hdj.datepick.domain.auth.infrastructure;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowableOfType;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import app.hdj.datepick.global.error.enums.ErrorCode;
 import app.hdj.datepick.global.error.exception.CustomException;
 import io.jsonwebtoken.Claims;
@@ -7,20 +11,15 @@ import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.catchThrowableOfType;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class JwtUtilTest {
 
@@ -34,7 +33,8 @@ class JwtUtilTest {
     @BeforeEach
     void setUp() {
         jwtUtil = new JwtUtil(secretKey, accessTokenExpireInterval, refreshTokenExpireInterval);
-        jwtParser = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8))).build();
+        jwtParser = Jwts.parserBuilder()
+            .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8))).build();
     }
 
     @Test
@@ -47,8 +47,10 @@ class JwtUtilTest {
         String accessToken = jwtUtil.createAccessToken(Map.of(), now);
 
         // then
-        long expireAt = jwtParser.parseClaimsJws(accessToken).getBody().getExpiration().toInstant().getEpochSecond();
-        long calculatedExpiration = Timestamp.valueOf(now.plusSeconds(accessTokenExpireInterval.toSeconds())).toInstant().getEpochSecond();
+        long expireAt = jwtParser.parseClaimsJws(accessToken).getBody().getExpiration().toInstant()
+            .getEpochSecond();
+        long calculatedExpiration = Timestamp.valueOf(
+            now.plusSeconds(accessTokenExpireInterval.toSeconds())).toInstant().getEpochSecond();
         assertThat(expireAt).isEqualTo(calculatedExpiration);
     }
 
@@ -62,8 +64,10 @@ class JwtUtilTest {
         String accessToken = jwtUtil.createRefreshToken(Map.of(), now);
 
         // then
-        long expireAt = jwtParser.parseClaimsJws(accessToken).getBody().getExpiration().toInstant().getEpochSecond();
-        long calculatedExpiration = Timestamp.valueOf(now.plusSeconds(refreshTokenExpireInterval.toSeconds())).toInstant().getEpochSecond();
+        long expireAt = jwtParser.parseClaimsJws(accessToken).getBody().getExpiration().toInstant()
+            .getEpochSecond();
+        long calculatedExpiration = Timestamp.valueOf(
+            now.plusSeconds(refreshTokenExpireInterval.toSeconds())).toInstant().getEpochSecond();
         assertThat(expireAt).isEqualTo(calculatedExpiration);
     }
 
@@ -114,11 +118,13 @@ class JwtUtilTest {
     @DisplayName("만료된 Token의 유효성을 검사하면 예외를 발생시킨다.")
     void validateExpiredToken() {
         // given
-        LocalDateTime now = LocalDateTime.now().minusSeconds(accessTokenExpireInterval.plusSeconds(1L).toSeconds());
+        LocalDateTime now = LocalDateTime.now()
+            .minusSeconds(accessTokenExpireInterval.plusSeconds(1L).toSeconds());
         String accessToken = jwtUtil.createAccessToken(Map.of(), now);
 
         // when
-        CustomException throwable = catchThrowableOfType(() -> jwtUtil.getPayload(accessToken), CustomException.class);
+        CustomException throwable = catchThrowableOfType(() -> jwtUtil.getPayload(accessToken),
+                                                         CustomException.class);
 
         // then
         assertThat(throwable.getErrorCode()).isEqualTo(ErrorCode.TOKEN_EXPIRED);
@@ -128,14 +134,15 @@ class JwtUtilTest {
     @DisplayName("유효하지 않은 Token의 유효성을 검사하면 예외를 발생시킨다..")
     void validateInvalidToken() {
         // given
-        LocalDateTime now = LocalDateTime.now().minusSeconds(accessTokenExpireInterval.plusSeconds(1L).toSeconds());
+        LocalDateTime now = LocalDateTime.now()
+            .minusSeconds(accessTokenExpireInterval.plusSeconds(1L).toSeconds());
         String accessToken = jwtUtil.createAccessToken(Map.of(), now) + "Modify Token String Value";
 
         // when
-        CustomException throwable = catchThrowableOfType(() -> jwtUtil.getPayload(accessToken), CustomException.class);
+        CustomException throwable = catchThrowableOfType(() -> jwtUtil.getPayload(accessToken),
+                                                         CustomException.class);
 
         // then
         assertThat(throwable.getErrorCode()).isEqualTo(ErrorCode.TOKEN_INVALID);
     }
-
 }

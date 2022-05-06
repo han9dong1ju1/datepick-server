@@ -30,5 +30,4 @@ public class CoursePickService {
         }
         coursePickRepository.remove(courseId, userId);
     }
-
 }

@@ -9,5 +9,4 @@ public class DatepickServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(DatepickServerApplication.class, args);
     }
-
 }

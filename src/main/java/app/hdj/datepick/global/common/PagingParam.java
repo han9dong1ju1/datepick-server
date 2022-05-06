@@ -1,11 +1,10 @@
 package app.hdj.datepick.global.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
@@ -18,5 +17,4 @@ public class PagingParam {
     @NotNull
     @Positive
     private Integer size;
-
 }

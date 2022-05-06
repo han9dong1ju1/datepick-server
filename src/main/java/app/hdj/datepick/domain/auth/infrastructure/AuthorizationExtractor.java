@@ -1,7 +1,7 @@
 package app.hdj.datepick.domain.auth.infrastructure;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
+import javax.servlet.http.HttpServletRequest;
 
 public class AuthorizationExtractor {
 
@@ -19,5 +19,4 @@ public class AuthorizationExtractor {
         }
         return null;
     }
-
 }

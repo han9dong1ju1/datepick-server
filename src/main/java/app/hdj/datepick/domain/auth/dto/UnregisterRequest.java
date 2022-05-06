@@ -1,17 +1,17 @@
 package app.hdj.datepick.domain.auth.dto;
 
+import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UnregisterRequest {
 
     @NotNull
     private String reason;
-
     private String content;
-
 }

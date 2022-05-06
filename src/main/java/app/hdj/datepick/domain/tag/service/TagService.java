@@ -1,14 +1,12 @@
 package app.hdj.datepick.domain.tag.service;
 
-import app.hdj.datepick.domain.tag.dto.TagResponse;
-import app.hdj.datepick.domain.tag.entity.Tag;
+import app.hdj.datepick.domain.tag.dto.TagWithCountResponse;
 import app.hdj.datepick.domain.tag.repository.TagRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -17,8 +15,10 @@ public class TagService {
 
     private final TagRepository tagRepository;
 
-    public List<TagResponse> getTagList() {
-        return tagRepository.findAll().stream().map(TagResponse::from).collect(Collectors.toList());
+    public List<TagWithCountResponse> getTagList() {
+        return tagRepository.findAll()
+            .stream()
+            .map(TagWithCountResponse::from)
+            .collect(Collectors.toList());
     }
-
 }

@@ -4,6 +4,7 @@ import app.hdj.datepick.domain.user.enums.Gender;
 import app.hdj.datepick.domain.user.enums.Provider;
 
 public interface OAuthUserInfo {
+
     String getUid();
 
     String getName();

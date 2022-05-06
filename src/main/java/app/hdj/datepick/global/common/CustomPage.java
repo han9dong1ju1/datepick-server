@@ -1,9 +1,8 @@
 package app.hdj.datepick.global.common;
 
+import java.util.List;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 @Getter
 public class CustomPage<T> {
@@ -23,12 +22,9 @@ public class CustomPage<T> {
     }
 
     public static <T> CustomPage<T> from(Page<T> page) {
-        return new CustomPage<>(
-                page.getTotalElements(),
-                page.getTotalPages(),
-                page.getNumber(),
-                page.getContent()
-        );
+        return new CustomPage<>(page.getTotalElements(),
+                                page.getTotalPages(),
+                                page.getNumber(),
+                                page.getContent());
     }
-
 }

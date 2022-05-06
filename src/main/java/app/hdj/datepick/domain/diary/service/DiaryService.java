@@ -10,20 +10,18 @@ import app.hdj.datepick.domain.diary.repository.DiaryRepository;
 import app.hdj.datepick.domain.relation.entity.CoursePlaceRelation;
 import app.hdj.datepick.domain.relation.repository.CoursePlaceRepository;
 import app.hdj.datepick.global.common.CustomPage;
-import app.hdj.datepick.global.common.ImageUrl;
+import app.hdj.datepick.global.common.ImageUrlResponse;
 import app.hdj.datepick.global.common.PagingParam;
 import app.hdj.datepick.global.config.file.FileService;
 import app.hdj.datepick.global.enums.CustomSort;
 import app.hdj.datepick.global.error.enums.ErrorCode;
 import app.hdj.datepick.global.error.exception.CustomException;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -34,42 +32,45 @@ public class DiaryService {
     private final CoursePlaceRepository coursePlaceRepository;
     private final FileService fileService;
 
-    public CustomPage<DiaryResponse> getDiaryPage(PagingParam pagingParam,
-                                                  CustomSort customSort,
-                                                  DiaryFilterParam diaryFilterParam) {
-        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
-        Page<Diary> diaryPage = diaryRepository.findDiaryPage(diaryFilterParam, pagingParam, sort);
-        return new CustomPage<>(
-                diaryPage.getTotalElements(),
-                diaryPage.getTotalPages(),
-                diaryPage.getNumber(),
-                diaryPage.getContent().stream()
-                        .map(DiaryResponse::from)
-                        .collect(Collectors.toList())
-        );
+    public CustomPage<DiaryResponse> getDiaryPage(
+        PagingParam pagingParam, CustomSort customSort, DiaryFilterParam diaryFilterParam
+    ) {
+        Page<Diary> diaryPage = diaryRepository.findDiaryPage(diaryFilterParam,
+                                                              pagingParam,
+                                                              customSort);
+        return new CustomPage<>(diaryPage.getTotalElements(),
+                                diaryPage.getTotalPages(),
+                                diaryPage.getNumber(),
+                                diaryPage.getContent()
+                                    .stream()
+                                    .map(DiaryResponse::from)
+                                    .collect(Collectors.toList()));
     }
 
-    public CustomPage<DiaryResponse> getMyDiaryPage(PagingParam pagingParam,
-                                                    CustomSort customSort,
-                                                    DiaryFilterParam diaryFilterParam) {
-        Sort sort = CustomSort.toSort(customSort, CustomSort.LATEST);
-        Page<Diary> diaryPage = diaryRepository.findMyDiaryPage(diaryFilterParam, pagingParam, sort);
-        return new CustomPage<>(
-                diaryPage.getTotalElements(),
-                diaryPage.getTotalPages(),
-                diaryPage.getNumber(),
-                diaryPage.getContent().stream()
-                        .map(DiaryResponse::from)
-                        .collect(Collectors.toList())
-        );
+    public CustomPage<DiaryResponse> getMyDiaryPage(
+        PagingParam pagingParam, CustomSort customSort, DiaryFilterParam diaryFilterParam
+    ) {
+        Page<Diary> diaryPage = diaryRepository.findMyDiaryPage(diaryFilterParam,
+                                                                pagingParam,
+                                                                customSort);
+        return new CustomPage<>(diaryPage.getTotalElements(),
+                                diaryPage.getTotalPages(),
+                                diaryPage.getNumber(),
+                                diaryPage.getContent()
+                                    .stream()
+                                    .map(DiaryResponse::from)
+                                    .collect(Collectors.toList()));
     }
 
 
     @Transactional
-    public DiaryResponse addDiary(DiaryRequest diaryRequest,
-                                  Long userId) {
+    public DiaryResponse addDiary(
+        DiaryRequest diaryRequest, Long userId
+    ) {
         //course 에 요청한 place 가 존재하지 않으면 reject
-        CoursePlaceRelation coursePlaceRelation = coursePlaceRepository.findByCourseIdAndPlaceId(diaryRequest.getCourseId(), diaryRequest.getPlaceId()).orElseThrow();
+        CoursePlaceRelation coursePlace = coursePlaceRepository.findByCourseIdAndPlaceId(
+            diaryRequest.getCourseId(),
+            diaryRequest.getPlaceId()).orElseThrow();
 
         //course 가 본인 course 가 아니면 reject
         Course course = courseRepository.findById(diaryRequest.getCourseId()).orElseThrow();
@@ -78,10 +79,10 @@ public class DiaryService {
         }
 
         Diary diary = Diary.builder()
-                .content(diaryRequest.getContent())
-                .rating(diaryRequest.getRating())
-                .coursePlaceRelation(coursePlaceRelation)
-                .build();
+            .content(diaryRequest.getContent())
+            .rating(diaryRequest.getRating())
+            .coursePlace(coursePlace)
+            .build();
         diary = diaryRepository.save(diary);
 
         return DiaryResponse.from(diary);
@@ -89,7 +90,7 @@ public class DiaryService {
 
     public DiaryResponse getDiary(Long diaryId, Long userId) {
         Diary diary = diaryRepository.findById(diaryId).orElseThrow();
-        Course course = diary.getCoursePlaceRelation().getCourse();
+        Course course = diary.getCoursePlace().getCourse();
 
         if (!course.getUser().getId().equals(userId) && course.getIsPrivate()) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
@@ -99,11 +100,12 @@ public class DiaryService {
     }
 
     @Transactional
-    public DiaryResponse modifyDiary(Long diaryId,
-                                     DiaryRequest diaryRequest,
-                                     Long userId) {
+    public DiaryResponse modifyDiary(
+        Long diaryId, DiaryRequest diaryRequest, Long userId
+    ) {
         //course 에 요청한 place 가 존재하지 않으면 reject
-        if (coursePlaceRepository.existsByCourseIdAndPlaceId(diaryRequest.getCourseId(), diaryRequest.getPlaceId())) {
+        if (coursePlaceRepository.existsByCourseIdAndPlaceId(diaryRequest.getCourseId(),
+                                                             diaryRequest.getPlaceId())) {
             throw new CustomException(ErrorCode.ENTITY_NOT_FOUND);
         }
 
@@ -123,7 +125,7 @@ public class DiaryService {
     @Transactional
     public void removeDiary(Long diaryId, Long userId) {
         Diary diary = diaryRepository.findById(diaryId).orElseThrow();
-        Course course = diary.getCoursePlaceRelation().getCourse();
+        Course course = diary.getCoursePlace().getCourse();
         if (!course.getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
         }
@@ -131,24 +133,23 @@ public class DiaryService {
     }
 
     @Transactional
-    public ImageUrl addDiaryImage(Long diaryId, MultipartFile image, Long userId) {
+    public ImageUrlResponse addDiaryImage(Long diaryId, MultipartFile image, Long userId) {
         Diary diary = diaryRepository.findById(diaryId).orElseThrow();
 
         // 다이어라가 속한 코스가 본인게 아니라면 reject
-        if (!diary.getCoursePlaceRelation().getCourse().getUser().getId().equals(userId)) {
+        if (!diary.getCoursePlace().getCourse().getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
         }
         String imageUrl = fileService.add(image, "diary/" + diaryId);
-        return new ImageUrl(imageUrl);
+        return new ImageUrlResponse(imageUrl);
     }
 
     @Transactional
     public void removeDiaryImage(Long diaryId, String imageUrl, Long userId) {
         Diary diary = diaryRepository.findById(diaryId).orElseThrow();
-        if (!diary.getCoursePlaceRelation().getCourse().getUser().getId().equals(userId)) {
+        if (!diary.getCoursePlace().getCourse().getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
         }
         fileService.remove(imageUrl);
     }
-
 }

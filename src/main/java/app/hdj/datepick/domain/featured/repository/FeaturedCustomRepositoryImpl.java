@@ -1,5 +1,8 @@
 package app.hdj.datepick.domain.featured.repository;
 
+import static app.hdj.datepick.domain.featured.entity.QFeatured.featured;
+import static app.hdj.datepick.domain.relation.entity.QCourseFeaturedRelation.courseFeaturedRelation;
+
 import app.hdj.datepick.domain.featured.entity.Featured;
 import app.hdj.datepick.global.util.PagingUtil;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -10,9 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import static app.hdj.datepick.domain.featured.entity.QFeatured.featured;
-import static app.hdj.datepick.domain.relation.entity.QCourseFeaturedRelation.courseFeaturedRelation;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -25,14 +25,13 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
 
     @Override
     public Page<Featured> findFeaturedPage(Boolean isPinned, Long courseId, Pageable pageable) {
-        JPAQuery<Featured> query = jpaQueryFactory
-                .select(featured);
+        JPAQuery<Featured> query = jpaQueryFactory.select(featured);
 
         // from
         if (courseId != null) {
             query.from(courseFeaturedRelation)
-                    .innerJoin(courseFeaturedRelation.featured, featured)
-                    .where(courseFeaturedRelation.course.id.eq(courseId));
+                .innerJoin(courseFeaturedRelation.featured, featured)
+                .where(courseFeaturedRelation.course.id.eq(courseId));
         } else {
             query.from(featured);
         }
@@ -46,5 +45,4 @@ public class FeaturedCustomRepositoryImpl implements FeaturedCustomRepository {
 
         return pagingUtil.getPageImpl(pageable, query);
     }
-
 }
