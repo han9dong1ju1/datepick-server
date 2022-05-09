@@ -17,7 +17,7 @@
 - 위치 기반으로 장소를 검색하고 조회할 수 있으며, 필요시 카카오 API를 통해 없는 장소를 추가할 수 있습니다.
 - 사용자들에게 인기 있는 장소들을 추천해줍니다.
 - 장소들을 조합해 데이트 코스를 생성하고 공유할 수 있습니다.
-- 데이트 코스에 댓글 작성할 수 있습니다.
+- 데이트 코스에 댓글을 작성할 수 있습니다.
 - 자신의 데이트 코스에 대해 다이어리를 작성하고 공유할 수 있습니다.
 
 ## 🛠 기술 스택
@@ -38,6 +38,14 @@
 - AWS S3
 - AWS CloudFront
 
+## 백엔드 아키텍처
+
+### Entity 설계
+
+![diagram](https://user-images.githubusercontent.com/25472942/167360906-726b3f57-f797-42d7-9319-0df0d1d3649c.png)
+
 ## More...
 
 - [API 문서](https://datepick.notion.site/API-6707da981d384526b87377be52c10c50)
+- [Git 브랜치 전햑](https://datepick.notion.site/Git-cac4bb4284794178af18648e35e9d029)
+- [Spring 코드 컨벤션](https://datepick.notion.site/Spring-6b646ffdf9684a9dabe7eabb565cf913)
