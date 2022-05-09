@@ -41,12 +41,12 @@
 
 ## 🏛 백엔드 아키텍처
 
-### Entity 설계
+### Entity 구조
 
 ![diagram](https://user-images.githubusercontent.com/25472942/167360906-726b3f57-f797-42d7-9319-0df0d1d3649c.png)
 
 ## 💬 More...
 
 - [API 문서](https://datepick.notion.site/API-6707da981d384526b87377be52c10c50)
-- [Git 브랜치 전햑](https://datepick.notion.site/Git-cac4bb4284794178af18648e35e9d029)
-- [Spring 코드 컨벤션](https://datepick.notion.site/Spring-6b646ffdf9684a9dabe7eabb565cf913)
+- [Git 브랜치 전략](https://datepick.notion.site/Git-cac4bb4284794178af18648e35e9d029)
+- [코드 컨벤션](https://datepick.notion.site/Spring-6b646ffdf9684a9dabe7eabb565cf913)
