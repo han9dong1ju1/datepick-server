@@ -24,19 +24,27 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(
         HttpServletRequest request, HttpServletResponse response, Object handler
     ) {
-        Authorize authorize = getAuthorize((HandlerMethod) handler);
+        Authorize authorize = null;
+
+        if (handler instanceof HandlerMethod) {
+            authorize = getAuthorize((HandlerMethod) handler);
+        }
+
         if (authorize != null) {
             String token = AuthorizationExtractor.extract(request);
             validateAuthorization(token, authorize);
         }
+
         return true;
     }
 
     private Authorize getAuthorize(HandlerMethod handlerMethod) {
         Authorize authorize = handlerMethod.getMethodAnnotation(Authorize.class);
+
         if (authorize == null) {
             authorize = handlerMethod.getBean().getClass().getAnnotation(Authorize.class);
         }
+
         return authorize;
     }
 
@@ -46,6 +54,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         Map<String, Object> payload = jwtUtil.getPayload(token);
+
         if (!payload.containsKey(AuthService.USER_AUTHORITIES_CLAIM_KEY) || !payload.containsKey(
             AuthService.USER_ID_CLAIM_KEY)
             || !payload.containsKey(AuthService.TOKEN_UUID_CLAIM_KEY)) {
@@ -53,6 +62,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         List<String> authorities = (List<String>) payload.get(AuthService.USER_AUTHORITIES_CLAIM_KEY);
+
         for (Role role : authorize.value()) {
             if (!authorities.contains(role.toString())) {
                 throw new CustomException(ErrorCode.ACCESS_DENIED);
