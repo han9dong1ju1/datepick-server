@@ -28,7 +28,7 @@ public class SnakeToCamelCaseFilter extends OncePerRequestFilter {
             String camelCaseParam = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, param);
 
             parameters.put(camelCaseParam, request.getParameterValues(param));
-            // parameters.put(param, request.getParameterValues(param));
+            parameters.put(param, request.getParameterValues(param));
         }
 
         // 필터체인을 이용하여, request에 해당 값을 추가하여 반환

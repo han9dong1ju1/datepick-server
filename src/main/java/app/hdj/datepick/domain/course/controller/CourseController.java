@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -163,8 +164,9 @@ public class CourseController {
     List<CoursePlaceResponse> removeCoursePlaces(
         @AuthPrincipal Long userId,
         @PathVariable Long courseId,
-        @Valid @RequestBody List<@Positive Long> coursePlaceIds
+        @Valid @RequestParam("course_place_id") List<@Positive Long> coursePlaceIds
     ) {
+        log.debug(coursePlaceIds.toString());
         return coursePlaceService.removeCoursePlaces(userId, courseId, coursePlaceIds);
     }
 
