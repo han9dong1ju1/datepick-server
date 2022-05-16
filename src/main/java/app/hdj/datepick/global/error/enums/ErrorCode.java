@@ -22,7 +22,7 @@ public enum ErrorCode {
     OAUTH_SERVER_ERROR(500, "OAuth 제공자에게 오류가 생겼습니다."),
 
     // AWS
-    FILE_NOT_EXISTS(400, "첨부된 파일이 없습니다."),
+    FILE_NOT_EXISTS(404, "첨부된 파일이 없습니다."),
     FILE_ALREADY_EXISTS(409, "파일이 이미 존재합니다."),
     FILE_UPLOAD_FAILED(500, "파일 업로드에 실패하였습니다."),
 
@@ -34,7 +34,7 @@ public enum ErrorCode {
 
     // Pick
     PICK_ALREADY_EXISTS(409, "이미 픽했습니다."),
-    PICK_NOT_EXISTS(409, "아직 픽하지 않았습니다.");
+    PICK_NOT_EXISTS(404, "아직 픽하지 않았습니다.");
 
     private final int status;
     private final String message;
