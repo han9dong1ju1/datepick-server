@@ -32,8 +32,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @Validated
 @RequiredArgsConstructor
+@RequestMapping("v1/diaries")
 @RestController
-@RequestMapping("v1/diary")
 public class DiaryController {
 
     private final DiaryService diaryService;

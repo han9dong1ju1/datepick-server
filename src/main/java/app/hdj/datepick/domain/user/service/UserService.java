@@ -10,8 +10,6 @@ import app.hdj.datepick.global.config.file.FileService;
 import app.hdj.datepick.global.error.enums.ErrorCode;
 import app.hdj.datepick.global.error.exception.CustomException;
 import java.util.NoSuchElementException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,9 +23,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final FileService fileService;
-
-    @PersistenceContext
-    private EntityManager em;
 
     public UserResponse getPublicUser(Long id) {
         User user = userRepository.findById(id).orElseThrow();
